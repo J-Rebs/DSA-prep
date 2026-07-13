@@ -11,7 +11,8 @@ A production-grade Java repository mapping advanced algorithmic patterns directl
 graph TD
     subgraph Phase 1: Foundations [Linear Boundaries & Search Space]
         A[Sliding Window] --> B[Two Pointers]
-        B --> C[Binary Search / Divide & Conquer]
+        B --> C[Linked Lists & Pointers]
+        C --> CA[Binary Search / Divide & Conquer]
     end
 
     subgraph Phase 2: Structural [State, Priorities & Hierarchies]
@@ -32,7 +33,7 @@ graph TD
         N --> O[Bit Manipulation & Math]
     end
 
-    C --> D
+    CA --> D
     G --> H
     K --> L
 ```
@@ -43,6 +44,7 @@ graph TD
 | --- | --- | --- | --- | --- | --- |
 | **Phase 1** | Sliding Window | Rate Limiter (Sliding Window Counter) | Medium / Hard | 🔄 In Progress | [View](./src/main/java/com/engine/phase1_foundations/sliding_window/PATTERN_BLUEPRINT.md) |
 | **Phase 1** | Two Pointers | Real-time Data Deduplication / Merging | Medium | 🛑 Todo | [View](./src/main/java/com/engine/phase1_foundations/two_pointers/PATTERN_BLUEPRINT.md) |
+| **Phase 1** | Linked Lists & Pointers | LRU Cache / MemTable Compactor | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase1_foundations/linked_list/PATTERN_BLUEPRINT.md) |
 | **Phase 1** | Binary Search | LSM-Tree SSTable Index Lookup | Medium | 🔄 In Progress | [View](./src/main/java/com/engine/phase1_foundations/binary_search/PATTERN_BLUEPRINT.md) |
 | **Phase 2** | Monotonic Stack | Event Metric Streaming (Next Max Spike) | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/monotonic_stack/PATTERN_BLUEPRINT.md) |
 | **Phase 2** | Heaps / PQ | Distributed Top-K Heavy Hitters Tracker | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/heaps_and_priority/PATTERN_BLUEPRINT.md) |

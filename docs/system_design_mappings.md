@@ -216,3 +216,17 @@ High-scale web caches (e.g., Redis, Varnish, Cloudflare CDN) use **Bloom Filters
   * **Bloom Filter:** Hashing a key produces multiple integer index offsets. We execute bitwise OR operations to write bits to a central bitmask array, and bitwise AND to check presence.
   * **HyperLogLog:** Evaluates the number of leading zeros in hashed binary keys using bit-shift logic (`num >>> 24`) and updates registers.
   * **Quant/Performance Trick:** The entire system operates on primitive `long[]` arrays, using bitwise operations (`1L << (index & 63)`) to modify individual bits without memory allocation.
+
+---
+
+## 16. Linked Lists & Pointers $\rightarrow$ LRU Cache & MemTable SSTable Merger
+
+### Macro System Component: Cache Controllers (LRU/LFU) & DB Write Paths (MemTables)
+In-memory caching engines (e.g. Redis, memcached) require $O(1)$ evictions of the oldest keys when reaching capacity boundaries (Least Recently Used policy). Relational and LSM-Tree databases also merge multiple sorted streams of mutation logs (MemTables) to flush clean, sorted tables to disk (SSTables). 
+
+### How it leverages the DSA Pattern
+* **Algorithmic Primitive:** **Doubly Linked Lists** (for LRU eviction) and **Singly Linked Lists** (for sorted list merges).
+* **Mechanism:**
+  * **LRU Cache:** A Hash Map maps search keys to nodes in a Doubly Linked List. Whenever a key is queried or updated, its corresponding node is detached from its current position and spliced to the head of the list in $O(1)$ pointer operations. The tail node always represents the least recently used element, which can be discarded in $O(1)$ operations upon capacity overflow.
+  * **MemTable Merges:** Linked list pointers allow merging $K$ sorted node chains without allocating new memory, adjusting next pointers dynamically during traversals.
+  * **Quant/Performance Trick:** To prevent heap fragmentation in high-throughput JVM environments, custom memory-pooled nodes (e.g. allocation arrays where nodes are represented by offsets in long/int pools) are preferred over instantiation of individual `Node` objects.
