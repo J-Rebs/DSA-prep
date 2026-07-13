@@ -1,12 +1,12 @@
 # Pattern Blueprint: Binary Search
 
 ## 1. System Design Mapping
-* **Macro System Component:** LSM-Tree SSTable Index Lookup
+* **Macro System Component:** LSM-Tree SSTable Index Lookup & Distributed Shard Allocation
 * **How it leverages this DSA Pattern:**
-  SSTable block indexes contain keys sorted in lexicographical order. Searching for a specific database key uses binary search on the index blocks to locate the appropriate offset on disk.
+  SSTable block indexes contain keys sorted in lexicographical order. Searching for a specific database key uses binary search on the index blocks to locate the appropriate offset on disk. At scale, binary search coordinates query distributions across distributed hash rings, cluster node partitions, and elastic scheduler resource allocations.
 * **Data Flow Architecture:**
   ```text
-  Key Query ──> [Binary Search on Block Index] ──> Identify Block Offset ──> Fetch Disk Block
+  Query Key / Capacity Constraint ──> [Binary Search Partitioning] ──> Locate Target Shard / Solve Optimal Bounds
   ```
 
 ## 2. High-Yield Performance Tricks (Java Specific)
@@ -21,86 +21,49 @@
 ## 3. The Core Structural Trick (Mental Model)
 > Continually half the search space based on sorted properties. The invariant is that the target key resides in the interval `[low, high]`.
 
-## 4. Production-Ready Java Blueprint
+## 4. The 9-Problem Mastery Ladder
 
-### Code Blocks
-```java
-// SSTableIndexLookup.java
-package com.engine.phase1_foundations.binary_search;
+### Phase 1: Easy Warmups
+1. **[Easy] Exact Search (Key Index Lookup)** - [🛑 Todo]
+   * *System Mapping:* Search index for exact key.
+   * *LeetCode Equivalent:* LeetCode 704 - Binary Search
+   * *Mental Model Cue:* Half the search space, checking if mid == target.
+2. **[Easy] Insertion Position Finder** - [🛑 Todo]
+   * *System Mapping:* Finding the start block of a partition index range.
+   * *LeetCode Equivalent:* LeetCode 35 - Search Insert Position
+   * *Mental Model Cue:* Return `low` (the insertion index) when the search loop terminates.
 
-public final class SSTableIndexLookup {
-    // 1. Lower Bound Binary Search: findBlockOffset
-    public static int findBlockOffset(long[] keys, int[] offsets, long targetKey) {
-        int low = 0;
-        int high = keys.length - 1;
-        int ans = -1;
-        while (low <= high) {
-            int mid = (low + high) >>> 1;
-            if (keys[mid] <= targetKey) {
-                ans = mid;
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
-        }
-        return ans == -1 ? -1 : offsets[ans];
-    }
+### Phase 2: Medium System Integration
+3. **[Medium] Range Query Lookup (Lower Bound)** - [🔄 In Progress]
+   * *System Mapping:* SSTable Block Start Key Lookup (Greatest key <= target).
+   * *LeetCode Equivalent:* LeetCode 34 - Find First and Last Position of Element in Sorted Array / Lower Bound
+   * *Mental Model Cue:* Cache potential answer when keys[mid] <= target, then scan right.
+4. **[Medium] Rotated Index Buffer Search** - [🛑 Todo]
+   * *System Mapping:* Distributed hash ring node lookup.
+   * *LeetCode Equivalent:* LeetCode 33 - Search in Rotated Sorted Array
+   * *Mental Model Cue:* Check which half of the array is sorted, then check if target falls inside that sorted half.
+5. **[Medium] Rotated Index Boundary Finder** - [🛑 Todo]
+   * *System Mapping:* Identifying the partition offset boundaries.
+   * *LeetCode Equivalent:* LeetCode 153 - Find Minimum in Rotated Sorted Array
+   * *Mental Model Cue:* If keys[mid] > keys[high], the pivot/minimum lies to the right; else it lies to the left (including mid).
+6. **[Medium] Peak Load Anomaly Detector** - [🛑 Todo]
+   * *System Mapping:* Finding peak metrics under wave-like load spikes.
+   * *LeetCode Equivalent:* LeetCode 162 - Find Peak Element
+   * *Mental Model Cue:* If metrics[mid] < metrics[mid+1], the peak lies to the right; else it lies to the left (including mid).
+7. **[Medium] Capacity Planner** - [🛑 Todo]
+   * *System Mapping:* Elastic Auto-Scaler instance calculator.
+   * *LeetCode Equivalent:* LeetCode 1011 - Capacity To Ship Packages Within D Days
+   * *Mental Model Cue:* Binary search on the *capacity* range [maxLoad, sumLoads]. Helper method checks if capacity can execute all tasks in <= numInstances.
 
-    // 2. Rotated Buffer Search: searchRotatedIndex
-    public static int searchRotatedIndex(long[] keys, long targetKey) {
-        int low = 0;
-        int high = keys.length - 1;
-        while (low <= high) {
-            int mid = (low + high) >>> 1;
-            if (keys[mid] == targetKey) return mid;
-            if (keys[low] <= keys[mid]) {
-                if (targetKey >= keys[low] && targetKey < keys[mid]) {
-                    high = mid - 1;
-                } else {
-                    low = mid + 1;
-                }
-            } else {
-                if (targetKey > keys[mid] && targetKey <= keys[high]) {
-                    low = mid + 1;
-                } else {
-                    high = mid - 1;
-                }
-            }
-        }
-        return -1;
-    }
+### Phase 3: Hard Scale & Stress
+8. **[Hard] Cross-Partition Median Key Find** - [🛑 Todo]
+   * *System Mapping:* Split-brain metadata sync mediator.
+   * *LeetCode Equivalent:* LeetCode 4 - Median of Two Sorted Arrays
+   * *Mental Model Cue:* Binary search the partition point in the smaller array such that elements on the left are <= elements on the right.
+9. **[Hard] Maximum Metric Load Allocator** - [🛑 Todo]
+   * *System Mapping:* Dynamic partition shard balance controller (Minimizing max load).
+   * *LeetCode Equivalent:* LeetCode 410 - Split Array Largest Sum
+   * *Mental Model Cue:* Binary search the *max load* range [maxVal, sumVal]. Helper method verifies if array can be partitioned into <= numShards sub-arrays where each sub-array sum is <= max load.
 
-    // 3. Cross-Partition Median Find: findMedianKey
-    public static double findMedianKey(long[] keysA, long[] keysB) {
-        if (keysA.length > keysB.length) return findMedianKey(keysB, keysA);
-        int m = keysA.length, n = keysB.length;
-        int low = 0, high = m;
-        while (low <= high) {
-            int i = (low + high) >>> 1;
-            int j = ((m + n + 1) / 2) - i;
-            long maxLeftA = (i == 0) ? Long.MIN_VALUE : keysA[i - 1];
-            long minRightA = (i == m) ? Long.MAX_VALUE : keysA[i];
-            long maxLeftB = (j == 0) ? Long.MIN_VALUE : keysB[j - 1];
-            long minRightB = (j == n) ? Long.MAX_VALUE : keysB[j];
-            if (maxLeftA <= minRightB && maxLeftB <= minRightA) {
-                if ((m + n) % 2 != 0) {
-                    return Math.max(maxLeftA, maxLeftB);
-                } else {
-                    return (Math.max(maxLeftA, maxLeftB) + Math.min(minRightA, minRightB)) / 2.0;
-                }
-            } else if (maxLeftA > minRightB) {
-                high = i - 1;
-            } else {
-                low = i + 1;
-            }
-        }
-        throw new IllegalArgumentException("Inputs not sorted.");
-    }
-}
-```
-
-### Performance Analysis
-1. **Zero-Boxing Optimization:** All methods consume and return primitives (`long`, `int`, `double`). This ensures that zero heap allocations are triggered during calculations, eliminating GC overhead.
-2. **Unsigned Midpoint Math:** The midpoint calculation uses `(low + high) >>> 1` to prevent potential integer overflow bugs that happen when `low + high` exceeds `Integer.MAX_VALUE`.
-3. **Cache Line Friendly:** Operates directly on contiguous parallel arrays (`keys[]` and `offsets[]`), which improves CPU cache hit ratios during random binary leaps.
-
+## 5. Production-Ready Java Blueprint (To be written by User)
+*Once you solve a problem, copy your clean implementation here.*
