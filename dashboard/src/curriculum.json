@@ -78,7 +78,7 @@
     "color": "var(--accent-violet)",
     "concepts": [
       { "id": "monotonic_stack", "name": "Monotonic Stack", "component": "Event Metric Streaming", "status": "🛑 Todo" },
-      { "id": "heaps_pq", "name": "Heaps / Priority Queue", "component": "Distributed Top-K Heavy Hitters", "status": "🛑 Todo" },
+      { "id": "heaps_and_priority", "name": "Heaps / Priority Queue", "component": "Distributed Top-K Heavy Hitters", "status": "🛑 Todo" },
       { "id": "trie", "name": "Trie", "component": "Longest Prefix Match (IP Router)", "status": "🛑 Todo" },
       { "id": "segment_tree", "name": "Segment Tree", "component": "Telemetry Metric Range Query Engine", "status": "🛑 Todo" }
     ]
@@ -88,10 +88,10 @@
     "subtitle": "Connectivity, Routing & Consensus",
     "color": "var(--accent-cyan)",
     "concepts": [
-      { "id": "graph_traversal", "name": "Graph BFS/DFS", "component": "Call Graph Trace Optimizer", "status": "🛑 Todo" },
+      { "id": "graph_traversals", "name": "Graph BFS/DFS", "component": "Call Graph Trace Optimizer", "status": "🛑 Todo" },
       { "id": "topological_sort", "name": "Topological Sort", "component": "Distributed Task Scheduler", "status": "🛑 Todo" },
       { "id": "union_find", "name": "Union-Find (DSU)", "component": "Network Partition Detector", "status": "🛑 Todo" },
-      { "id": "dijkstra", "name": "Dijkstra / Shortest Path", "component": "Service Mesh RPC Route optimizer", "status": "🛑 Todo" }
+      { "id": "shortest_paths", "name": "Dijkstra / Shortest Path", "component": "Service Mesh RPC Route optimizer", "status": "🛑 Todo" }
     ]
   },
   {
