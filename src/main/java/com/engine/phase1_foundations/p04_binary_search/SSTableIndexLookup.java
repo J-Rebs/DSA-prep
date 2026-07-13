@@ -17,22 +17,7 @@ public final class SSTableIndexLookup {
     // ==========================================
 
     public static int searchExactKey(long[] keys, long target) {
-        if (keys == null || keys.length == 0) {
-            return -1;
-        }
-        int low = 0;
-        int high = keys.length - 1;
-        while (low <= high) {
-            int mid = (low + high) >>> 1;
-            long midVal = keys[mid];
-            if (midVal == target) {
-                return mid;
-            } else if (midVal < target) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
-        }
+        // TODO: Implement exact binary search
         return -1;
     }
 
