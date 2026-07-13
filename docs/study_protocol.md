@@ -85,3 +85,21 @@ To ensure that any problem can run its tests in total isolation without side-eff
 1. **No Shared Mutable State:** Test classes must never rely on shared static mutable fields. Every test run must be stateless.
 2. **Fresh Data Generation:** Always use the `TestDataGenerator` to supply unique, fresh arrays or parameters for each individual test execution.
 3. **Independent Execution:** Each package (e.g. `phase1_foundations/sliding_window`) maintains its own self-contained source files and tests, meaning you can compile and run a single test class (e.g. `SlidingWindowTest`) directly from your IDE without compiling or invoking the rest of the test suite.
+
+---
+
+## 🤖 The AI Mentor Assessment & Code Audit Loop
+
+Every time you submit a solution for a problem in the mastery ladder for the first time, we will run the **AI Mentor Audit**. This loop is designed to diagnose weak spots, provide targeted learning calibrations, and ensure production readiness.
+
+### 1. The Audit Criteria
+When you paste your solution, the AI will evaluate:
+* **Edge-Case Resilience:** Did you handle null references, empty/single-element bounds, duplicates, and integer overflow/underflow points?
+* **GC & Performance Footprint:** Did you enforce zero-boxing? Are operations running in optimal space/time bounds without triggering unnecessary object creations?
+* **Clean Code & Invariant Documentation:** Is the loop invariant clearly documented? Is the code readability aligned with production library standards?
+
+### 2. Diagnosis & Calibrations
+If the AI detects a conceptual gap or optimization opportunity, it will:
+* **Diagnose the Weak Spot:** Explain *why* the implementation falls short (e.g. index off-by-ones, unnecessary auto-boxing).
+* **Provide a Micro-Drill:** Give you a specific target trace-debug exercise (e.g. "Trace this input manually through your loop: keys = [10], target = 5") to help you visualize the bug, rather than just giving you the corrected code.
+* **Explain the Invariant:** Focus on the mental models or mathematical invariants before you re-submit.
