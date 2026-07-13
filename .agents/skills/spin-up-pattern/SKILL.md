@@ -30,10 +30,11 @@ Follow this systematic workflow:
 
 1. Open [curriculum.json](file:///Users/joe/Documents/projects/DSA-prep/dashboard/src/curriculum.json).
 2. Locate the target Phase object.
-3. Add or update the concept object inside the `concepts` array:
+3. Determine the sequential learning order number `XX` (from `01` to `16`) for the pattern.
+4. Add or update the concept object inside the `concepts` array. **Note: The ID must use the prefix `pXX_` (e.g. `p05_monotonic_stack`) to ensure it sorts alphabetically in the IDE while remaining a valid Java package identifier!**
    ```json
    {
-     "id": "concept_id",
+     "id": "pXX_concept_id",
      "name": "Concept Display Name",
      "component": "Target System Component Name",
      "status": "🛑 Todo",
@@ -56,23 +57,21 @@ Follow this systematic workflow:
 
 ## 4. Scaffold Source & Blueprint Files
 
-1. Create the pattern directory: `src/main/java/com/engine/<phase_dir>/<pattern_dir>/`.
-2. Create [PATTERN_BLUEPRINT.md](file:///Users/joe/Documents/projects/DSA-prep/docs/templates/java_dsa_blueprint.md) inside that directory outlining:
-   * **1. System Design Mapping**
-   * **2. High-Yield Performance Tricks (Java Specific)**
-   * **3. The Core Structural Trick (Mental Model)**
-   * **4. The 9-Problem Mastery Ladder** (with the status checklist).
-3. Create the skeleton Java source file `<PatternClassName>.java` in that directory declaring the signatures of all 9 methods with placeholder return values (e.g., `-1`, `null`, `0.0`) and clear JavaDocs.
+1. Create the pattern directory: `src/main/java/com/engine/<phase_dir>/pXX_<concept_id>/` (e.g. `src/main/java/com/engine/phase2_structural/p05_monotonic_stack/`).
+2. Create `PATTERN_BLUEPRINT.md` inside that directory outlining the system mappings, Java tricks, loop invariants, and problem checklist.
+3. Create the skeleton Java source file `<PatternClassName>.java` in that directory declaring:
+   * The package: `package com.engine.<phase_dir>.pXX_<concept_id>;`
+   * Signatures for all 9 methods in the mastery ladder with placeholder return values.
 
 ---
 
 ## 5. Scaffold Parameterized Test Files
 
-1. Create the test directory: `src/test/java/com/engine/<phase_dir>/<pattern_dir>/`.
-2. Create `<PatternClassName>Test.java` containing:
-   * JUnit 5 Parameterized Tests (`@ParameterizedTest`, `@MethodSource`) for all 9 problems.
-   * A large-scale stress test (100,000+ inputs generated via [TestDataGenerator](file:///Users/joe/Documents/projects/DSA-prep/src/test/java/com/engine/TestDataGenerator.java)) verifying time limits and OOM limits.
-   * Boundary checks (nulls, overflows, empty arrays).
+1. Create the test directory: `src/test/java/com/engine/<phase_dir>/pXX_<concept_id>/` (e.g. `src/test/java/com/engine/phase2_structural/p05_monotonic_stack/`).
+2. Create `<PatternClassName>Test.java` in that directory declaring:
+   * The package: `package com.engine.<phase_dir>.pXX_<concept_id>;`
+   * Imports for the source classes and test generator.
+   * Parameterized tests for all 9 problems, verifying boundaries and scales.
 
 ---
 
