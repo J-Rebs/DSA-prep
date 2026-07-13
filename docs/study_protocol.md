@@ -76,3 +76,12 @@ graph TD
 * **Grade: Remedial (`🛑 Todo`)**
   * *Threshold:* Struggles with the core invariant logic, hits stack overflow, or fails multiple basic edge cases.
   * *Action:* Revert status to `🛑 Todo`. Open the pattern's `PATTERN_BLUEPRINT.md` and read the *Core Structural Trick (Mental Model)* again. Request a step-by-step trace from AI to inspect index movements.
+
+---
+
+## 🔒 Test Isolation & Self-Containment Invariant
+
+To ensure that any problem can run its tests in total isolation without side-effects or dependencies:
+1. **No Shared Mutable State:** Test classes must never rely on shared static mutable fields. Every test run must be stateless.
+2. **Fresh Data Generation:** Always use the `TestDataGenerator` to supply unique, fresh arrays or parameters for each individual test execution.
+3. **Independent Execution:** Each package (e.g. `phase1_foundations/sliding_window`) maintains its own self-contained source files and tests, meaning you can compile and run a single test class (e.g. `SlidingWindowTest`) directly from your IDE without compiling or invoking the rest of the test suite.
