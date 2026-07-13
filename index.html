@@ -566,14 +566,170 @@ int mid = (low + high) >>> 1;</code></pre>
             "name": "Two Pointers",
             "component": "Real-time Stream Compaction & Merge",
             "status": "🛑 Todo",
-            "problems": []
+            "guidance": {
+              "overview": "Two Pointers is a technique where two references scan a sorted array or list from opposing ends or at different speeds to solve a range or search condition in linear time.",
+              "mentalModel": "Start one pointer at the beginning and the other at the end (or side-by-side). Move them toward each other or adjust their indices based on comparisons of their values relative to the target.",
+              "javaTricks": "For index manipulation, avoid object instantiation. Use primitive integer indices `left` and `right`. Inplace swaps can be done using a primitive temp variable."
+            },
+            "problems": [
+              {
+                "name": "Pair with Target Sum",
+                "difficulty": "Easy",
+                "status": "🛑 Todo",
+                "systemMapping": "Stream deduplication index mapper",
+                "description": "Find a pair in a sorted array that adds up to a target sum.",
+                "hints": "Start one pointer at index 0 and another at array length - 1. Calculate the sum. If the sum matches the target, return their indices. If the sum is less, increment left. If larger, decrement right."
+              },
+              {
+                "name": "Remove Duplicates (Compaction)",
+                "difficulty": "Easy",
+                "status": "🛑 Todo",
+                "systemMapping": "Real-time compaction for incoming time-series packets",
+                "description": "Remove duplicates from a sorted array in-place and return the length of the compacted subsegment.",
+                "hints": "Use a slow pointer `nextNonDuplicate` initialized to 1, and scan the array with a fast pointer `i`. If `arr[i] != arr[nextNonDuplicate - 1]`, copy `arr[i]` to `arr[nextNonDuplicate]` and increment `nextNonDuplicate`."
+              },
+              {
+                "name": "Squaring a Sorted Array",
+                "difficulty": "Easy",
+                "status": "🛑 Todo",
+                "systemMapping": "Batch load balancer squaring index bounds",
+                "description": "Create a sorted array containing squares of elements in a sorted array containing negative and positive values.",
+                "hints": "Use two pointers, one at 0 and one at length-1. Compare their absolute values. Place the square of the larger value at the end of the result array and move that pointer."
+              },
+              {
+                "name": "Triplet Sum to Zero",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Three-way ledger transaction reconciliation",
+                "description": "Find all unique triplets in an array that sum to zero.",
+                "hints": "Sort the array. Iterate through each element. For each element `arr[i]`, use two pointers to find pairs that sum to `-arr[i]`."
+              },
+              {
+                "name": "Subarrays with Product Less than Target",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Product throughput window calculator",
+                "description": "Find the count of contiguous subarrays whose product is strictly less than target.",
+                "hints": "Use a sliding window / two pointers approach. Expand right. Multiply running product. If product >= target, divide running product by left element and increment left."
+              },
+              {
+                "name": "Compacting SSTable logs in-place",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Active MemTable compaction",
+                "description": "Consolidate active and tombstoned logs in-place using two runner pointers.",
+                "hints": "One pointer scans all logs, and another pointer tracks the position of the next active log. Overwrite active logs in-place."
+              },
+              {
+                "name": "Min Window Sort",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Buffer sort boundary identification",
+                "description": "Find the length of the shortest subarray that, when sorted, makes the entire array sorted.",
+                "hints": "Find the first element out of sorted order from the left, and the first out of order from the right. Find the min and max of this subarray, and expand bounds if elements outside are larger than min or smaller than max."
+              },
+              {
+                "name": "Quadruple Sum to Target",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Four-way ledger balance reconciler",
+                "description": "Find all unique quadruplets that sum to a target value.",
+                "hints": "Sort the array. Use two nested loops for the first two elements, and then use two pointers to scan the rest of the array."
+              },
+              {
+                "name": "Dutch National Flag Problem (Partitioning)",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Three-tiered cache bucket partitioner",
+                "description": "Sort an array of 0s, 1s, and 2s in-place in linear time with O(1) space.",
+                "hints": "Use three pointers: `low` for 0s, `high` for 2s, and `i` for current element. If `arr[i] == 0`, swap `arr[i]` and `arr[low]`, increment `low` and `i`. If `arr[i] == 2`, swap `arr[i]` and `arr[high]`, decrement `high`."
+              }
+            ]
           },
           {
             "id": "p03_linked_list",
             "name": "Linked Lists & Pointers",
             "component": "LRU Cache / MemTable Compactor",
             "status": "🛑 Todo",
-            "problems": []
+            "guidance": {
+              "overview": "Linked Lists represent data nodes linked sequentially. In-place manipulation of next references requires careful pointer state tracking (using fast/slow or multiple temporary pointers) without allocating heap memory.",
+              "mentalModel": "Draw nodes on paper. Track previous, current, and next temporary nodes. Modify `.next` pointers sequentially. Use fast/slow runners for cycle detection or midpoints.",
+              "javaTricks": "Never instantiate new node objects during traversal or reversal. Re-link existing references. Always check for `null` pointer exceptions before accessing `.next`."
+            },
+            "problems": [
+              {
+                "name": "Reverse Linked List",
+                "difficulty": "Easy",
+                "status": "🛑 Todo",
+                "systemMapping": "LSM-Tree commit log transaction reversal",
+                "description": "Reverse a singly linked list in-place.",
+                "hints": "Keep pointers to `prev` (initially null), `curr` (initially head). In a loop, save `nextTemp = curr.next`, set `curr.next = prev`, set `prev = curr`, set `curr = nextTemp`."
+              },
+              {
+                "name": "Middle of Linked List",
+                "difficulty": "Easy",
+                "status": "🛑 Todo",
+                "systemMapping": "Linked queue chunk splitter",
+                "description": "Find the middle node of a singly linked list.",
+                "hints": "Use two pointers: `slow` and `fast`. Move `slow` by 1 step, and `fast` by 2 steps. When `fast` or `fast.next` is null, `slow` is at the midpoint."
+              },
+              {
+                "name": "Cycle Detection",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Network routing topology loop detection",
+                "description": "Determine if a linked list contains a cycle (loop).",
+                "hints": "Use Floyd's Cycle Detection (Tortoise and Hare). Move `slow` 1 step and `fast` 2 steps. If they meet, there is a cycle."
+              },
+              {
+                "name": "LRU Cache",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "In-memory cache controller with O(1) eviction",
+                "description": "Design and implement a Least Recently Used (LRU) Cache using a doubly linked list and a hash map.",
+                "hints": "Maintain a head and tail dummy node on a doubly linked list. When a key is accessed, move its node to the head. Evict from the tail."
+              },
+              {
+                "name": "LFU Cache",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Frequency-based database block caching",
+                "description": "Design a Least Frequently Used (LFU) Cache.",
+                "hints": "Map each frequency count to a doubly linked list of nodes with that frequency. Keep a map of keys to nodes. Evict from the minimum frequency list."
+              },
+              {
+                "name": "Deep Copy Node Buffer",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Metadata clone partition generator",
+                "description": "Clone a linked list where each node has a next pointer and a random pointer.",
+                "hints": "Insert cloned nodes adjacent to their original nodes: `A -> A' -> B -> B'`. Copy random pointers: `curr.next.random = curr.random.next`. Separate the list."
+              },
+              {
+                "name": "Arbitrary Precision Arithmetic",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Financial stream high-precision balance calculation",
+                "description": "Add two numbers represented as linked lists, where each node is a digit.",
+                "hints": "Traverse both lists, add values along with carry. Create a new list of digits. Clean up trailing carries."
+              },
+              {
+                "name": "Merge K Sorted Lists",
+                "difficulty": "Hard",
+                "status": "🛑 Todo",
+                "systemMapping": "MemTable/SSTable compaction merge",
+                "description": "Merge k sorted linked lists into a single sorted list.",
+                "hints": "Use a PriorityQueue of nodes, sorted by value. Insert the head of each list. Poll the min, add its next node to the queue, and append to the merged list."
+              },
+              {
+                "name": "Reverse Nodes in K-Group",
+                "difficulty": "Hard",
+                "status": "🛑 Todo",
+                "systemMapping": "Batch-level log stream group reverser",
+                "description": "Reverse nodes of a linked list k at a time.",
+                "hints": "Count nodes. If count >= k, reverse the first k nodes. Recursively reverse the rest and link them."
+              }
+            ]
           },
           {
             "id": "p04_binary_search",
@@ -860,6 +1016,50 @@ for (int right = 0; right &lt; arr.length; right++) {
     
     // 3. Record answer: track max/min valid window size
 }</code></pre>
+          </div>
+        `;
+      } else if (conceptId === 'p02_two_pointers') {
+        lessonHTML = `
+          <div class="guidance-container" style="border-left-color: var(--accent-amber); background: rgba(178, 135, 81, 0.015);">
+            <h4 style="font-size: 1.1rem; font-weight: 700; color: var(--accent-amber); margin-bottom: 8px;">🎓 Lesson: Two Pointers Mechanics</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 12px;">
+              Two Pointers uses two indices to traverse a sorted array from opposing ends (converging) or in tandem (compaction). For converging searches, we compare elements at both boundaries and move pointers inward to narrow down the target sum or criteria in a single linear pass.
+            </p>
+            <div class="section-title" style="color: var(--accent-indigo); margin-top: 16px;">Standard Java Loop Template (Converging)</div>
+            <pre><code>int left = 0;
+int right = arr.length - 1;
+
+while (left &lt; right) {
+    int currentSum = arr[left] + arr[right];
+    
+    if (currentSum == target) {
+        return new int[]{left, right}; // Found target pair
+    } else if (currentSum &lt; target) {
+        left++;   // Need a larger sum
+    } else {
+        right--;  // Need a smaller sum
+    }
+}</code></pre>
+          </div>
+        `;
+      } else if (conceptId === 'p03_linked_list') {
+        lessonHTML = `
+          <div class="guidance-container" style="border-left-color: var(--accent-amber); background: rgba(178, 135, 81, 0.015);">
+            <h4 style="font-size: 1.1rem; font-weight: 700; color: var(--accent-amber); margin-bottom: 8px;">🎓 Lesson: Linked List Pointer Swaps</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 12px;">
+              Reversing links in-place requires keeping track of adjacent references. We use a <code>prev</code> pointer (initially null), a <code>curr</code> pointer (initially head), and a temporary <code>nextTemp</code> variable to store the forward link before we mutate it, ensuring we don't lose the rest of the list.
+            </p>
+            <div class="section-title" style="color: var(--accent-indigo); margin-top: 16px;">Standard Java Loop Template (Reversal)</div>
+            <pre><code>Node prev = null;
+Node curr = head;
+
+while (curr != null) {
+    Node nextTemp = curr.next; // 1. Save forward pointer
+    curr.next = prev;          // 2. Reverse link
+    prev = curr;               // 3. Move prev forward
+    curr = nextTemp;           // 4. Move curr forward
+}
+return prev; // New head</code></pre>
           </div>
         `;
       } else if (conceptId === 'p04_binary_search') {
