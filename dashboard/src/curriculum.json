@@ -12,10 +12,12 @@
         "problems": [
           { "name": "Max Sum Subarray of Size K", "difficulty": "Easy", "status": "🛑 Todo" },
           { "name": "Smallest Subarray with a Greater Sum", "difficulty": "Easy", "status": "🛑 Todo" },
-          { "name": "Rate Limiter sliding window count (SSTable logs)", "difficulty": "Medium", "status": "🔄 In Progress" },
+          { "name": "Rate Limiter Sliding Window Count", "difficulty": "Medium", "status": "🔄 In Progress" },
           { "name": "Longest Substring with K Distinct Characters", "difficulty": "Medium", "status": "🛑 Todo" },
           { "name": "Permutation in a String", "difficulty": "Medium", "status": "🛑 Todo" },
-          { "name": "Minimum Window Substring", "difficulty": "Hard", "status": "🛑 Todo" },
+          { "name": "Jitter Buffer Smoothing (Character Replacement)", "difficulty": "Medium", "status": "🛑 Todo" },
+          { "name": "Telemetry Drop Tolerator (Max Consecutive Ones III)", "difficulty": "Medium", "status": "🛑 Todo" },
+          { "name": "Minimum Window Substring (Log Aggregator)", "difficulty": "Hard", "status": "🛑 Todo" },
           { "name": "Sliding Window Maximum (Metric buffer queues)", "difficulty": "Hard", "status": "🛑 Todo" }
         ]
       },

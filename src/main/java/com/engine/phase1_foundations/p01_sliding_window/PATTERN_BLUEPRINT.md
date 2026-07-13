@@ -22,12 +22,14 @@
 2. **[Easy]** Smallest Subarray with a Greater Sum - [🛑 Todo]
 
 ### Phase 2: Medium System Integration
-3. **[Medium]** Rate Limiter sliding window count (SSTable logs) - [🔄 In Progress]
+3. **[Medium]** Rate Limiter Sliding Window Count - [🔄 In Progress]
 4. **[Medium]** Longest Substring with K Distinct Characters - [🛑 Todo]
 5. **[Medium]** Permutation in a String - [🛑 Todo]
+6. **[Medium]** Jitter Buffer Smoothing (Character Replacement) - [🛑 Todo]
+7. **[Medium]** Telemetry Drop Tolerator (Max Consecutive Ones III) - [🛑 Todo]
 
 ### Phase 3: Hard Scale & Stress
-8. **[Hard]** Minimum Window Substring - [🛑 Todo]
+8. **[Hard]** Minimum Window Substring (Log Aggregator) - [🛑 Todo]
 9. **[Hard]** Sliding Window Maximum (Metric buffer queues) - [🛑 Todo]
 
 ## 5. Production-Ready Java Blueprint (To be written by User)
