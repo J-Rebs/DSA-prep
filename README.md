@@ -65,24 +65,18 @@ graph TD
 
 ## 🖥️ Interactive Study Dashboard
 
-The repository includes a modern, interactive React + Vite single-page dashboard to help you visualize pointer states, track your problem ladders, and access Java optimization cheatsheets.
+The repository includes a modern, self-contained interactive web page [index.html](file:///Users/joe/Documents/projects/DSA-prep/index.html) at the root of the repository to help you visualize pointer states, track your problem ladders, and access Java optimization cheatsheets.
 
 ### 1. Running Locally
-To launch the dashboard on your machine:
-```bash
-cd dashboard
-npm run dev
-```
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Simply double-click the [index.html](file:///Users/joe/Documents/projects/DSA-prep/index.html) file, or open it in any web browser! No local servers, Node.js, or package installations are required.
 
 ### 2. Live GitHub Pages Site
-A GitHub Actions workflow is fully configured in [.github/workflows/deploy.yml](file:///Users/joe/Documents/projects/DSA-prep/.github/workflows/deploy.yml).
+Because the compiled code is purely static, you can serve it directly using the default branch source setting:
+1. Go to your repository settings on GitHub ➔ **Pages** ➔ **Build and deployment**.
+2. Set **Source** to **`Deploy from a branch`**.
+3. Set **Branch** to **`main`** and the folder to **`/ (root)`**.
+4. Click **Save**.
 
-Whenever you push commits to the `main` branch:
-1. GitHub Actions automatically checks out the repository.
-2. It builds the production-ready static site inside `dashboard/dist/`.
-3. It deploys the build artifact to **GitHub Pages**.
-4. You can access the live interactive site publicly at:
-   **`https://J-Rebs.github.io/DSA-prep/`**
-*(Note: To enable this on GitHub, go to your repository settings on GitHub -> Pages -> Build and deployment -> Source: set to "GitHub Actions".)*
+Your live study dashboard will be live at:
+**`https://J-Rebs.github.io/DSA-prep/`** (or `https://J-Rebs.github.io/DSA-prep/index.html`)
 
