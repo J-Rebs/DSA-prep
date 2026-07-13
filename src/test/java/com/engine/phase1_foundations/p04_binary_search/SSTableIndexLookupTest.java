@@ -1,4 +1,4 @@
-package com.engine.phase1_foundations.binary_search;
+package com.engine.phase1_foundations.p04_binary_search;
 
 import com.engine.TestDataGenerator;
 import org.junit.jupiter.api.Test;

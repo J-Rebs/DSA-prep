@@ -1,4 +1,4 @@
-package com.engine.phase1_foundations.binary_search;
+package com.engine.phase1_foundations.p04_binary_search;
 
 /**
  * High-performance SSTable Index Lookup & Capacity Management component.

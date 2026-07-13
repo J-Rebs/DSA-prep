@@ -5,13 +5,13 @@
     "color": "var(--accent-indigo)",
     "concepts": [
       {
-        "id": "sliding_window",
+        "id": "p01_sliding_window",
         "name": "Sliding Window",
         "component": "Rate Limiter (Sliding Window Counter)",
         "status": "🔄 In Progress",
         "problems": [
           { "name": "Max Sum Subarray of Size K", "difficulty": "Easy", "status": "🛑 Todo" },
-          { "name": "Smallest Subarray with a Greater Sum", "difficulty: ": "Easy", "status": "🛑 Todo" },
+          { "name": "Smallest Subarray with a Greater Sum", "difficulty": "Easy", "status": "🛑 Todo" },
           { "name": "Rate Limiter sliding window count (SSTable logs)", "difficulty": "Medium", "status": "🔄 In Progress" },
           { "name": "Longest Substring with K Distinct Characters", "difficulty": "Medium", "status": "🛑 Todo" },
           { "name": "Permutation in a String", "difficulty": "Medium", "status": "🛑 Todo" },
@@ -20,7 +20,7 @@
         ]
       },
       {
-        "id": "two_pointers",
+        "id": "p02_two_pointers",
         "name": "Two Pointers",
         "component": "Real-time Stream Compaction & Merge",
         "status": "🛑 Todo",
@@ -37,7 +37,7 @@
         ]
       },
       {
-        "id": "linked_list",
+        "id": "p03_linked_list",
         "name": "Linked Lists & Pointers",
         "component": "LRU Cache / MemTable Compactor",
         "status": "🛑 Todo",
@@ -54,7 +54,7 @@
         ]
       },
       {
-        "id": "binary_search",
+        "id": "p04_binary_search",
         "name": "Binary Search",
         "component": "LSM-Tree SSTable Index Lookup",
         "status": "🔄 In Progress",
@@ -77,10 +77,10 @@
     "subtitle": "State, Priorities & Hierarchies",
     "color": "var(--accent-violet)",
     "concepts": [
-      { "id": "monotonic_stack", "name": "Monotonic Stack", "component": "Event Metric Streaming", "status": "🛑 Todo" },
-      { "id": "heaps_and_priority", "name": "Heaps / Priority Queue", "component": "Distributed Top-K Heavy Hitters", "status": "🛑 Todo" },
-      { "id": "trie", "name": "Trie", "component": "Longest Prefix Match (IP Router)", "status": "🛑 Todo" },
-      { "id": "segment_tree", "name": "Segment Tree", "component": "Telemetry Metric Range Query Engine", "status": "🛑 Todo" }
+      { "id": "p05_monotonic_stack", "name": "Monotonic Stack", "component": "Event Metric Streaming", "status": "🛑 Todo" },
+      { "id": "p06_heaps_and_priority", "name": "Heaps / Priority Queue", "component": "Distributed Top-K Heavy Hitters", "status": "🛑 Todo" },
+      { "id": "p07_trie", "name": "Trie", "component": "Longest Prefix Match (IP Router)", "status": "🛑 Todo" },
+      { "id": "p08_segment_tree", "name": "Segment Tree", "component": "Telemetry Metric Range Query Engine", "status": "🛑 Todo" }
     ]
   },
   {
@@ -88,10 +88,10 @@
     "subtitle": "Connectivity, Routing & Consensus",
     "color": "var(--accent-cyan)",
     "concepts": [
-      { "id": "graph_traversals", "name": "Graph BFS/DFS", "component": "Call Graph Trace Optimizer", "status": "🛑 Todo" },
-      { "id": "topological_sort", "name": "Topological Sort", "component": "Distributed Task Scheduler", "status": "🛑 Todo" },
-      { "id": "union_find", "name": "Union-Find (DSU)", "component": "Network Partition Detector", "status": "🛑 Todo" },
-      { "id": "shortest_paths", "name": "Dijkstra / Shortest Path", "component": "Service Mesh RPC Route optimizer", "status": "🛑 Todo" }
+      { "id": "p09_graph_traversals", "name": "Graph BFS/DFS", "component": "Call Graph Trace Optimizer", "status": "🛑 Todo" },
+      { "id": "p10_topological_sort", "name": "Topological Sort", "component": "Distributed Task Scheduler", "status": "🛑 Todo" },
+      { "id": "p11_union_find", "name": "Union-Find (DSU)", "component": "Network Partition Detector", "status": "🛑 Todo" },
+      { "id": "p12_shortest_paths", "name": "Dijkstra / Shortest Path", "component": "Service Mesh RPC Route optimizer", "status": "🛑 Todo" }
     ]
   },
   {
@@ -99,10 +99,10 @@
     "subtitle": "Decision Engines & Hashing",
     "color": "var(--accent-amber)",
     "concepts": [
-      { "id": "dynamic_programming", "name": "Dynamic Programming", "component": "Cloud Instance Load Balancer", "status": "🛑 Todo" },
-      { "id": "backtracking", "name": "Backtracking", "component": "SQL Query Execution Planner", "status": "🛑 Todo" },
-      { "id": "greedy_intervals", "name": "Greedy / Intervals", "component": "Thread Pool Task Scheduler", "status": "🛑 Todo" },
-      { "id": "bit_manipulation", "name": "Bit Manipulation / Math", "component": "Bloom Filter & Hashing", "status": "🛑 Todo" }
+      { "id": "p13_dynamic_programming", "name": "Dynamic Programming", "component": "Cloud Instance Load Balancer", "status": "🛑 Todo" },
+      { "id": "p14_backtracking", "name": "Backtracking", "component": "SQL Query Execution Planner", "status": "🛑 Todo" },
+      { "id": "p15_greedy_intervals", "name": "Greedy / Intervals", "component": "Thread Pool Task Scheduler", "status": "🛑 Todo" },
+      { "id": "p16_bit_manipulation", "name": "Bit Manipulation / Math", "component": "Bloom Filter & Hashing", "status": "🛑 Todo" }
     ]
   }
 ]

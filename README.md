@@ -42,22 +42,22 @@ graph TD
 
 | Phase | Pattern | Target System Component | LeetCode Tier | Status | Link to Blueprint |
 | --- | --- | --- | --- | --- | --- |
-| **Phase 1** | Sliding Window | Rate Limiter (Sliding Window Counter) | Medium / Hard | 🔄 In Progress | [View](./src/main/java/com/engine/phase1_foundations/sliding_window/PATTERN_BLUEPRINT.md) |
-| **Phase 1** | Two Pointers | Real-time Data Deduplication / Merging | Medium | 🛑 Todo | [View](./src/main/java/com/engine/phase1_foundations/two_pointers/PATTERN_BLUEPRINT.md) |
-| **Phase 1** | Linked Lists & Pointers | LRU Cache / MemTable Compactor | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase1_foundations/linked_list/PATTERN_BLUEPRINT.md) |
-| **Phase 1** | Binary Search | LSM-Tree SSTable Index Lookup | Medium | 🔄 In Progress | [View](./src/main/java/com/engine/phase1_foundations/binary_search/PATTERN_BLUEPRINT.md) |
-| **Phase 2** | Monotonic Stack | Event Metric Streaming (Next Max Spike) | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/monotonic_stack/PATTERN_BLUEPRINT.md) |
-| **Phase 2** | Heaps / PQ | Distributed Top-K Heavy Hitters Tracker | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/heaps_and_priority/PATTERN_BLUEPRINT.md) |
-| **Phase 2** | Trie | Longest Prefix Match (IP Router) | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/trie/PATTERN_BLUEPRINT.md) |
-| **Phase 2** | Segment Tree | Telemetry Metric Range Query Engine | Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/segment_tree/PATTERN_BLUEPRINT.md) |
-| **Phase 3** | Graph BFS/DFS | Microservice Call Graph Trace Optimizer | Medium | 🛑 Todo | [View](./src/main/java/com/engine/phase3_distributed/graph_traversals/PATTERN_BLUEPRINT.md) |
-| **Phase 3** | Topological Sort | Distributed Task Scheduler / CI-CD Engine | Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase3_distributed/topological_sort/PATTERN_BLUEPRINT.md) |
-| **Phase 3** | Union-Find (DSU) | Distributed Network Partition Detector | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase3_distributed/union_find/PATTERN_BLUEPRINT.md) |
-| **Phase 3** | Dijkstra / Shortest Path | Service Mesh RPC Traffic Routing | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase3_distributed/shortest_paths/PATTERN_BLUEPRINT.md) |
-| **Phase 4** | Dynamic Programming | Cloud Instance Load Balancer | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase4_optimization/dynamic_programming/PATTERN_BLUEPRINT.md) |
-| **Phase 4** | Backtracking | SQL Relational Query Execution Planner | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase4_optimization/backtracking/PATTERN_BLUEPRINT.md) |
-| **Phase 4** | Greedy / Intervals | Thread Pool Task Scheduler (SJF/EDF) | Medium | 🛑 Todo | [View](./src/main/java/com/engine/phase4_optimization/greedy_intervals/PATTERN_BLUEPRINT.md) |
-| **Phase 4** | Bit Manipulation / Math | Bloom Filter & HyperLogLog Estimation | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase4_optimization/bit_manipulation/PATTERN_BLUEPRINT.md) |
+| **Phase 1** | Sliding Window | Rate Limiter (Sliding Window Counter) | Medium / Hard | 🔄 In Progress | [View](./src/main/java/com/engine/phase1_foundations/p01_sliding_window/PATTERN_BLUEPRINT.md) |
+| **Phase 1** | Two Pointers | Real-time Data Deduplication / Merging | Medium | 🛑 Todo | [View](./src/main/java/com/engine/phase1_foundations/p02_two_pointers/PATTERN_BLUEPRINT.md) |
+| **Phase 1** | Linked Lists & Pointers | LRU Cache / MemTable Compactor | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase1_foundations/p03_linked_list/PATTERN_BLUEPRINT.md) |
+| **Phase 1** | Binary Search | LSM-Tree SSTable Index Lookup | Medium | 🔄 In Progress | [View](./src/main/java/com/engine/phase1_foundations/p04_binary_search/PATTERN_BLUEPRINT.md) |
+| **Phase 2** | Monotonic Stack | Event Metric Streaming (Next Max Spike) | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/p05_monotonic_stack/PATTERN_BLUEPRINT.md) |
+| **Phase 2** | Heaps / PQ | Distributed Top-K Heavy Hitters Tracker | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/p06_heaps_and_priority/PATTERN_BLUEPRINT.md) |
+| **Phase 2** | Trie | Longest Prefix Match (IP Router) | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/p07_trie/PATTERN_BLUEPRINT.md) |
+| **Phase 2** | Segment Tree | Telemetry Metric Range Query Engine | Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/p08_segment_tree/PATTERN_BLUEPRINT.md) |
+| **Phase 3** | Graph BFS/DFS | Microservice Call Graph Trace Optimizer | Medium | 🛑 Todo | [View](./src/main/java/com/engine/phase3_distributed/p09_graph_traversals/PATTERN_BLUEPRINT.md) |
+| **Phase 3** | Topological Sort | Distributed Task Scheduler / CI-CD Engine | Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase3_distributed/p10_topological_sort/PATTERN_BLUEPRINT.md) |
+| **Phase 3** | Union-Find (DSU) | Distributed Network Partition Detector | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase3_distributed/p11_union_find/PATTERN_BLUEPRINT.md) |
+| **Phase 3** | Dijkstra / Shortest Path | Service Mesh RPC Traffic Routing | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase3_distributed/p12_shortest_paths/PATTERN_BLUEPRINT.md) |
+| **Phase 4** | Dynamic Programming | Cloud Instance Load Balancer | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase4_optimization/p13_dynamic_programming/PATTERN_BLUEPRINT.md) |
+| **Phase 4** | Backtracking | SQL Relational Query Execution Planner | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase4_optimization/p14_backtracking/PATTERN_BLUEPRINT.md) |
+| **Phase 4** | Greedy / Intervals | Thread Pool Task Scheduler (SJF/EDF) | Medium | 🛑 Todo | [View](./src/main/java/com/engine/phase4_optimization/p15_greedy_intervals/PATTERN_BLUEPRINT.md) |
+| **Phase 4** | Bit Manipulation / Math | Bloom Filter & HyperLogLog Estimation | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase4_optimization/p16_bit_manipulation/PATTERN_BLUEPRINT.md) |
 
 *Status options: 🟢 Mastered | 🔄 In Progress | 🛑 Todo*
 

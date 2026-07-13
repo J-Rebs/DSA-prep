@@ -19,6 +19,7 @@
 
 ### Phase 1: Easy Warmups
 1. **[Easy]** Max Sum Subarray of Size K - [🛑 Todo]
+2. **[Easy]** Smallest Subarray with a Greater Sum - [🛑 Todo]
 
 ### Phase 2: Medium System Integration
 3. **[Medium]** Rate Limiter sliding window count (SSTable logs) - [🔄 In Progress]
