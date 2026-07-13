@@ -2,6 +2,9 @@
 
 A production-grade Java repository mapping advanced algorithmic patterns directly to large-scale infrastructure components. 
 
+> [!TIP]
+> Before starting, review the [Study Protocol & Recalibration Guide](./docs/study_protocol.md) to understand the 6–8 problem mastery ladder and the weekly testing protocol.
+
 ## 🗺️ The Tiered Interview Roadmap
 
 ```mermaid
