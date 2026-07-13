@@ -955,7 +955,6 @@ int mid = (low + high) >>> 1;</code></pre>
     function switchTab(tabId) {
       document.querySelectorAll('.nav-tab').forEach(tab => {
         tab.classList.remove('active');
-        if (tab.innerText === 'Visualizers' && tabId === 'tab-visualizers') tab.classList.add('active');
         if (tab.innerText === 'Curriculum' && tabId === 'tab-curriculum') tab.classList.add('active');
         if (tab.innerText === 'Java Optimization' && tabId === 'tab-performance') tab.classList.add('active');
       });
@@ -1015,7 +1014,6 @@ int mid = (low + high) >>> 1;</code></pre>
         container.appendChild(pCard);
       });
     }
-
     function selectConcept(conceptId) {
       selectedConceptId = conceptId;
       document.querySelectorAll('.concept-item').forEach(item => {
@@ -1042,7 +1040,7 @@ int mid = (low + high) >>> 1;</code></pre>
       if (currentConcept.problems && currentConcept.problems.length > 0) {
         currentConcept.problems.forEach((prob, idx) => {
           const diffClass = prob.difficulty === 'Easy' ? 'diff-easy' : prob.difficulty === 'Medium' ? 'diff-medium' : 'diff-hard';
-          const isChecked = prob.status === '🟢 Solved' || prob.status === '🟢 Solved' ? 'checked' : '';
+          const isChecked = prob.status === '🟢 Solved' ? 'checked' : '';
           
           problemsHTML += `
             <div class="problem-card">
@@ -1076,7 +1074,7 @@ int mid = (low + high) >>> 1;</code></pre>
       if (currentConcept.guidance) {
         guidanceHTML = `
           <div class="guidance-container">
-            <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">💡 Pattern Guidance: ${currentConcept.name}</h4>
+            <h4 style="font-size: 1.1rem; font-weight: 700; color: var(--accent-indigo); margin-bottom: 8px;">💡 Pattern Guidance: ${currentConcept.name}</h4>
             <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.45;">${currentConcept.guidance.overview}</p>
             <div class="guidance-box">
               <div class="sub-box">
@@ -1092,17 +1090,67 @@ int mid = (low + high) >>> 1;</code></pre>
         `;
       }
 
+      // Compile Lesson Template block based on concept type
+      let lessonHTML = "";
+      if (conceptId === 'p01_sliding_window') {
+        lessonHTML = `
+          <div class="guidance-container" style="border-left-color: var(--accent-amber); background: rgba(178, 135, 81, 0.015);">
+            <h4 style="font-size: 1.1rem; font-weight: 700; color: var(--accent-amber); margin-bottom: 8px;">🎓 Lesson: Sliding Window Mechanics</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 12px;">
+              The window represents a contiguous subsegment of elements. We expand the bounds by incrementing the <code>right</code> pointer, absorbing elements into our tracking variables. If a constraint is violated, we contract the bounds by incrementing the <code>left</code> pointer, evicting elements until the window is valid.
+            </p>
+            <div class="section-title" style="color: var(--accent-indigo); margin-top: 16px;">Standard Java Loop Template</div>
+            <pre><code>int left = 0;
+for (int right = 0; right &lt; arr.length; right++) {
+    // 1. Expand window: Incorporate arr[right] into metrics
+    
+    // 2. Shrink window while constraints are violated
+    while (isConstraintViolated()) {
+        // Evict arr[left] from metrics
+        left++;
+    }
+    
+    // 3. Record answer: track max/min valid window size
+}</code></pre>
+          </div>
+        `;
+      } else if (conceptId === 'p04_binary_search') {
+        lessonHTML = `
+          <div class="guidance-container" style="border-left-color: var(--accent-amber); background: rgba(178, 135, 81, 0.015);">
+            <h4 style="font-size: 1.1rem; font-weight: 700; color: var(--accent-amber); margin-bottom: 8px;">🎓 Lesson: Search Space Partitioning</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 12px;">
+              Binary Search iteratively discards half of the remaining search space. For boundary lookups, if the midpoint <code>mid</code> is valid, we cache it as our current best answer and move the <code>low</code> pointer to search the right half for a better boundary. Otherwise, we move <code>high</code> to search the left half.
+            </p>
+            <div class="section-title" style="color: var(--accent-indigo); margin-top: 16px;">Standard Java Loop Template</div>
+            <pre><code>int low = 0;
+int high = arr.length - 1;
+int ans = -1; // Caches the boundary result
+
+while (low &lt;= high) {
+    int mid = (low + high) &gt;&gt;&gt; 1; // Overflow-safe midpoint shift
+    
+    if (isValid(arr[mid])) {
+        ans = mid;      // Cache current valid index
+        low = mid + 1;  // Search right to find larger bounds
+    } else {
+        high = mid - 1; // Search left to find smaller bounds
+    }
+}</code></pre>
+          </div>
+        `;
+      }
+
       detailsContainer.innerHTML = `
-        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 4px;">${currentConcept.name} Mastery Ladder</h3>
+        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 4px;">${currentConcept.name} Mastery</h3>
         <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">${currentConcept.component}</p>
         
+        ${lessonHTML}
         ${guidanceHTML}
         
         <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 12px; color: var(--text-secondary);">Mastery Checklists</h4>
         <div class="problem-ladder">
           ${problemsHTML}
         </div>
-      `;
     }
 
     function toggleProblemAccordion(idx) {
@@ -1124,344 +1172,10 @@ int mid = (low + high) >>> 1;</code></pre>
       selectConcept(conceptId);
     }
 
-
-    // --- BINARY SEARCH VISUALIZER LOGIC ---
-    const bsKeys = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160];
-    const bsOffsets = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600];
-    
-    let bsState = {
-      low: 0,
-      high: bsKeys.length - 1,
-      mid: -1,
-      ans: -1,
-      step: 0,
-      complete: false
-    };
-
-    function renderBinarySearchArray() {
-      const container = document.getElementById('bs-array-container');
-      container.innerHTML = "";
-
-      bsKeys.forEach((key, idx) => {
-        const box = document.createElement('div');
-        box.className = 'array-box';
-        
-        const isLow = idx === bsState.low;
-        const isHigh = idx === bsState.high;
-        const isMid = idx === bsState.mid;
-        const isAns = idx === bsState.ans;
-
-        if (isMid) box.classList.add('mid');
-        else if (isAns) box.classList.add('selected');
-        else if (idx >= bsState.low && idx <= bsState.high) box.classList.add('active');
-        else box.classList.add('out-of-bounds');
-
-        box.innerHTML = `
-          <span style="font-size: 0.75rem; color: var(--text-secondary); position: absolute; bottom:-20px;">i=${idx}</span>
-          <span style="font-size: 0.95rem;">${key}</span>
-        `;
-
-        if (isLow) box.innerHTML += `<span class="pointer-label pointer-low">low</span>`;
-        if (isHigh) box.innerHTML += `<span class="pointer-label pointer-high" style="top: ${isLow ? '-45px' : '-25px'}">high</span>`;
-        if (isMid) box.innerHTML += `<span class="pointer-label pointer-mid" style="top: ${(isLow || isHigh) ? '-45px' : '-25px'}">mid</span>`;
-
-        container.appendChild(box);
-      });
-
-      // Update state metrics in panel
-      document.getElementById('var-bs-low').innerText = bsState.low;
-      document.getElementById('var-bs-high').innerText = bsState.high;
-      document.getElementById('var-bs-mid').innerText = bsState.mid !== -1 ? bsState.mid : 'N/A';
-      document.getElementById('var-bs-ans').innerText = bsState.ans !== -1 ? `index ${bsState.ans} (offset ${bsOffsets[bsState.ans]})` : 'None';
-    }
-
-    function stepBinarySearch() {
-      if (bsState.complete) return;
-
-      const target = Number(document.getElementById('bs-target').value);
-      let { low, high, mid, ans, step } = bsState;
-      let logText = "";
-
-      if (low <= high) {
-        mid = Math.floor((low + high) / 2);
-        const midVal = bsKeys[mid];
-        bsState.mid = mid;
-
-        if (midVal <= target) {
-          ans = mid;
-          low = mid + 1;
-          logText = `Step ${step + 1}: keys[mid=${mid}] (${midVal}) <= target (${target}). Cache offset=${bsOffsets[mid]} and search right (low = mid + 1 = ${low})`;
-        } else {
-          high = mid - 1;
-          logText = `Step ${step + 1}: keys[mid=${mid}] (${midVal}) > target (${target}). Search left (high = mid - 1 = ${high})`;
-        }
-        step++;
-        bsState.low = low;
-        bsState.high = high;
-        bsState.ans = ans;
-        bsState.step = step;
-      } else {
-        bsState.complete = true;
-        logText = `Search complete! Resulting block offset is ${ans !== -1 ? bsOffsets[ans] : -1} (Key: ${ans !== -1 ? bsKeys[ans] : "None"})`;
-        document.getElementById('btn-bs-step').disabled = true;
-      }
-
-      document.getElementById('bs-log').innerText = logText;
-      renderBinarySearchArray();
-    }
-
-    function resetBinarySearch() {
-      bsState = {
-        low: 0,
-        high: bsKeys.length - 1,
-        mid: -1,
-        ans: -1,
-        step: 0,
-        complete: false
-      };
-      document.getElementById('btn-bs-step').disabled = false;
-      document.getElementById('bs-log').innerText = "Set target key and click 'Step Forward' to trace.";
-      renderBinarySearchArray();
-    }
-
-
-    // --- LINKED LIST REVERSAL LOGIC ---
-    let listNodes = [
-      { id: 1, val: 10, nextId: 2, isReversed: false },
-      { id: 2, val: 20, nextId: 3, isReversed: false },
-      { id: 3, val: 30, nextId: 4, isReversed: false },
-      { id: 4, val: 40, nextId: 5, isReversed: false },
-      { id: 5, val: 50, nextId: null, isReversed: false }
-    ];
-
-    let lrState = {
-      prev: null,
-      curr: 1,
-      nextTemp: null,
-      step: 0,
-      complete: false
-    };
-
-    function renderListReversal() {
-      const container = document.getElementById('lr-list-container');
-      container.innerHTML = "";
-
-      listNodes.forEach((node, idx) => {
-        const isCurr = node.id === lrState.curr;
-        const isPrev = node.id === lrState.prev;
-        const isNextTemp = node.id === lrState.nextTemp;
-
-        const el = document.createElement('div');
-        el.className = 'list-node';
-        if (isCurr) el.classList.add('curr');
-        else if (isPrev) el.classList.add('prev');
-
-        el.innerHTML = `<span style="font-size:0.95rem;">${node.val}</span>`;
-        if (isCurr) el.innerHTML += `<span class="pointer-label pointer-low" style="background:var(--accent-indigo); color:#fff;">curr</span>`;
-        if (isPrev) el.innerHTML += `<span class="pointer-label pointer-low" style="background:var(--accent-violet); color:#fff;">prev</span>`;
-        if (isNextTemp) el.innerHTML += `<span class="pointer-label pointer-low" style="background:var(--accent-amber); color:#000; top:-45px;">nextTemp</span>`;
-
-        container.appendChild(el);
-
-        if (idx < listNodes.length - 1) {
-          const arrow = document.createElement('span');
-          arrow.className = `list-arrow ${node.isReversed ? 'reversed' : ''}`;
-          arrow.innerHTML = '&rarr;';
-          container.appendChild(arrow);
-        }
-      });
-
-      const nullLabel = document.createElement('span');
-      nullLabel.style.color = 'var(--text-muted)';
-      nullLabel.style.fontFamily = 'monospace';
-      nullLabel.innerText = 'NULL';
-      container.appendChild(nullLabel);
-
-      // Variables update
-      document.getElementById('var-lr-prev').innerText = lrState.prev ? `Node(${lrState.prev * 10})` : 'null';
-      document.getElementById('var-lr-curr').innerText = lrState.curr ? `Node(${lrState.curr * 10})` : 'null';
-      document.getElementById('var-lr-next').innerText = lrState.nextTemp ? `Node(${lrState.nextTemp * 10})` : 'null';
-    }
-
-    function stepListReversal() {
-      if (lrState.complete) return;
-
-      let { prev, curr, nextTemp, step } = lrState;
-      let logText = "";
-
-      if (curr === null) {
-        lrState.complete = true;
-        logText = "Reversal complete! New head node is Node(50)";
-        document.getElementById('btn-lr-step').disabled = true;
-        document.getElementById('lr-log').innerText = logText;
-        renderListReversal();
-        return;
-      }
-
-      const subStep = step % 4;
-      const currentNode = listNodes.find(n => n.id === curr);
-
-      if (subStep === 0) {
-        nextTemp = currentNode.nextId;
-        logText = `Pointer Step: nextTemp = curr.next (nextTemp -> Node(${nextTemp ? nextTemp * 10 : "null"}))`;
-      } else if (subStep === 1) {
-        listNodes = listNodes.map(n => n.id === curr ? { ...n, nextId: prev, isReversed: true } : n);
-        logText = `Link Mutated: curr.next = prev (Inverting Node(${currentNode.val}) -> ${prev ? prev * 10 : "null"})`;
-      } else if (subStep === 2) {
-        prev = curr;
-        logText = `Pointer Shift: prev = curr (prev -> Node(${currentNode.val}))`;
-      } else if (subStep === 3) {
-        curr = nextTemp;
-        logText = `Pointer Shift: curr = nextTemp (curr -> ${curr ? "Node(" + curr * 10 + ")" : "null"})`;
-      }
-
-      lrState.prev = prev;
-      lrState.curr = curr;
-      lrState.nextTemp = nextTemp;
-      lrState.step = step + 1;
-
-      document.getElementById('lr-log').innerText = logText;
-      renderListReversal();
-    }
-
-    function resetListReversal() {
-      listNodes = [
-        { id: 1, val: 10, nextId: 2, isReversed: false },
-        { id: 2, val: 20, nextId: 3, isReversed: false },
-        { id: 3, val: 30, nextId: 4, isReversed: false },
-        { id: 4, val: 40, nextId: 5, isReversed: false },
-        { id: 5, val: 50, nextId: null, isReversed: false }
-      ];
-      lrState = {
-        prev: null,
-        curr: 1,
-        nextTemp: null,
-        step: 0,
-        complete: false
-      };
-      document.getElementById('btn-lr-step').disabled = false;
-      document.getElementById('lr-log').innerText = "Initial state: prev = null, curr = Node(10)";
-      renderListReversal();
-    }
-
-
-    // --- FLOYD CYCLE DETECTION LOGIC ---
-    let fcState = {
-      slow: 1,
-      fast: 1,
-      step: 0,
-      complete: false
-    };
-
-    function renderCycleDetection() {
-      const container = document.getElementById('fc-list-container');
-      container.innerHTML = "";
-
-      const ids = [1, 2, 3, 4, 5];
-      ids.forEach((id, idx) => {
-        const isSlow = id === fcState.slow;
-        const isFast = id === fcState.fast;
-
-        const el = document.createElement('div');
-        el.className = 'list-node';
-        if (isSlow) el.classList.add('slow');
-        if (isFast) el.classList.add('fast');
-
-        el.innerHTML = `<span style="font-size:0.95rem;">N(${id})</span>`;
-        if (isSlow) el.innerHTML += `<span class="pointer-label pointer-low" style="background:var(--accent-cyan); color:#000;">slow</span>`;
-        if (isFast) el.innerHTML += `<span class="pointer-label pointer-low" style="background:var(--accent-rose); color:#fff; top: ${isSlow ? '-45px' : '-25px'}">fast</span>`;
-
-        container.appendChild(el);
-
-        if (idx < ids.length - 1) {
-          const arrow = document.createElement('span');
-          arrow.className = 'list-arrow';
-          arrow.innerHTML = '&rarr;';
-          container.appendChild(arrow);
-        } else {
-          const loopArrow = document.createElement('span');
-          loopArrow.className = 'list-arrow';
-          loopArrow.style.color = 'var(--accent-rose)';
-          loopArrow.innerHTML = '&larr; (Loop back to N3)';
-          container.appendChild(loopArrow);
-        }
-      });
-    }
-
-    function stepCycleDetection() {
-      if (fcState.complete) return;
-
-      let { slow, fast, step } = fcState;
-      let logText = "";
-
-      const getNext = (nodeId) => {
-        if (nodeId === 5) return 3; // loop back
-        return nodeId + 1;
-      };
-
-      const nextSlow = getNext(slow);
-      const nextFast = getNext(getNext(fast));
-      step++;
-
-      if (nextSlow === nextFast) {
-        fcState.complete = true;
-        logText = `Cycle detected! slow and fast met at Node(${nextSlow}) after ${step} steps.`;
-        document.getElementById('btn-fc-step').disabled = true;
-      } else {
-        logText = `Step ${step}: slow moved to Node(${nextSlow}), fast moved to Node(${nextFast})`;
-      }
-
-      fcState.slow = nextSlow;
-      fcState.fast = nextFast;
-      fcState.step = step;
-
-      document.getElementById('fc-log').innerText = logText;
-      renderCycleDetection();
-    }
-
-    function resetCycleDetection() {
-      fcState = {
-        slow: 1,
-        fast: 1,
-        step: 0,
-        complete: false
-      };
-      document.getElementById('btn-fc-step').disabled = false;
-      document.getElementById('fc-log').innerText = "Pointers initialized at Head: slow = Node(1), fast = Node(1)";
-      renderCycleDetection();
-    }
-
-
-    // --- TAB TOGGLE CONTROLLER ON STARTUP ---
-    function selectVisualizer(visType) {
-      document.getElementById('btn-vis-bs').classList.remove('active');
-      document.getElementById('btn-vis-lr').classList.remove('active');
-      document.getElementById('btn-vis-fc').classList.remove('active');
-
-      document.getElementById('vis-binary-search').style.display = 'none';
-      document.getElementById('vis-list-reversal').style.display = 'none';
-      document.getElementById('vis-list-cycle').style.display = 'none';
-
-      if (visType === 'binary_search') {
-        document.getElementById('btn-vis-bs').classList.add('active');
-        document.getElementById('vis-binary-search').style.display = 'block';
-        resetBinarySearch();
-      } else if (visType === 'list_reversal') {
-        document.getElementById('btn-vis-lr').classList.add('active');
-        document.getElementById('vis-list-reversal').style.display = 'block';
-        resetListReversal();
-      } else if (visType === 'list_cycle') {
-        document.getElementById('btn-vis-fc').classList.add('active');
-        document.getElementById('vis-list-cycle').style.display = 'block';
-        resetCycleDetection();
-      }
-    }
-
     // Initialize on load
     window.onload = () => {
-      renderBinarySearchArray();
-      renderListReversal();
-      renderCycleDetection();
+      renderCurriculumTabs();
+      selectConcept(selectedConceptId);
     };
   </script>
 </body>
