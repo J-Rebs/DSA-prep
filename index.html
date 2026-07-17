@@ -480,7 +480,7 @@ int mid = (low + high) >>> 1;</code></pre>
             "id": "p01_sliding_window",
             "name": "Sliding Window",
             "component": "Rate Limiter (Sliding Window Counter)",
-            "status": "🔄 In Progress",
+            "status": "🟢 Mastered",
             "guidance": {
               "overview": "Sliding Window is used to perform operations on a specific contiguous block of elements within an array or string. Instead of rescanning the elements from scratch for every index, we slide a 'window' (defined by left and right boundaries) over the data stream, updating the tracking metrics incrementally in O(1) time.",
               "mentalModel": "Maintain two pointers (left and right). Move the right pointer to expand the window and ingest elements. When the window violates constraints (e.g., sum too large, too many distinct elements), increment the left pointer to shrink the window until the constraint is satisfied.",
@@ -490,7 +490,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Max Sum Subarray of Size K",
                 "difficulty": "Easy",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Metric Rollup Buffer (aggregating metrics in window blocks)",
                 "description": "Given an array of positive numbers and a positive number 'k', find the maximum sum of any contiguous subarray of size 'k'.",
                 "hints": "Initialize a running sum. Expand the window up to size k. Once window size reaches k, subtract the element sliding out of the window (left pointer) and add the new element (right pointer)."
@@ -498,7 +498,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Smallest Subarray with a Greater Sum",
                 "difficulty": "Easy",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Sizing network packets (finding min packets to exceed capacity threshold)",
                 "description": "Given an array of positive numbers and a positive number 'S', find the length of the smallest contiguous subarray whose sum is greater than or equal to 'S'.",
                 "hints": "Expand the window until the sum is >= S. Then, shrink the window from the left as much as possible while maintaining a sum >= S, tracking the minimum window length."
@@ -506,7 +506,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Rate Limiter Sliding Window Count",
                 "difficulty": "Medium",
-                "status": "🔄 In Progress",
+                "status": "🟢 Solved",
                 "systemMapping": "SSTable Event Rate Limiter (detecting peak request floods)",
                 "description": "Given sorted event timestamps, return the indices of requests that violated the rate limit (more than maxRequests within windowSize).",
                 "hints": "For each timestamp, expand the window. Shrink the window from the left by discarding timestamps older than current_time - windowSize. If the remaining count of successful requests inside the window exceeds maxRequests, mark the current request index as blocked (and do not record it as successful)."
@@ -514,7 +514,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Longest Substring with K Distinct Characters",
                 "difficulty": "Medium",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Memory Pool Allocator (tracking blocks of unique client sessions)",
                 "description": "Given a string, find the length of the longest substring in it with no more than 'k' distinct characters.",
                 "hints": "Use an integer count array to track character frequencies. Expand the window. If the number of non-zero frequencies exceeds K, shrink from the left until unique character count is back to K."
@@ -522,7 +522,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Permutation in a String",
                 "difficulty": "Medium",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Log pattern signatures (finding packet header anagrams in byte streams)",
                 "description": "Given a string and a pattern, find all starting indices of the pattern's anagrams/permutations in the string.",
                 "hints": "Create a frequency signature map of the pattern. Maintain a sliding window of size equal to the pattern. Compare the window's character frequencies with the pattern's frequencies."
@@ -530,7 +530,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Jitter Buffer Smoothing (Character Replacement)",
                 "difficulty": "Medium",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Packet Jitter Smoothing (tolerating character replacement anomalies)",
                 "description": "Find the length of the longest substring with same letters after replacing at most k characters.",
                 "hints": "Track the frequency of the most frequent character in the current window. The remaining characters (window_length - max_freq) are the ones that must be replaced. If replacements exceed k, shrink from the left."
@@ -538,7 +538,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Telemetry Drop Tolerator (Max Consecutive Ones III)",
                 "difficulty": "Medium",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Telemetry Jitter drop protection (tolerating up to K dropouts in metrics)",
                 "description": "Given binary packet log events, find the longest consecutive run of successful packets (1s) after replacing at most k dropped packets (0s).",
                 "hints": "This is equivalent to finding the longest subarray containing at most K zeros. Expand the window. If the count of zeros exceeds K, shrink from the left."
@@ -546,7 +546,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Minimum Window Substring (Log Aggregator)",
                 "difficulty": "Hard",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Multi-tag log collector (consolidating minimum span containing all metrics)",
                 "description": "Given a string and a pattern, find the smallest substring containing all characters of the pattern.",
                 "hints": "Track the matching character count. Expand the window until it contains all characters of the pattern. Then, shrink from the left to find the minimum length, saving the smallest valid substring."
@@ -554,7 +554,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Sliding Window Maximum (Metric buffer queues)",
                 "difficulty": "Hard",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Telemetry load spike monitoring (tracking sliding max of queues)",
                 "description": "Given an array of metric metrics, find the maximum value in each sliding window of size k.",
                 "hints": "Use a double-ended queue (Deque) to store indices. Keep indices in the deque in decreasing order of their corresponding values. Remove indices that fall outside the window size k from the front. Remove smaller element indices from the back."
@@ -1016,6 +1016,14 @@ for (int right = 0; right &lt; arr.length; right++) {
     
     // 3. Record answer: track max/min valid window size
 }</code></pre>
+            
+            <div class="section-title" style="color: var(--accent-emerald); margin-top: 20px; font-weight: 700;">💡 Key Findings & Future Tips</div>
+            <ul style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-left: 20px; margin-top: 8px; display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Monotonic Deque (Index-Based):</strong> When tracking maximums or minimums in a sliding window, storing indices (e.g., <code>deq.offerLast(right)</code>) instead of actual values is standard practice. It simplifies out-of-bounds checks (<code>deq.peekFirst() == left</code>) and naturally handles duplicate values.</li>
+              <li><strong>Primitive Array Optimizations:</strong> For high-frequency algorithms (e.g. rate limiters or character count checkers), utilizing fixed-size primitive arrays (like <code>int[] count = new int[256]</code>) eliminates object allocation and unboxing overhead in hot paths.</li>
+              <li><strong>Dynamic Window Constraints:</strong> When resolving replacement or drop tolerance problems, ensure your window shrink condition measures the replaceable budget (e.g., <code>windowSize - maxFreq > k</code>) rather than just the window size itself.</li>
+              <li><strong>Stream & Boxed Overhead:</strong> While stream operations like <code>res.stream().mapToInt(Integer::intValue).toArray()</code> are elegant, pre-allocating the output array or using a manual primitive loop avoids collection boxing overhead and performs much faster.</li>
+            </ul>
           </div>
         `;
       } else if (conceptId === 'p02_two_pointers') {

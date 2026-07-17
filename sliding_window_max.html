@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sliding Window Maximum Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #fdfbf7;
+      --bg-card: #ffffff;
+      --border-color: #e3ded2;
+      --border-active: #1c4e70;
+      
+      --text-primary: #222629;
+      --text-secondary: #5a6065;
+      --text-muted: #8d9499;
+
+      --accent-indigo: #1c4e70;
+      --accent-lavender: #a894b0;
+      --accent-emerald: #426b52;
+      --accent-amber: #b28751;
+      --accent-rose: #b58d92;
+      --accent-cyan: #8faeb4;
+      
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --shadow-flat: 0 2px 4px rgba(43, 38, 34, 0.03);
+      --shadow-card: 0 4px 16px rgba(43, 38, 34, 0.04), 0 2px 4px rgba(43, 38, 34, 0.02);
+      --shadow-hover: 0 10px 30px rgba(178, 135, 81, 0.08), 0 2px 6px rgba(43, 38, 34, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(143, 174, 180, 0.1) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(168, 148, 176, 0.1) 0px, transparent 50%);
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    header h1 {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent-indigo);
+      margin-bottom: 10px;
+    }
+
+    header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .visualizer-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-card);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    /* Controls Panel */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    input {
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      width: 180px;
+    }
+
+    input.k-input {
+      width: 60px;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 18px;
+      border: 1px solid var(--accent-indigo);
+      background: var(--bg-card);
+      color: var(--accent-indigo);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    button:hover {
+      background: var(--accent-indigo);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(28, 78, 112, 0.15);
+    }
+
+    button.primary {
+      background: var(--accent-indigo);
+      color: #ffffff;
+    }
+
+    button.primary:hover {
+      background: #143851;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none !important;
+    }
+
+    /* Visualization Elements */
+    .animation-area {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    @media (min-width: 900px) {
+      .animation-area {
+        grid-template-columns: 3fr 2fr;
+      }
+    }
+
+    /* Array container */
+    .array-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .array-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent-indigo);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .elements-wrapper {
+      display: flex;
+      position: relative;
+      padding: 10px 0;
+      overflow-x: auto;
+      gap: 12px;
+    }
+
+    .element-card {
+      min-width: 60px;
+      height: 75px;
+      background: var(--bg-main);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: var(--font-mono);
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .element-card .val {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .element-card .idx {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Active window overlay */
+    .element-card.in-window {
+      border-color: var(--accent-cyan);
+      background: rgba(143, 174, 180, 0.08);
+    }
+
+    .element-card.window-left {
+      border-left-width: 4px;
+      border-left-color: var(--accent-amber);
+    }
+
+    .element-card.window-right {
+      border-right-width: 4px;
+      border-right-color: var(--accent-amber);
+    }
+
+    .element-card.is-max {
+      background: rgba(178, 135, 81, 0.15);
+      border-color: var(--accent-amber);
+      transform: scale(1.05);
+    }
+
+    .element-card.is-current {
+      box-shadow: 0 0 0 3px rgba(28, 78, 112, 0.3);
+      border-color: var(--accent-indigo);
+    }
+
+    /* Deque display */
+    .deque-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .deque-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      background: var(--bg-main);
+      border: 1px dashed var(--border-color);
+      border-radius: 12px;
+      min-height: 80px;
+    }
+
+    .deque-label {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .deque-elements {
+      display: flex;
+      gap: 10px;
+      flex-grow: 1;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    .deque-node {
+      background: var(--bg-card);
+      border: 2px solid var(--accent-lavender);
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: var(--font-mono);
+      min-width: 50px;
+      animation: popIn 0.3s ease-out;
+    }
+
+    .deque-node.front {
+      border-color: var(--accent-amber);
+      background: rgba(178, 135, 81, 0.05);
+    }
+
+    .deque-node .node-val {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .deque-node .node-idx {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Results */
+    .results-container {
+      margin-top: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .results-wrapper {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-height: 50px;
+      align-items: center;
+    }
+
+    .result-badge {
+      background: var(--accent-indigo);
+      color: #ffffff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.1rem;
+      animation: popIn 0.2s ease-out;
+    }
+
+    /* Explanation and Code trace */
+    .explanation-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: #faf8f5;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      height: 100%;
+    }
+
+    .explanation-text {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text-primary);
+      min-height: 80px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 15px;
+    }
+
+    .code-container {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      overflow-x: auto;
+      background: #1e1e24;
+      color: #d4d4d4;
+      padding: 15px;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+
+    .code-line {
+      display: block;
+      padding: 2px 6px;
+      border-left: 3px solid transparent;
+    }
+
+    .code-line.active {
+      background: rgba(28, 78, 112, 0.4);
+      border-left-color: var(--accent-amber);
+      color: #ffffff;
+    }
+
+    .keyword { color: #569cd6; }
+    .type { color: #4ec9b0; }
+    .comment { color: #6a9955; font-style: italic; }
+    .string { color: #ce9178; }
+    .number { color: #b5cea8; }
+
+    /* Trace Log */
+    .trace-log-container {
+      margin-top: 20px;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 15px;
+      max-height: 150px;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    .trace-log-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .trace-entry {
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.03);
+    }
+    
+    .trace-entry.pop-back { color: var(--accent-rose); }
+    .trace-entry.pop-front { color: var(--accent-amber); }
+    .trace-entry.push { color: var(--accent-emerald); }
+    .trace-entry.result { color: var(--accent-indigo); font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Monotonic Deque Visualizer</h1>
+      <p>Interactive Step-by-Step Sliding Window Maximum ($O(N)$ Complexity)</p>
+    </header>
+
+    <div class="visualizer-card">
+      <!-- Controls -->
+      <div class="controls">
+        <div class="control-group">
+          <label for="array-input">Array:</label>
+          <input type="text" id="array-input" value="1, 3, -1, -3, 5, 3, 6, 7">
+        </div>
+        <div class="control-group">
+          <label for="k-input">k:</label>
+          <input type="number" id="k-input" class="k-input" value="3" min="1">
+        </div>
+        <button id="btn-init" class="primary">Reset & Init</button>
+        <button id="btn-prev" disabled>
+          Back
+        </button>
+        <button id="btn-next">
+          Next
+        </button>
+        <button id="btn-play">
+          Play
+        </button>
+      </div>
+
+      <!-- Animation Area -->
+      <div class="animation-area">
+        <!-- Visualization -->
+        <div>
+          <!-- Array elements visual -->
+          <div class="array-container">
+            <div class="array-title">
+              <span>Array & Sliding Window</span>
+              <span id="window-range-label" style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--text-secondary);">Window: [ - , - ]</span>
+            </div>
+            <div class="elements-wrapper" id="elements-wrapper">
+              <!-- Element cards will be generated here -->
+            </div>
+          </div>
+
+          <!-- Deque Visual -->
+          <div class="deque-container">
+            <div class="array-title">Monotonic Deque (Stores Indices)</div>
+            <div class="deque-wrapper">
+              <span class="deque-label" style="margin-right: 15px;">Front (Max)</span>
+              <div class="deque-elements" id="deque-elements">
+                <!-- Nodes generated here -->
+              </div>
+              <span class="deque-label" style="margin-left: 15px;">Back</span>
+            </div>
+          </div>
+
+          <!-- Results Visual -->
+          <div class="results-container">
+            <div class="array-title">Resulting Maximums Array</div>
+            <div class="results-wrapper" id="results-wrapper">
+              <!-- Result badges generated here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Code & Explanation -->
+        <div>
+          <div class="explanation-panel">
+            <div class="array-title">Execution State</div>
+            <div class="explanation-text" id="explanation-text">
+              Enter an array and click "Reset & Init" to start the visualization.
+            </div>
+            
+            <div class="code-container">
+              <span class="code-line" id="code-line-1"><span class="keyword">Deque</span>&lt;<span class="type">Integer</span>&gt; deque = <span class="keyword">new</span> <span class="type">ArrayDeque</span>&lt;&gt;();</span>
+              <span class="code-line" id="code-line-2"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; N; i++) {</span>
+              <span class="code-line" id="code-line-3">    <span class="comment">// 1. Remove indices out of current window bounds</span></span>
+              <span class="code-line" id="code-line-4">    <span class="keyword">if</span> (!deque.isEmpty() && deque.peekFirst() &lt; i - k + <span class="number">1</span>) {</span>
+              <span class="code-line" id="code-line-5">        deque.pollFirst();</span>
+              <span class="code-line" id="code-line-6">    }</span>
+              <span class="code-line" id="code-line-7">    <span class="comment">// 2. Remove elements smaller than current from back</span></span>
+              <span class="code-line" id="code-line-8">    <span class="keyword">while</span> (!deque.isEmpty() && metrics[deque.peekLast()] &lt; metrics[i]) {</span>
+              <span class="code-line" id="code-line-9">        deque.pollLast();</span>
+              <span class="code-line" id="code-line-10">    }</span>
+              <span class="code-line" id="code-line-11">    <span class="comment">// 3. Add current index to back</span></span>
+              <span class="code-line" id="code-line-12">    deque.offerLast(i);</span>
+              <span class="code-line" id="code-line-13">    <span class="comment">// 4. If window is full size, front of deque is the max</span></span>
+              <span class="code-line" id="code-line-14">    <span class="keyword">if</span> (i &gt;= k - <span class="number">1</span>) {</span>
+              <span class="code-line" id="code-line-15">        result[i - k + <span class="number">1</span>] = metrics[deque.peekFirst()];</span>
+              <span class="code-line" id="code-line-16">    }</span>
+              <span class="code-line" id="code-line-17">}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trace Log -->
+      <div class="trace-log-container">
+        <div class="trace-log-title">Detailed Trace Log</div>
+        <div id="trace-log">
+          <!-- Entries added dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State management
+    let metrics = [];
+    let k = 3;
+    let steps = [];
+    let currentStepIdx = -1;
+    let playInterval = null;
+
+    // Elements
+    const arrayInput = document.getElementById('array-input');
+    const kInput = document.getElementById('k-input');
+    const btnInit = document.getElementById('btn-init');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const btnPlay = document.getElementById('btn-play');
+    const elementsWrapper = document.getElementById('elements-wrapper');
+    const dequeElements = document.getElementById('deque-elements');
+    const resultsWrapper = document.getElementById('results-wrapper');
+    const explanationText = document.getElementById('explanation-text');
+    const traceLog = document.getElementById('trace-log');
+    const windowRangeLabel = document.getElementById('window-range-label');
+
+    // Generate step-by-step trace
+    function generateSteps() {
+      const N = metrics.length;
+      const localSteps = [];
+      const deque = []; // simulated deque storing indices
+      const results = [];
+
+      for (let i = 0; i < N; i++) {
+        // Step A: Show current pointer index i
+        localSteps.push({
+          type: 'start-iteration',
+          i: i,
+          val: metrics[i],
+          deque: [...deque],
+          results: [...results],
+          activeLines: [2],
+          desc: `Start processing index <strong>${i}</strong> (value: <strong>${metrics[i]}</strong>).`
+        });
+
+        // Step B: Check out-of-bounds removal
+        const outOfBoundsLimit = i - k + 1;
+        let poppedFront = null;
+        let isOutOfBounds = deque.length > 0 && deque[0] < outOfBoundsLimit;
+        
+        localSteps.push({
+          type: 'check-bounds',
+          i: i,
+          deque: [...deque],
+          results: [...results],
+          activeLines: [4],
+          desc: `Checking if the index at the front of the deque is out of the sliding window boundaries (index < ${outOfBoundsLimit}).`
+        });
+
+        if (isOutOfBounds) {
+          poppedFront = deque.shift();
+          localSteps.push({
+            type: 'pop-bounds',
+            i: i,
+            popped: poppedFront,
+            deque: [...deque],
+            results: [...results],
+            activeLines: [5],
+            desc: `Index <strong>${poppedFront}</strong> (value: <strong>${metrics[poppedFront]}</strong>) is out of bounds for the current window [${Math.max(0, outOfBoundsLimit)}, ${i}]. Polled it from the front.`
+          });
+        }
+
+        // Step C: Pop smaller elements from the back
+        let poppedBackList = [];
+        localSteps.push({
+          type: 'check-monotonicity',
+          i: i,
+          deque: [...deque],
+          results: [...results],
+          activeLines: [8],
+          desc: `Compare incoming value <strong>${metrics[i]}</strong> with elements from the back of the deque to maintain decreasing order.`
+        });
+
+        while (deque.length > 0 && metrics[deque[deque.length - 1]] < metrics[i]) {
+          const popped = deque.pop();
+          poppedBackList.push(popped);
+          localSteps.push({
+            type: 'pop-smaller',
+            i: i,
+            popped: popped,
+            deque: [...deque],
+            results: [...results],
+            activeLines: [9],
+            desc: `Value at index <strong>${popped}</strong> (value: <strong>${metrics[popped]}</strong>) is smaller than incoming <strong>${metrics[i]}</strong>. Polled it from the back since it can never be the maximum.`
+          });
+        }
+
+        // Step D: Add current element
+        deque.push(i);
+        localSteps.push({
+          type: 'push-current',
+          i: i,
+          deque: [...deque],
+          results: [...results],
+          activeLines: [12],
+          desc: `Push index <strong>${i}</strong> (value: <strong>${metrics[i]}</strong>) to the back of the deque.`
+        });
+
+        // Step E: Check if window is formed and record max
+        localSteps.push({
+          type: 'check-window-full',
+          i: i,
+          deque: [...deque],
+          results: [...results],
+          activeLines: [14],
+          desc: `Check if we have processed at least <strong>k = ${k}</strong> elements to form a complete window (i >= ${k - 1}).`
+        });
+
+        if (i >= k - 1) {
+          const maxIdx = deque[0];
+          const maxVal = metrics[maxIdx];
+          results.push(maxVal);
+          localSteps.push({
+            type: 'record-max',
+            i: i,
+            maxIdx: maxIdx,
+            maxVal: maxVal,
+            deque: [...deque],
+            results: [...results],
+            activeLines: [15],
+            desc: `Window [${i - k + 1}, ${i}] is complete. The index at the front of the deque is <strong>${maxIdx}</strong>, so the maximum is <strong>${maxVal}</strong>.`
+          });
+        }
+      }
+
+      return localSteps;
+    }
+
+    function initVisualizer() {
+      // Parse inputs
+      const rawInput = arrayInput.value;
+      metrics = rawInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+      k = parseInt(kInput.value);
+
+      if (metrics.length === 0 || isNaN(k) || k < 1) {
+        alert("Please enter a valid comma-separated array and a window size k >= 1.");
+        return;
+      }
+
+      // Generate steps
+      steps = generateSteps();
+      currentStepIdx = 0;
+      
+      // Clear trace log
+      traceLog.innerHTML = '';
+      
+      // Render
+      renderStep(0);
+      updateButtons();
+    }
+
+    function renderStep(idx) {
+      if (idx < 0 || idx >= steps.length) return;
+      const step = steps[idx];
+
+      // Update Explanation text
+      explanationText.innerHTML = step.desc;
+
+      // Update code line highlights
+      document.querySelectorAll('.code-line').forEach(el => el.classList.remove('active'));
+      step.activeLines.forEach(lineNum => {
+        const line = document.getElementById(`code-line-${lineNum}`);
+        if (line) line.classList.add('active');
+      });
+
+      // Render Array Elements
+      elementsWrapper.innerHTML = '';
+      const leftBoundary = Math.max(0, step.i - k + 1);
+      const isWindowFull = step.i >= k - 1;
+
+      metrics.forEach((val, i) => {
+        const card = document.createElement('div');
+        card.className = 'element-card';
+        
+        const valSpan = document.createElement('span');
+        valSpan.className = 'val';
+        valSpan.innerText = val;
+        card.appendChild(valSpan);
+
+        const idxSpan = document.createElement('span');
+        idxSpan.className = 'idx';
+        idxSpan.innerText = i;
+        card.appendChild(idxSpan);
+
+        // Highlight classes
+        if (i === step.i) {
+          card.classList.add('is-current');
+        }
+        if (isWindowFull && i >= leftBoundary && i <= step.i) {
+          card.classList.add('in-window');
+          if (i === leftBoundary) card.classList.add('window-left');
+          if (i === step.i) card.classList.add('window-right');
+        }
+        
+        // Highlight max element
+        const isMaxElement = step.type === 'record-max' && i === step.maxIdx;
+        if (isMaxElement) {
+          card.classList.add('is-max');
+        }
+
+        elementsWrapper.appendChild(card);
+      });
+
+      // Update window range label
+      if (isWindowFull) {
+        windowRangeLabel.innerText = `Window: [${leftBoundary}, ${step.i}]`;
+      } else {
+        windowRangeLabel.innerText = `Window: [0, ${step.i}] (building)`;
+      }
+
+      // Render Deque
+      dequeElements.innerHTML = '';
+      step.deque.forEach((indexInDeque, qIdx) => {
+        const node = document.createElement('div');
+        node.className = 'deque-node';
+        if (qIdx === 0) {
+          node.classList.add('front');
+        }
+        
+        const valSpan = document.createElement('span');
+        valSpan.className = 'node-val';
+        valSpan.innerText = metrics[indexInDeque];
+        
+        const idxSpan = document.createElement('span');
+        idxSpan.className = 'node-idx';
+        idxSpan.innerText = `idx:${indexInDeque}`;
+
+        node.appendChild(valSpan);
+        node.appendChild(idxSpan);
+        dequeElements.appendChild(node);
+      });
+
+      if (step.deque.length === 0) {
+        const emptyMsg = document.createElement('span');
+        emptyMsg.style.color = 'var(--text-muted)';
+        emptyMsg.style.fontStyle = 'italic';
+        emptyMsg.innerText = 'Empty';
+        dequeElements.appendChild(emptyMsg);
+      }
+
+      // Render Results Array
+      resultsWrapper.innerHTML = '';
+      step.results.forEach(resVal => {
+        const badge = document.createElement('div');
+        badge.className = 'result-badge';
+        badge.innerText = resVal;
+        resultsWrapper.appendChild(badge);
+      });
+
+      // Update Trace Log
+      appendTraceLog(step);
+    }
+
+    function appendTraceLog(step) {
+      // Remove any subsequent logs if we moved back
+      const expectedLogCount = currentStepIdx + 1;
+      while (traceLog.children.length >= expectedLogCount) {
+        traceLog.removeChild(traceLog.lastChild);
+      }
+
+      // If this step is not yet logged, log it
+      if (traceLog.children.length < expectedLogCount) {
+        const entry = document.createElement('div');
+        entry.className = 'trace-entry';
+        
+        if (step.type === 'pop-bounds') {
+          entry.classList.add('pop-front');
+        } else if (step.type === 'pop-smaller') {
+          entry.classList.add('pop-back');
+        } else if (step.type === 'push-current') {
+          entry.classList.add('push');
+        } else if (step.type === 'record-max') {
+          entry.classList.add('result');
+        }
+
+        // Clean up HTML tags for the log
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = step.desc;
+        entry.innerText = `[Step ${currentStepIdx + 1}] ` + tempDiv.innerText;
+
+        traceLog.appendChild(entry);
+        traceLog.scrollTop = traceLog.scrollHeight;
+      }
+    }
+
+    function updateButtons() {
+      btnPrev.disabled = currentStepIdx <= 0;
+      btnNext.disabled = currentStepIdx >= steps.length - 1;
+      
+      if (currentStepIdx >= steps.length - 1) {
+        stopPlay();
+      }
+    }
+
+    function nextStep() {
+      if (currentStepIdx < steps.length - 1) {
+        currentStepIdx++;
+        renderStep(currentStepIdx);
+        updateButtons();
+      }
+    }
+
+    function prevStep() {
+      if (currentStepIdx > 0) {
+        currentStepIdx--;
+        renderStep(currentStepIdx);
+        updateButtons();
+      }
+    }
+
+    function startPlay() {
+      btnPlay.innerText = 'Pause';
+      btnPlay.classList.add('primary');
+      playInterval = setInterval(() => {
+        if (currentStepIdx < steps.length - 1) {
+          nextStep();
+        } else {
+          stopPlay();
+        }
+      }, 1500);
+    }
+
+    function stopPlay() {
+      clearInterval(playInterval);
+      playInterval = null;
+      btnPlay.innerText = 'Play';
+      btnPlay.classList.remove('primary');
+    }
+
+    // Event listeners
+    btnInit.addEventListener('click', initVisualizer);
+    btnNext.addEventListener('click', () => {
+      stopPlay();
+      nextStep();
+    });
+    btnPrev.addEventListener('click', () => {
+      stopPlay();
+      prevStep();
+    });
+    btnPlay.addEventListener('click', () => {
+      if (playInterval) {
+        stopPlay();
+      } else {
+        if (currentStepIdx >= steps.length - 1) {
+          currentStepIdx = 0;
+          renderStep(currentStepIdx);
+          traceLog.innerHTML = '';
+        }
+        startPlay();
+      }
+    });
+
+    // Initialize
+    initVisualizer();
+  </script>
+</body>
+</html>
