@@ -6,7 +6,8 @@ import java.util.List;
 
 /**
  * High-performance Two-Pointer stream compaction & merging component.
- * Optimized to perform mutations in-place with minimal or zero heap allocations.
+ * Optimized to perform mutations in-place with minimal or zero heap
+ * allocations.
  */
 public final class TwoPointersCompactor {
 
@@ -23,7 +24,24 @@ public final class TwoPointersCompactor {
      * Finds indices of a pair in a sorted array that adds up to target.
      */
     public static int[] pairWithTargetSum(int[] arr, int target) {
-        return new int[]{};
+        // saftey guard
+        if (arr == null || arr.length < 2) {
+            return new int[] {};
+        }
+        // solution
+        int left = 0;
+        int right = arr.length - 1;
+        while (left < right) {
+            int sum = arr[left] + arr[right];
+            if (sum == target) {
+                return new int[] { left, right };
+            } else if (sum > target) {
+                right--;
+            } else {
+                left++;
+            }
+        }
+        return new int[] {};
     }
 
     /**
@@ -43,7 +61,7 @@ public final class TwoPointersCompactor {
      * Returns a sorted array containing squares of elements from the sorted input.
      */
     public static int[] squareSortedArray(int[] arr) {
-        return new int[]{};
+        return new int[] {};
     }
 
     /**
@@ -64,7 +82,8 @@ public final class TwoPointersCompactor {
 
     /**
      * Problem 6: Compacting SSTable logs in-place
-     * Consolidates active and tombstoned logs in-place, returning new active length.
+     * Consolidates active and tombstoned logs in-place, returning new active
+     * length.
      */
     public static int compactSSTableLogs(int[] logs, int tombstone) {
         return -1;
@@ -72,7 +91,8 @@ public final class TwoPointersCompactor {
 
     /**
      * Problem 7: Min Window Sort
-     * Finds length of shortest subarray that, when sorted, makes the entire array sorted.
+     * Finds length of shortest subarray that, when sorted, makes the entire array
+     * sorted.
      */
     public static int minWindowSort(int[] arr) {
         return -1;
