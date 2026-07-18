@@ -137,6 +137,7 @@ public final class TwoPointersCompactor {
                         mid++;
                     }
                     right--;
+                    // is what we want to the same as what we saw before
                     while (mid < right && arr[right] == arr[right + 1]) {
                         right--;
                     }
