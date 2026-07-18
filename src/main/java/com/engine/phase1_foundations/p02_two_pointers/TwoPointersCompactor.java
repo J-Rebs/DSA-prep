@@ -77,7 +77,30 @@ public final class TwoPointersCompactor {
      * Returns a sorted array containing squares of elements from the sorted input.
      */
     public static int[] squareSortedArray(int[] arr) {
-        return new int[] {};
+        if (arr == null) {
+            return new int[] {};
+        }
+        // we can use left and right pointers (the converging pattern) to simulate
+        // as if we had taken the absolute values already. key: extreme values
+        // comparison.
+        int left = 0;
+        int right = arr.length - 1;
+        int[] solution = new int[arr.length];
+        // we start with the greatest values so have to start at end of solution array
+        int solIdx = arr.length - 1;
+
+        while (left <= right) {
+            int lVal = arr[left] < 0 ? -arr[left] : arr[left];
+            int rVal = arr[right] < 0 ? -arr[right] : arr[right];
+            if (lVal > rVal) {
+                solution[solIdx--] = lVal * lVal;
+                left++;
+            } else {
+                solution[solIdx--] = rVal * rVal;
+                right--;
+            }
+        }
+        return solution;
     }
 
     /**
