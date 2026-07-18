@@ -4,30 +4,30 @@ This document defines the learning framework, target problem volume, weekly eval
 
 ---
 
-## 🎯 Target Problem Volume: The 6–8 Rule
+## 🎯 Target Problem Volume: The 11-Problem Rule
 
-To master an algorithmic pattern without getting stuck in a cycle of endless grinding, aim for **6 to 8 highly targeted problems** per pattern. This volume is structured as a progressive difficulty ladder:
+To master an algorithmic pattern without getting stuck in a cycle of endless grinding, aim for **11 highly targeted problems** per pattern. This volume is structured as a progressive difficulty ladder:
 
 ### The Mastery Ladder
 ```text
-  [Level 3: Scale & Boundary Stress]  -->  1 - 2 Hard problems (Extreme bounds, overflow, quants tier)
+  [Level 3: Scale & Boundary Stress]  -->  2 Hard problems (Extreme bounds, overflow, quants tier)
                   ▲
-  [Level 2: Systems Integration]       -->  3 - 4 Medium problems (Direct mappings to system design components)
+  [Level 2: Systems Integration]       -->  6 Medium problems (Direct mappings to system design components)
                   ▲
-  [Level 1: Structural Invariant]      -->  1 - 2 Easy/Medium problems (Understand basic template & index bounds)
+  [Level 1: Structural Invariant]      -->  3 Easy problems (Understand basic template & index bounds)
 ```
 
-1. **Level 1: Structural Warmups (1–2 Problems)**
+1. **Level 1: Structural Warmups (3 Problems)**
    * **Goal:** Internalize the core pattern invariants and standard template.
    * **Focus:** Pointer movements, base cases, loop termination, and index boundaries.
-2. **Level 2: Systems Core (3–4 Problems)**
+2. **Level 2: Systems Core (6 Problems)**
    * **Goal:** Implement the direct mapping to real-world infrastructure components (e.g. Sliding Window Rate Limiter).
    * **Focus:** Low-level performance, cache locality, and zero-autoboxing.
-3. **Level 3: Scale & Stress (1–2 Problems)**
+3. **Level 3: Scale & Stress (2 Problems)**
    * **Goal:** Handle extreme scale, concurrency, or mathematical constraints (quant/hard interview tier).
    * **Focus:** Minimizing JVM GC pressure, time-limit-exceeded (TLE) prevention, and raw memory optimization.
 
-*Total Curriculum Size: 15 Patterns × 6–8 Problems = 90–120 high-quality problems.*
+*Total Curriculum Size: 16 Patterns × 11 Problems = 176 high-quality problems.*
 
 ---
 

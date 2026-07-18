@@ -31,7 +31,7 @@ Maintain two indices: `left` and `right`.
 
 ---
 
-## 4. The 9-Problem Mastery Ladder
+## 4. The 11-Problem Mastery Ladder
 
 ### Phase 1: Easy Warmups
 1. **[Easy] Pair with Target Sum**
@@ -40,11 +40,11 @@ Maintain two indices: `left` and `right`.
 2. **[Easy] Remove Duplicates (Compaction)**
    * *System Mapping:* In-place telemetry log compaction.
    * *Description:* Remove duplicate elements in-place from a sorted array.
-
-### Phase 2: Medium System Integration
-3. **[Medium] Squaring a Sorted Array**
+3. **[Easy] Squaring a Sorted Array**
    * *System Mapping:* Batch load balancer squaring index bounds.
    * *Description:* Return sorted array of squares from a sorted array containing negative values.
+
+### Phase 2: Medium System Integration
 4. **[Medium] Triplet Sum to Zero**
    * *System Mapping:* Three-way ledger transaction reconciliation.
    * *Description:* Find all unique triplets that sum to zero.
@@ -57,14 +57,20 @@ Maintain two indices: `left` and `right`.
 7. **[Medium] Min Window Sort**
    * *System Mapping:* Buffer sort boundary identification.
    * *Description:* Shortest subarray length that, when sorted, makes the entire array sorted.
-
-### Phase 3: Hard Scale & Stress
-8. **[Hard] Quadruple Sum to Target**
+8. **[Medium] Quadruple Sum to Target**
    * *System Mapping:* Four-way ledger balance reconciler.
    * *Description:* Find all unique quadruplets that sum to target.
-9. **[Hard] Dutch National Flag Problem (Partitioning)**
+9. **[Medium] Dutch National Flag Problem (Partitioning)**
    * *System Mapping:* Three-tiered cache bucket partitioner.
    * *Description:* Sort an array of 0s, 1s, and 2s in-place in linear time.
+
+### Phase 3: Hard Scale & Stress
+10. **[Hard] Trapping Rain Water**
+    * *System Mapping:* Telemetry metric packet buffer volume calculation.
+    * *Description:* Compute how much water can be trapped in an elevation map.
+11. **[Hard] Shortest Subarray with Sum at Least K**
+    * *System Mapping:* Multi-partition transaction window search.
+    * *Description:* Find shortest contiguous subarray with sum >= K (supports negative values).
 
 ---
 

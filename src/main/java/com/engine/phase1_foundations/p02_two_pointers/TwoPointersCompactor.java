@@ -78,10 +78,6 @@ public final class TwoPointersCompactor {
         return -1;
     }
 
-    // ==========================================
-    // PHASE 3: HARD SCALE & STRESS
-    // ==========================================
-
     /**
      * Problem 8: Quadruple Sum to Target
      * Finds all unique quadruplets that sum to a target value.
@@ -96,5 +92,25 @@ public final class TwoPointersCompactor {
      */
     public static void dutchNationalFlag(int[] arr) {
         // In-place modification
+    }
+
+    // ==========================================
+    // PHASE 3: HARD SCALE & STRESS
+    // ==========================================
+
+    /**
+     * Problem 10: Trapping Rain Water
+     * Computes how much water can be trapped in an elevation map.
+     */
+    public static int trappingRainWater(int[] heights) {
+        return -1;
+    }
+
+    /**
+     * Problem 11: Shortest Subarray with Sum at Least K
+     * Finds shortest contiguous subarray with sum >= K (supports negative values).
+     */
+    public static int shortestSubarraySumAtLeastK(int[] arr, int k) {
+        return -1;
     }
 }

@@ -647,6 +647,22 @@ int mid = (low + high) >>> 1;</code></pre>
                 "systemMapping": "Three-tiered cache bucket partitioner",
                 "description": "Sort an array of 0s, 1s, and 2s in-place in linear time with O(1) space.",
                 "hints": "Use three pointers: `low` for 0s, `high` for 2s, and `i` for current element. If `arr[i] == 0`, swap `arr[i]` and `arr[low]`, increment `low` and `i`. If `arr[i] == 2`, swap `arr[i]` and `arr[high]`, decrement `high`."
+              },
+              {
+                "name": "Trapping Rain Water",
+                "difficulty": "Hard",
+                "status": "🛑 Todo",
+                "systemMapping": "Telemetry metric packet buffer volume calculation",
+                "description": "Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.",
+                "hints": "Maintain left and right pointers at 0 and length-1, along with leftMax and rightMax. Move the pointer pointing to the smaller height inward, updating the max bounds and adding the difference to the total water volume."
+              },
+              {
+                "name": "Shortest Subarray with Sum at Least K",
+                "difficulty": "Hard",
+                "status": "🛑 Todo",
+                "systemMapping": "Multi-partition transaction window search",
+                "description": "Find the length of the shortest contiguous subarray with a sum of at least K (where values can be negative).",
+                "hints": "Use a prefix sum array and a double-ended queue (deque) to store indices in a monotonically increasing order of prefix sums. For each index, shrink from the front if the difference in prefix sums is at least K, and prune from the back to maintain monotonicity."
               }
             ]
           },

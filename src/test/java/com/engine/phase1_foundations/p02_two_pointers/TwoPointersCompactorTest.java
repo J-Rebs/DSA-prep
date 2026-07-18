@@ -130,10 +130,6 @@ public class TwoPointersCompactorTest {
         assertEquals(expected, TwoPointersCompactor.minWindowSort(arr));
     }
 
-    // ==========================================
-    // PHASE 3: HARD SCALE & STRESS
-    // ==========================================
-
     // 8. Quadruple Sum
     @Test
     public void testQuadrupleSumToTarget() {
@@ -148,6 +144,39 @@ public class TwoPointersCompactorTest {
         int[] arr = new int[]{2, 2, 0, 1, 2, 0};
         TwoPointersCompactor.dutchNationalFlag(arr);
         assertArrayEquals(new int[]{0, 0, 1, 2, 2, 2}, arr);
+    }
+
+    // ==========================================
+    // PHASE 3: HARD SCALE & STRESS
+    // ==========================================
+
+    // 10. Trapping Rain Water
+    static Stream<Object[]> trappingRainWaterCases() {
+        return Stream.of(
+            new Object[]{ new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, 6 },
+            new Object[]{ new int[]{4, 2, 0, 3, 2, 5}, 9 }
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("trappingRainWaterCases")
+    public void testTrappingRainWater(int[] heights, int expected) {
+        assertEquals(expected, TwoPointersCompactor.trappingRainWater(heights));
+    }
+
+    // 11. Shortest Subarray with Sum at Least K
+    static Stream<Object[]> shortestSubarraySumAtLeastKCases() {
+        return Stream.of(
+            new Object[]{ new int[]{1}, 1, 1 },
+            new Object[]{ new int[]{1, 2}, 4, -1 },
+            new Object[]{ new int[]{2, -1, 2}, 3, 3 }
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("shortestSubarraySumAtLeastKCases")
+    public void testShortestSubarraySumAtLeastK(int[] arr, int k, int expected) {
+        assertEquals(expected, TwoPointersCompactor.shortestSubarraySumAtLeastK(arr, k));
     }
 
     @Nested
@@ -185,6 +214,15 @@ public class TwoPointersCompactorTest {
             TwoPointersCompactor.dutchNationalFlag(nullArr); // should handle null gracefully without crash
             int[] emptyArr = new int[]{};
             TwoPointersCompactor.dutchNationalFlag(emptyArr); // empty check
+
+            // Trapping Rain Water bounds
+            assertEquals(-1, TwoPointersCompactor.trappingRainWater(null));
+            assertEquals(0, TwoPointersCompactor.trappingRainWater(new int[]{}));
+
+            // Shortest Subarray Sum bounds
+            assertEquals(-1, TwoPointersCompactor.shortestSubarraySumAtLeastK(null, 5));
+            assertEquals(-1, TwoPointersCompactor.shortestSubarraySumAtLeastK(new int[]{}, 5));
+            assertEquals(-1, TwoPointersCompactor.shortestSubarraySumAtLeastK(new int[]{1, 2}, 0));
         }
 
         @Test

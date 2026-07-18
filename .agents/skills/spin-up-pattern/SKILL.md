@@ -1,6 +1,6 @@
 ---
 name: spin-up-pattern
-description: Use this skill to initialize and scaffold a new DSA pattern in the DSA & System Design Engine repository. This generates the 9-problem mastery ladder, creates skeleton Java source files, sets up JUnit 5 parameterized test files, and registers the pattern with the interactive study dashboard.
+description: Use this skill to initialize and scaffold a new DSA pattern in the DSA & System Design Engine repository. This generates the 11-problem mastery ladder, creates skeleton Java source files, sets up JUnit 5 parameterized test files, and registers the pattern with the interactive study dashboard.
 ---
 
 # Skill: Spin Up Pattern
@@ -18,9 +18,9 @@ Follow this systematic workflow:
    * `Phase 2: Structural`
    * `Phase 3: Distributed & Networks`
    * `Phase 4: Optimization & Search`
-2. **Define the 9-Problem Ladder:** Outline exactly 9 problems in sequential order:
-   * **2 Easy Warmups:** Basic pointer swaps or array scans (e.g., LeetCode Easy equivalents).
-   * **5 Medium Integrations:** Directly mapped to system bottlenecks (e.g., Rate limiters, buffer compactors, routers).
+2. **Define the 11-Problem Ladder:** Outline exactly 11 problems in sequential order:
+   * **3 Easy Warmups:** Basic pointer swaps or array scans (e.g., LeetCode Easy equivalents).
+   * **6 Medium Integrations:** Directly mapped to system bottlenecks (e.g., Rate limiters, buffer compactors, routers).
    * **2 Hard Stress:** Multi-partition search, scale limits, or mathematical bounds.
 3. **Map to Systems:** For each problem, define the **Macro System Component** and the **Mental Model Invariant**.
 
@@ -41,7 +41,7 @@ Follow this systematic workflow:
      "problems": [
        { "name": "Problem 1 Name", "difficulty": "Easy", "status": "🛑 Todo" },
        ...
-       { "name": "Problem 9 Name", "difficulty": "Hard", "status": "🛑 Todo" }
+       { "name": "Problem 11 Name", "difficulty": "Hard", "status": "🛑 Todo" }
      ]
    }
    ```
@@ -61,7 +61,7 @@ Follow this systematic workflow:
 2. Create `PATTERN_BLUEPRINT.md` inside that directory outlining the system mappings, Java tricks, loop invariants, and problem checklist.
 3. Create the skeleton Java source file `<PatternClassName>.java` in that directory declaring:
    * The package: `package com.engine.<phase_dir>.pXX_<concept_id>;`
-   * Signatures for all 9 methods in the mastery ladder with placeholder return values.
+   * Signatures for all 11 methods in the mastery ladder with placeholder return values.
 
 ---
 
@@ -71,7 +71,7 @@ Follow this systematic workflow:
 2. Create `<PatternClassName>Test.java` in that directory declaring:
    * The package: `package com.engine.<phase_dir>.pXX_<concept_id>;`
    * Imports for the source classes, test generator, JUnit `@Nested`, and `com.sun.management.ThreadMXBean` for memory tracking.
-   * Parameterized tests for all 9 problems.
+   * Parameterized tests for all 11 problems.
    * A nested class `@Nested class RigorousGatekeeper` containing:
      * Boundary validation tests (empty inputs, null values, out-of-bound arguments).
      * Time complexity stress tests using `assertTimeoutPreemptively` to guarantee $O(N)$ behavior.

@@ -1,2 +1,3 @@
-com/engine/phase1_foundations/p04_binary_search/SSTableIndexLookup.class
 com/engine/phase1_foundations/p01_sliding_window/SlidingWindowCounter.class
+com/engine/phase1_foundations/p04_binary_search/SSTableIndexLookup.class
+com/engine/phase1_foundations/p02_two_pointers/TwoPointersCompactor.class
