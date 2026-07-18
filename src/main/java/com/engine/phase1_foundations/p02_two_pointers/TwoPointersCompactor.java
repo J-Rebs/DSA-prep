@@ -108,7 +108,47 @@ public final class TwoPointersCompactor {
      * Finds all unique triplets in the array that sum to zero.
      */
     public static List<List<Integer>> tripletSumToZero(int[] arr) {
-        return new ArrayList<>();
+        // null check
+        if (arr == null || arr.length == 0) {
+            return new ArrayList<>();
+        }
+        // sort input, O(nlogn)
+        Arrays.sort(arr);
+        List<List<Integer>> res = new ArrayList<>();
+        // O(n^2) loop - we have to evaluate the whole array for a
+        // given index. This beats O(n^3) but we cannot do better than this.
+        for (int left = 0; left < arr.length; left++) {
+            // no need to repeat a value if we already examined it's possible
+            // solutions
+            if (left > 0 && arr[left] == arr[left - 1]) {
+                continue;
+            }
+            int mid = left + 1;
+            int right = arr.length - 1;
+            while (mid < right) {
+                int sum = arr[left] + arr[mid] + arr[right];
+                if (sum == 0) {
+                    res.add(List.of(arr[left], arr[mid], arr[right]));
+
+                    // dont want to repeat so exclude like values
+                    mid++;
+                    // is what we went to the same as what we saw before
+                    while (mid < right && arr[mid] == arr[mid - 1]) {
+                        mid++;
+                    }
+                    right--;
+                    while (mid < right && arr[right] == arr[right + 1]) {
+                        right--;
+                    }
+                } else if (sum < 0) {
+                    mid++;
+                } else {
+                    right--;
+                }
+
+            }
+        }
+        return res;
     }
 
     /**

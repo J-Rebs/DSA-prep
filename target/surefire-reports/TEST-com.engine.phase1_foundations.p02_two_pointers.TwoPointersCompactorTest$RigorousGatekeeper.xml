@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper" time="0.008" tests="29" errors="0" skipped="0" failures="17">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper" time="0.005" tests="29" errors="0" skipped="0" failures="15">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/Users/joe/.sdkman/candidates/java/25.0.1-amzn/lib"/>
-    <property name="sun.java.command" value="/Users/joe/Documents/projects/DSA-prep/target/surefire/surefirebooter-20260718092749968_3.jar /Users/joe/Documents/projects/DSA-prep/target/surefire 2026-07-18T09-27-49_927-jvmRun1 surefire-20260718092749968_1tmp surefire_0-20260718092749968_2tmp"/>
+    <property name="sun.java.command" value="/Users/joe/Documents/projects/DSA-prep/target/surefire/surefirebooter-20260718095640118_3.jar /Users/joe/Documents/projects/DSA-prep/target/surefire 2026-07-18T09-56-40_076-jvmRun1 surefire-20260718095640118_1tmp surefire_0-20260718095640118_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="TwoPointersCompactorTest"/>
@@ -30,7 +30,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/joe/Documents/projects/DSA-prep/target/surefire/surefirebooter-20260718092749968_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/joe/Documents/projects/DSA-prep/target/surefire/surefirebooter-20260718095640118_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="25.0.1+8-LTS"/>
@@ -74,9 +74,9 @@
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 ]]></failure>
   </testcase>
-  <testcase name="testRemoveDuplicates(int[], int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.009"/>
-  <testcase name="testRemoveDuplicates(int[], int)[2]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001"/>
-  <testcase name="testRemoveDuplicates(int[], int)[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001"/>
+  <testcase name="testRemoveDuplicates(int[], int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.015"/>
+  <testcase name="testRemoveDuplicates(int[], int)[2]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0"/>
+  <testcase name="testRemoveDuplicates(int[], int)[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0"/>
   <testcase name="testCompactSSTableLogs(int[], int, int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.003">
     <failure message="expected: &lt;4&gt; but was: &lt;-1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <4> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
@@ -189,7 +189,7 @@
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 ]]></failure>
   </testcase>
-  <testcase name="testCompactSSTableLogs(int[], int, int)[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001">
+  <testcase name="testCompactSSTableLogs(int[], int, int)[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0">
     <failure message="expected: &lt;3&gt; but was: &lt;-1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <3> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -245,7 +245,7 @@
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 ]]></failure>
   </testcase>
-  <testcase name="testDutchNationalFlag" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.002">
+  <testcase name="testDutchNationalFlag" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001">
     <failure message="array contents differ at index [0], expected: &lt;0&gt; but was: &lt;2&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: array contents differ at index [0], expected: <0> but was: <2>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -262,8 +262,8 @@
   </testcase>
   <testcase name="testPairWithTargetSum(int[], int, int[])[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001"/>
   <testcase name="testPairWithTargetSum(int[], int, int[])[2]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0"/>
-  <testcase name="testPairWithTargetSum(int[], int, int[])[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001"/>
-  <testcase name="testSubarraysWithProductLessThanTarget(int[], int, int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0">
+  <testcase name="testPairWithTargetSum(int[], int, int[])[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0"/>
+  <testcase name="testSubarraysWithProductLessThanTarget(int[], int, int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001">
     <failure message="expected: &lt;6&gt; but was: &lt;-1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <6> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -375,7 +375,7 @@
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 ]]></failure>
   </testcase>
-  <testcase name="testShortestSubarraySumAtLeastK(int[], int, int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0">
+  <testcase name="testShortestSubarraySumAtLeastK(int[], int, int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001">
     <failure message="expected: &lt;1&gt; but was: &lt;-1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <1> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -431,8 +431,8 @@
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 ]]></failure>
   </testcase>
-  <testcase name="testShortestSubarraySumAtLeastK(int[], int, int)[2]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0"/>
-  <testcase name="testShortestSubarraySumAtLeastK(int[], int, int)[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0">
+  <testcase name="testShortestSubarraySumAtLeastK(int[], int, int)[2]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001"/>
+  <testcase name="testShortestSubarraySumAtLeastK(int[], int, int)[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001">
     <failure message="expected: &lt;3&gt; but was: &lt;-1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <3> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -488,10 +488,10 @@
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 ]]></failure>
   </testcase>
-  <testcase name="testSquareSortedArray(int[], int[])[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001"/>
-  <testcase name="testSquareSortedArray(int[], int[])[2]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001"/>
-  <testcase name="testSquareSortedArray(int[], int[])[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0"/>
-  <testcase name="testMinWindowSort(int[], int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001">
+  <testcase name="testSquareSortedArray(int[], int[])[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0"/>
+  <testcase name="testSquareSortedArray(int[], int[])[2]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0"/>
+  <testcase name="testSquareSortedArray(int[], int[])[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001"/>
+  <testcase name="testMinWindowSort(int[], int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0">
     <failure message="expected: &lt;5&gt; but was: &lt;-1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <5> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -547,7 +547,7 @@
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 ]]></failure>
   </testcase>
-  <testcase name="testMinWindowSort(int[], int)[2]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001">
+  <testcase name="testMinWindowSort(int[], int)[2]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0">
     <failure message="expected: &lt;6&gt; but was: &lt;-1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <6> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -603,7 +603,7 @@
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 ]]></failure>
   </testcase>
-  <testcase name="testMinWindowSort(int[], int)[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001">
+  <testcase name="testMinWindowSort(int[], int)[3]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0">
     <failure message="expected: &lt;0&gt; but was: &lt;-1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <0> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -659,118 +659,8 @@
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 ]]></failure>
   </testcase>
-  <testcase name="testTripletSumToZero(int[], int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0">
-    <failure message="expected: &lt;4&gt; but was: &lt;0&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <4> but was: <0>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
-	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)
-	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145)
-	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:531)
-	at com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest.testTripletSumToZero(TwoPointersCompactorTest.java:85)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:186)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:197)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:186)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:186)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:1024)
-	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:803)
-	at java.base/java.util.stream.ReferencePipeline$7$1FlatMap.accept(ReferencePipeline.java:293)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:1024)
-	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570)
-	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)
-	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:153)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:176)
-	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)
-	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:632)
-	at java.base/java.util.stream.ReferencePipeline$7$1FlatMap.accept(ReferencePipeline.java:293)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1716)
-	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570)
-	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)
-	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:153)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:176)
-	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)
-	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:632)
-	at java.base/java.util.stream.ReferencePipeline$7$1FlatMap.accept(ReferencePipeline.java:293)
-	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1716)
-	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570)
-	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)
-	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:153)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:176)
-	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)
-	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:632)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-]]></failure>
-  </testcase>
-  <testcase name="testTripletSumToZero(int[], int)[2]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0">
-    <failure message="expected: &lt;2&gt; but was: &lt;0&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <2> but was: <0>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
-	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)
-	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145)
-	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:531)
-	at com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest.testTripletSumToZero(TwoPointersCompactorTest.java:85)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:186)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:197)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:186)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:186)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:1024)
-	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:803)
-	at java.base/java.util.stream.ReferencePipeline$7$1FlatMap.accept(ReferencePipeline.java:293)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:1024)
-	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570)
-	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)
-	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:153)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:176)
-	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)
-	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:632)
-	at java.base/java.util.stream.ReferencePipeline$7$1FlatMap.accept(ReferencePipeline.java:293)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
-	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1716)
-	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570)
-	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)
-	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:153)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:176)
-	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)
-	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:632)
-	at java.base/java.util.stream.ReferencePipeline$7$1FlatMap.accept(ReferencePipeline.java:293)
-	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1716)
-	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570)
-	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)
-	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:153)
-	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:176)
-	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)
-	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:632)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-]]></failure>
-  </testcase>
+  <testcase name="testTripletSumToZero(int[], int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001"/>
+  <testcase name="testTripletSumToZero(int[], int)[2]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.001"/>
   <testcase name="testTrappingRainWater(int[], int)[1]" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest" time="0.0">
     <failure message="expected: &lt;6&gt; but was: &lt;-1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <6> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
@@ -884,7 +774,7 @@
 ]]></failure>
   </testcase>
   <testcase name="testTimeComplexityBounds" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper" time="0.003"/>
-  <testcase name="testBoundaryConditions" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper" time="0.001">
+  <testcase name="testBoundaryConditions" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper" time="0.0">
     <failure message="expected: &lt;0&gt; but was: &lt;-1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <0> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -899,5 +789,5 @@
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 ]]></failure>
   </testcase>
-  <testcase name="testMemoryAllocations" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper" time="0.003"/>
+  <testcase name="testMemoryAllocations" classname="com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper" time="0.0"/>
 </testsuite>

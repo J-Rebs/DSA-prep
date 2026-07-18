@@ -22,11 +22,11 @@ This document records the results of the **Rigorous Gatekeeper** verification ch
 
 ### 2. Two Pointers (`p02_two_pointers`)
 * **Attempt Date:** 2026-07-18
-* **Progress:** 3 / 11 Problems Solved
+* **Progress:** 4 / 11 Problems Solved
   * `[x]` Problem 1: Pair with Target Sum
   * `[x]` Problem 2: Remove Duplicates (Compaction)
   * `[x]` Problem 3: Squaring a Sorted Array
-  * `[ ]` Problem 4: Triplet Sum to Zero
+  * `[x]` Problem 4: Triplet Sum to Zero
   * `[ ]` Problem 5: Subarrays with Product Less than Target
   * `[ ]` Problem 6: Compacting SSTable logs in-place
   * `[ ]` Problem 7: Min Window Sort
