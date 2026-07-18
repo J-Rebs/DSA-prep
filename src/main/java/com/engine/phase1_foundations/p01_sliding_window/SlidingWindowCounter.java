@@ -25,7 +25,7 @@ public final class SlidingWindowCounter {
      */
     public static int maxSumSubarray(int[] arr, int k) {
         // check we can produce something of size k or just retturn - 1
-        if (arr.length < k) {
+        if (arr == null || arr.length < k || k <= 0) {
             return -1;
         }
         int left = 0;
@@ -74,6 +74,9 @@ public final class SlidingWindowCounter {
      * (more than maxRequests within windowSize).
      */
     public static int[] rateLimiterCount(long[] timestamps, long windowSize, int maxRequests) {
+        if (timestamps == null || timestamps.length == 0 || windowSize <= 0 || maxRequests <= 0) {
+            return new int[]{};
+        }
         int[] violations = new int[timestamps.length];
         int violationIdx = 0;
 
@@ -294,6 +297,9 @@ public final class SlidingWindowCounter {
      * Finds the maximum value in each sliding window of size k.
      */
     public static int[] slidingWindowMaximum(int[] metrics, int k) {
+        if (metrics == null || metrics.length < k || k <= 0) {
+            return new int[]{};
+        }
         // use a monotonic deque
         // basically have an array deque that tracks the best answers
         // available to us in the window

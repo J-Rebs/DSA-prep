@@ -70,8 +70,13 @@ Follow this systematic workflow:
 1. Create the test directory: `src/test/java/com/engine/<phase_dir>/pXX_<concept_id>/` (e.g. `src/test/java/com/engine/phase2_structural/p05_monotonic_stack/`).
 2. Create `<PatternClassName>Test.java` in that directory declaring:
    * The package: `package com.engine.<phase_dir>.pXX_<concept_id>;`
-   * Imports for the source classes and test generator.
-   * Parameterized tests for all 9 problems, verifying boundaries and scales.
+   * Imports for the source classes, test generator, JUnit `@Nested`, and `com.sun.management.ThreadMXBean` for memory tracking.
+   * Parameterized tests for all 9 problems.
+   * A nested class `@Nested class RigorousGatekeeper` containing:
+     * Boundary validation tests (empty inputs, null values, out-of-bound arguments).
+     * Time complexity stress tests using `assertTimeoutPreemptively` to guarantee $O(N)$ behavior.
+     * Zero-allocation memory checks using `ThreadMXBean` to ensure no objects are allocated in critical paths.
+
 
 ---
 

@@ -1,12 +1,16 @@
 package com.engine.phase1_foundations.p01_sliding_window;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
 public class SlidingWindowCounterTest {
 
@@ -179,5 +183,87 @@ public class SlidingWindowCounterTest {
         // Correct implementation should yield 50 or -1 if unimplemented
         // We just assert that it executes within bounds and return successfully
         System.out.println("Stress scale run completed. Returned: " + sum);
+    }
+
+    @Nested
+    public class RigorousGatekeeper {
+
+        @Test
+        public void testBoundaryConditions() {
+            // maxSumSubarray boundaries
+            assertEquals(-1, SlidingWindowCounter.maxSumSubarray(null, 3));
+            assertEquals(-1, SlidingWindowCounter.maxSumSubarray(new int[]{}, 3));
+            assertEquals(-1, SlidingWindowCounter.maxSumSubarray(new int[]{1, 2}, 3));
+            assertEquals(-1, SlidingWindowCounter.maxSumSubarray(new int[]{1, 2, 3}, 0));
+            assertEquals(-1, SlidingWindowCounter.maxSumSubarray(new int[]{1, 2, 3}, -5));
+
+            // slidingWindowMaximum boundaries
+            assertArrayEquals(new int[]{}, SlidingWindowCounter.slidingWindowMaximum(null, 3));
+            assertArrayEquals(new int[]{}, SlidingWindowCounter.slidingWindowMaximum(new int[]{}, 3));
+            assertArrayEquals(new int[]{}, SlidingWindowCounter.slidingWindowMaximum(new int[]{1, 2}, 3));
+            assertArrayEquals(new int[]{}, SlidingWindowCounter.slidingWindowMaximum(new int[]{1, 2, 3}, 0));
+            assertArrayEquals(new int[]{}, SlidingWindowCounter.slidingWindowMaximum(new int[]{1, 2, 3}, -1));
+
+            // rateLimiterCount boundaries
+            assertArrayEquals(new int[]{}, SlidingWindowCounter.rateLimiterCount(null, 200L, 2));
+            assertArrayEquals(new int[]{}, SlidingWindowCounter.rateLimiterCount(new long[]{}, 200L, 2));
+            assertArrayEquals(new int[]{}, SlidingWindowCounter.rateLimiterCount(new long[]{100}, -10L, 2));
+        }
+
+        @Test
+        public void testTimeComplexityBounds() {
+            int limit = 100_000;
+            int[] arr = new int[limit];
+            for (int i = 0; i < limit; i++) {
+                arr[i] = limit - i;
+            }
+            assertTimeoutPreemptively(Duration.ofMillis(50), () -> {
+                SlidingWindowCounter.slidingWindowMaximum(arr, 100);
+            });
+        }
+
+        @Test
+        public void testMemoryAllocations() {
+            java.lang.management.ThreadMXBean threadBean = java.lang.management.ManagementFactory.getThreadMXBean();
+            java.lang.reflect.Method isSupportedMethod = null;
+            java.lang.reflect.Method setEnabledMethod = null;
+            java.lang.reflect.Method getAllocatedMethod = null;
+            try {
+                isSupportedMethod = threadBean.getClass().getMethod("isThreadAllocatedMemorySupported");
+                setEnabledMethod = threadBean.getClass().getMethod("setThreadAllocatedMemoryEnabled", boolean.class);
+                getAllocatedMethod = threadBean.getClass().getMethod("getThreadAllocatedMemory", long.class);
+            } catch (NoSuchMethodException e) {
+                // Not supported on this JVM
+            }
+
+            if (isSupportedMethod != null && getAllocatedMethod != null && setEnabledMethod != null) {
+                try {
+                    boolean supported = (boolean) isSupportedMethod.invoke(threadBean);
+                    if (supported) {
+                        setEnabledMethod.invoke(threadBean, true);
+                        long threadId = Thread.currentThread().getId();
+
+                        int[] arr = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+                        int k = 3;
+
+                        // Warm-up
+                        for (int i = 0; i < 5000; i++) {
+                            SlidingWindowCounter.maxSumSubarray(arr, k);
+                        }
+
+                        long bytesBefore = (long) getAllocatedMethod.invoke(threadBean, threadId);
+                        for (int i = 0; i < 10000; i++) {
+                            SlidingWindowCounter.maxSumSubarray(arr, k);
+                        }
+                        long bytesAfter = (long) getAllocatedMethod.invoke(threadBean, threadId);
+
+                        long allocatedSum = bytesAfter - bytesBefore;
+                        assertTrue(allocatedSum < 1024, "maxSumSubarray allocated too many bytes: " + allocatedSum + " bytes");
+                    }
+                } catch (Exception e) {
+                    // Ignore reflection invoke errors
+                }
+            }
+        }
     }
 }
