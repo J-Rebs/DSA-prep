@@ -22,9 +22,9 @@ This document records the results of the **Rigorous Gatekeeper** verification ch
 
 ### 2. Two Pointers (`p02_two_pointers`)
 * **Attempt Date:** 2026-07-18
-* **Progress:** 1 / 11 Problems Solved
+* **Progress:** 2 / 11 Problems Solved
   * `[x]` Problem 1: Pair with Target Sum
-  * `[ ]` Problem 2: Remove Duplicates (Compaction)
+  * `[x]` Problem 2: Remove Duplicates (Compaction)
   * `[ ]` Problem 3: Squaring a Sorted Array
   * `[ ]` Problem 4: Triplet Sum to Zero
   * `[ ]` Problem 5: Subarrays with Product Less than Target

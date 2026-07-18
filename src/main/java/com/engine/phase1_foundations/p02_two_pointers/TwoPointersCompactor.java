@@ -24,7 +24,7 @@ public final class TwoPointersCompactor {
      * Finds indices of a pair in a sorted array that adds up to target.
      */
     public static int[] pairWithTargetSum(int[] arr, int target) {
-        // saftey guard
+        // saftey guard and perf optimization for too small array
         if (arr == null || arr.length < 2) {
             return new int[] {};
         }
@@ -49,7 +49,23 @@ public final class TwoPointersCompactor {
      * Removes duplicate elements in-place and returns the new unique length.
      */
     public static int removeDuplicates(int[] arr) {
-        return -1;
+        // saftey and performance guard for too small or null inputs
+        if (arr == null || arr.length < 2) {
+            return arr == null ? -1 : arr.length;
+        }
+        int write = 1;
+        for (int read = 1; read < arr.length; read++) {
+            // check is the read value unique or not, write exists
+            // at the boundary of what is duplicative or not
+            if (arr[read] != arr[write - 1]) {
+                // if this is still unique, then we can overwrite what
+                // is in the spot where write is duplicate or
+                // if indexes are the same no op
+                arr[write] = arr[read];
+                write++;
+            }
+        }
+        return write;
     }
 
     // ==========================================
