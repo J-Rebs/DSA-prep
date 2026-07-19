@@ -201,7 +201,50 @@ public final class TwoPointersCompactor {
      * sorted.
      */
     public static int minWindowSort(int[] arr) {
-        return -1;
+        // saftey guard
+        if (arr == null) {
+            return -1;
+        }
+        // use symmterical scanning to find window
+        int lBound = -1;
+        for (int i = 0; i < arr.length - 1; i++) {
+            // should be the thing to the right
+            // is always greater than the thing to the left
+            if (arr[i] > arr[i + 1]) {
+                lBound = i;
+                break;
+            }
+        }
+        int rBound = -1;
+        for (int i = arr.length - 1; i > 0; i--) {
+            // should be the thing to the right is always greater
+            // than the thing to the left
+            if (arr[i] < arr[i - 1]) {
+                rBound = i;
+                break;
+            }
+        }
+        // if lBound is unset, must be rBound is unset and therefore
+        // already sorted
+        if (lBound == -1) {
+            return 0;
+        }
+
+        // pass 2 find min and max in window
+        int minVal = Integer.MAX_VALUE;
+        int maxVal = Integer.MIN_VALUE;
+        for (int i = lBound; i <= rBound; i++) {
+            minVal = Math.min(arr[i], minVal);
+            maxVal = Math.max(arr[i], maxVal);
+        }
+        // pass 3 find full sorting candidate
+        while (lBound >= 1 && arr[lBound - 1] > minVal) {
+            lBound--;
+        }
+        while (rBound < arr.length - 1 && arr[rBound + 1] < maxVal) {
+            rBound++;
+        }
+        return rBound - lBound + 1;
     }
 
     /**
