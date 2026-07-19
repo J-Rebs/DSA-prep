@@ -177,6 +177,8 @@ public final class TwoPointersCompactor {
 
             // after doing our best to update, test
             if (prod < target) {
+                // Key idea: # of contigous subarrays ending at index right
+                // is right - left + 1
                 count += right - left + 1;
             }
 
