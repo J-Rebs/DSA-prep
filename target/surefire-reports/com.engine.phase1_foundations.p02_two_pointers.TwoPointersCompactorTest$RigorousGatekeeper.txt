@@ -1,21 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper
 -------------------------------------------------------------------------------
-Tests run: 29, Failures: 7, Errors: 0, Skipped: 0, Time elapsed: 0.006 s <<< FAILURE! -- in com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper
-com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest.testQuadrupleSumToTarget -- Time elapsed: 0.014 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <2> but was: <0>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
-	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)
-	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145)
-	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:531)
-	at com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest.testQuadrupleSumToTarget(TwoPointersCompactorTest.java:138)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-
-com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest.testDutchNationalFlag -- Time elapsed: 0.001 s <<< FAILURE!
+Tests run: 29, Failures: 6, Errors: 0, Skipped: 0, Time elapsed: 0.007 s <<< FAILURE! -- in com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper
+com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest.testDutchNationalFlag -- Time elapsed: 0.003 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: array contents differ at index [0], expected: <0> but was: <2>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -84,7 +71,7 @@ org.opentest4j.AssertionFailedError: expected: <1> but was: <-1>
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 
-com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest.testShortestSubarraySumAtLeastK(int[], int, int)[3] -- Time elapsed: 0.001 s <<< FAILURE!
+com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest.testShortestSubarraySumAtLeastK(int[], int, int)[3] -- Time elapsed: 0.002 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <3> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -139,7 +126,7 @@ org.opentest4j.AssertionFailedError: expected: <3> but was: <-1>
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 
-com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest.testTrappingRainWater(int[], int)[1] -- Time elapsed: 0.001 s <<< FAILURE!
+com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest.testTrappingRainWater(int[], int)[1] -- Time elapsed: 0 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <6> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -249,7 +236,7 @@ org.opentest4j.AssertionFailedError: expected: <9> but was: <-1>
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 
-com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper.testBoundaryConditions -- Time elapsed: 0 s <<< FAILURE!
+com.engine.phase1_foundations.p02_two_pointers.TwoPointersCompactorTest$RigorousGatekeeper.testBoundaryConditions -- Time elapsed: 0.001 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <0> but was: <-1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)

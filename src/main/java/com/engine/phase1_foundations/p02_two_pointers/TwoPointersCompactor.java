@@ -267,7 +267,50 @@ public final class TwoPointersCompactor {
      * Finds all unique quadruplets that sum to a target value.
      */
     public static List<List<Integer>> quadrupleSumToTarget(int[] arr, int target) {
-        return new ArrayList<>();
+        // saftey guard
+        if (arr == null || arr.length < 4) {
+            return new ArrayList<>();
+        }
+        // then sort
+        Arrays.sort(arr);
+        // then solve using two sum idea to reduce order of solution
+        // from O(N^4) time to O(N^3) time.
+        List<List<Integer>> res = new ArrayList<>();
+        for (int first = 0; first < arr.length; first++) {
+            // consider duplicate
+            if (first > 0 && arr[first] == arr[first - 1]) {
+                continue;
+            }
+            for (int second = first + 1; second < arr.length; second++) {
+                // consider duplicate
+                if (second > first + 1 && arr[second] == arr[second - 1]) {
+                    continue;
+                }
+
+                int third = second + 1;
+                int fourth = arr.length - 1;
+                int subTarget = target - arr[first] - arr[second];
+                while (third < fourth) {
+                    // check do i have a solution
+                    if (subTarget - arr[third] - arr[fourth] == 0) {
+                        res.add(List.of(arr[first], arr[second], arr[third], arr[fourth]));
+                        third++;
+                        fourth--;
+                        // here you need to worry about duplicates since you are adding answers
+                        while (third < fourth && arr[third] == arr[third - 1])
+                            third++;
+                        while (third < fourth && arr[fourth] == arr[fourth + 1])
+                            fourth--;
+                    } else if (arr[third] + arr[fourth] > subTarget) {
+                        // dont worry about duplicates here since not putting in any answer
+                        fourth--;
+                    } else {
+                        third++;
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     /**
