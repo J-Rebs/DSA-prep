@@ -157,7 +157,31 @@ public final class TwoPointersCompactor {
      * Counts contiguous subarrays whose product is strictly less than target.
      */
     public static int subarraysWithProductLessThanTarget(int[] arr, int target) {
-        return -1;
+        // null guard
+        if (arr == null || target < 1) {
+            return -1;
+        }
+
+        // process all array of size 2 or greater
+        int left = 0;
+        int count = 0;
+        int prod = 1;
+        for (int right = 0; right < arr.length; right++) {
+
+            prod *= arr[right];
+
+            // update for constraint violation
+            while (prod >= target && left <= right) {
+                prod = prod / arr[left++];
+            }
+
+            // after doing our best to update, test
+            if (prod < target) {
+                count += right - left + 1;
+            }
+
+        }
+        return count;
     }
 
     /**
