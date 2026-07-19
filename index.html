@@ -1055,6 +1055,9 @@ for (int right = 0; right &lt; arr.length; right++) {
               For <strong>converging searches</strong>, we start pointers at opposing ends and move them inward to meet in the middle.
               For <strong>compaction and stream deduplication</strong>, we use a fast pointer to scan ahead and a slow pointer to write unique/valid events in-place, achieving zero heap allocations.
             </p>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 12px;">
+              💡 <strong>Symmetrical Boundary Scanning:</strong> When a problem asks to find the boundaries of a candidate subarray (e.g. <em>Min Window Sort</em>), think symmetrically. Scan left-to-right to find the first violation, and scan right-to-left to find the first violation from the end. This separates concerns and avoids managing complex state variables in a single pass.
+            </p>
             <div class="section-title" style="color: var(--accent-indigo); margin-top: 16px;">Standard Java Loop Template (Converging)</div>
             <pre><code>int left = 0;
 int right = arr.length - 1;
