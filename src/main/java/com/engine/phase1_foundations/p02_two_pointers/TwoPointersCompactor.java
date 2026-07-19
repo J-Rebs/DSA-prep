@@ -192,7 +192,22 @@ public final class TwoPointersCompactor {
      * length.
      */
     public static int compactSSTableLogs(int[] logs, int tombstone) {
-        return -1;
+        // saftey guard
+        if (logs == null) {
+            return -1;
+        }
+        int write = 0;
+        for (int read = 0; read < logs.length; read++) {
+            if (logs[read] != tombstone) {
+                // write to the front non-tombstone
+                int tmp = logs[write];
+                logs[write] = logs[read];
+                logs[read] = tmp;
+                write++;
+
+            }
+        }
+        return write;
     }
 
     /**
