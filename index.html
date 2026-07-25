@@ -805,7 +805,7 @@ int mid = (low + high) >>> 1;</code></pre>
             "status": "🔄 In Progress",
             "guidance": {
               "overview": "Binary Search finds the position of a target value within a sorted search space by repeatedly dividing the search space in half. Beyond basic index lookups, it is a primary mechanism for range queries and optimization problems (Search Space Binary Search).",
-              "mentalModel": "Define a search space boundary (low and high). In each loop step, calculate the midpoint. Compare the midpoint value against target criteria to discard half of the search space. Cache values when identifying boundaries.",
+              "mentalModel": "Define search space boundaries (low and high). In each loop step, calculate midpoint. If target is absent when loop completes: `low` points to the first element strictly greater than target (insertion point), while `high` (low - 1) points to the largest element strictly less than target (floor bound).",
               "javaTricks": "Always calculate midpoint using unsigned right shift: `int mid = (low + high) >>> 1` to avoid integer overflow bugs. In hot loops, declare loop variables outside the loop to limit frame allocation footprints."
             },
             "problems": [

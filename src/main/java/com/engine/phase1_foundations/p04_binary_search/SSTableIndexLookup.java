@@ -137,8 +137,36 @@ public final class SSTableIndexLookup {
      * Finds largest key <= targetKey to retrieve corresponding offset.
      */
     public static int findBlockOffset(long[] keys, int[] offsets, long targetKey) {
-        // TODO: Implement lower bound range finder
-        return -1;
+        // saftey guard
+        if (keys == null || offsets == null || keys.length == 0 || keys.length != offsets.length) {
+            return -1;
+        } else if (targetKey < keys[0]) {
+            // there's no point in trying process in this case.
+            return -1;
+        }
+
+        int low = 0;
+        int high = keys.length - 1;
+        int mid;
+        long midVal;
+
+        while (low <= high) {
+            mid = (low + high) >>> 1;
+            midVal = keys[mid];
+
+            if (midVal == targetKey) {
+                return offsets[mid];
+            } else if (midVal < targetKey) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        // in the event there was not an exact match, low will be the best option
+        // because we did a saftey check tom ake sure at least one key is >= target
+        // this should work ok
+        return offsets[low - 1];
     }
 
     /**
