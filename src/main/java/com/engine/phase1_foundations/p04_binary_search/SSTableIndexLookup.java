@@ -52,11 +52,6 @@ public final class SSTableIndexLookup {
      * Finds insertion index of target in sorted keys to maintain ascending order.
      */
     public static int findInsertPosition(long[] keys, long target) {
-        // iterate over the keys
-        // return the value of the closest index such that keys[idx] <= target
-        // this means basically whenever we see a a value <= target, assess that
-        // as an option then try a further to the right partition
-        // go all the way through the array then return the best result found
         // saftey guard
         if (keys == null || keys.length == 0) {
             return -1;
