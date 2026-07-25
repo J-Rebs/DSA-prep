@@ -1,7 +1,9 @@
 package com.engine.phase1_foundations.p02_two_pointers;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
 
 /**
@@ -391,6 +393,43 @@ public final class TwoPointersCompactor {
      * Finds shortest contiguous subarray with sum >= K (supports negative values).
      */
     public static int shortestSubarraySumAtLeastK(int[] arr, int k) {
-        return -1;
+        // saftey guards
+        if (arr == null || arr.length == 0 || k <= 0) {
+            return -1;
+        }
+        // track the nearest and smallest prefix sum
+        // small prefix sums are better since subarray sum = prefixSum[j] - prefixSum[i]
+        Deque<Integer> orderedSmallPrefixSum = new ArrayDeque<Integer>();
+        // longs can help avoid integer overflow
+        // do + 1 because we have to comptue prefixsum of the first index as well
+        long[] prefixSum = new long[arr.length + 1];
+        int smallestSizeSubarray = Integer.MAX_VALUE;
+        // compute prefix sums
+        prefixSum[0] = 0;
+        for (int i = 0; i < arr.length; i++) {
+            // the next prefix sum is the value at the current spot
+            // + the sum of whatever came before the prefix spot
+            prefixSum[i + 1] = prefixSum[i] + arr[i];
+        }
+        // then iterate over prefix sums
+        for (int i = 0; i < prefixSum.length; i++) {
+            // first check do we have any possible answers?
+            while (!orderedSmallPrefixSum.isEmpty()
+                    && prefixSum[i] - prefixSum[orderedSmallPrefixSum.peekFirst()] >= k) {
+                smallestSizeSubarray = Math.min(smallestSizeSubarray, i - orderedSmallPrefixSum.pollFirst());
+            }
+            // then remove bad candidates to keep the deque montonically increasing in
+            // prefix sum and montonoically increasing in terms of indices
+            // so the front is always the most likely to yield a result and the back the
+            // least likely
+            while (!orderedSmallPrefixSum.isEmpty() && prefixSum[i] <= prefixSum[orderedSmallPrefixSum.peekLast()]) {
+                orderedSmallPrefixSum.pollLast();
+            }
+            // now push our new candidate
+            orderedSmallPrefixSum.offerLast(i);
+        }
+        // if smallest size subarray was never updated, there is no answer
+        // return -1, otherwise it contains the size of the smallest sub array
+        return smallestSizeSubarray == Integer.MAX_VALUE ? -1 : smallestSizeSubarray;
     }
 }

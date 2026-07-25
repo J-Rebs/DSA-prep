@@ -43,7 +43,7 @@ graph TD
 | Phase | Pattern | Target System Component | LeetCode Tier | Status | Link to Blueprint |
 | --- | --- | --- | --- | --- | --- |
 | **Phase 1** | Sliding Window | Rate Limiter (Sliding Window Counter) | Medium / Hard | 🟢 Mastered | [View](./src/main/java/com/engine/phase1_foundations/p01_sliding_window/PATTERN_BLUEPRINT.md) |
-| **Phase 1** | Two Pointers | Real-time Data Deduplication / Merging | Medium | 🔄 In Progress | [View](./src/main/java/com/engine/phase1_foundations/p02_two_pointers/PATTERN_BLUEPRINT.md) |
+| **Phase 1** | Two Pointers | Real-time Data Deduplication / Merging | Medium | 🟢 Mastered | [View](./src/main/java/com/engine/phase1_foundations/p02_two_pointers/PATTERN_BLUEPRINT.md) |
 | **Phase 1** | Linked Lists & Pointers | LRU Cache / MemTable Compactor | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase1_foundations/p03_linked_list/PATTERN_BLUEPRINT.md) |
 | **Phase 1** | Binary Search | LSM-Tree SSTable Index Lookup | Medium | 🔄 In Progress | [View](./src/main/java/com/engine/phase1_foundations/p04_binary_search/PATTERN_BLUEPRINT.md) |
 | **Phase 1** | I/O, Parsing & Stream Processing | Log File & Stream Codec Parser Engine | Medium / Hard | 🟢 Mastered | [View](./src/main/java/com/engine/phase1_foundations/p17_io_and_parsing/PATTERN_BLUEPRINT.md) |
