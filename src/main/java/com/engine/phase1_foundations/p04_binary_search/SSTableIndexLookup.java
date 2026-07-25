@@ -21,7 +21,29 @@ public final class SSTableIndexLookup {
      * Finds the 0-based index of target in sorted keys, or -1 if not present.
      */
     public static int searchExactKey(long[] keys, long target) {
-        // TODO: Implement exact binary search
+        // saftey check
+        if (keys == null || keys.length == 0) {
+            return -1;
+        }
+
+        int low = 0;
+        int high = keys.length - 1;
+        while (low <= high) {
+            // bit shift to avoid integer overflow
+            int mid = (low + high) >>> 1;
+            long midVal = keys[mid];
+            if (midVal == target) {
+                return mid;
+            } else if (midVal < target) {
+                // if the value is too small
+                // assess the partition to the right of mid only
+                low = mid + 1;
+            } else {
+                // if too big, asess to the left
+                high = mid - 1;
+            }
+
+        }
         return -1;
     }
 
@@ -30,8 +52,33 @@ public final class SSTableIndexLookup {
      * Finds insertion index of target in sorted keys to maintain ascending order.
      */
     public static int findInsertPosition(long[] keys, long target) {
-        // TODO: Implement insertion index finder
-        return -1;
+        // iterate over the keys
+        // return the value of the closest index such that keys[idx] <= target
+        // this means basically whenever we see a a value <= target, assess that
+        // as an option then try a further to the right partition
+        // go all the way through the array then return the best result found
+        // saftey guard
+        if (keys == null || keys.length == 0) {
+            return -1;
+        }
+        int low = 0;
+        int high = keys.length - 1;
+        // evaulate
+        // note: we have the benefit that when searching
+        // low will always be the closest match if there is no exact
+        while (low <= high) {
+            int mid = (low + high) >>> 1;
+            long midval = keys[mid];
+            if (midval == target) {
+                return mid;
+            } else if (midval < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return low;
     }
 
     /**
@@ -41,7 +88,7 @@ public final class SSTableIndexLookup {
      */
     public static int[] findFirstAndLastOccurrence(long[] keys, long target) {
         // TODO: Implement first and last binary search
-        return new int[]{-1, -1};
+        return new int[] { -1, -1 };
     }
 
     // ==========================================
@@ -59,7 +106,8 @@ public final class SSTableIndexLookup {
 
     /**
      * Problem 5: Rotated Index Buffer Search (Hash Ring Locator)
-     * Searches for targetKey in a sorted array that has been rotated by an unknown offset.
+     * Searches for targetKey in a sorted array that has been rotated by an unknown
+     * offset.
      */
     public static int searchRotatedIndex(long[] keys, long targetKey) {
         // TODO: Implement rotated buffer binary search
@@ -86,7 +134,8 @@ public final class SSTableIndexLookup {
 
     /**
      * Problem 8: Capacity Planner (Search Space Binary Search)
-     * Finds minimum instance capacity required to complete workloads in numInstances limit.
+     * Finds minimum instance capacity required to complete workloads in
+     * numInstances limit.
      */
     public static int calculateMinimumCapacity(int[] taskLoads, int numInstances) {
         // TODO: Implement search-space binary search for optimal load capacity
@@ -95,7 +144,8 @@ public final class SSTableIndexLookup {
 
     /**
      * Problem 9: 2D SSTable Matrix Search (Partition Grid Search)
-     * Searches for target in a 2D matrix where rows are sorted and first element of each row > last of previous.
+     * Searches for target in a 2D matrix where rows are sorted and first element of
+     * each row > last of previous.
      */
     public static boolean searchIn2DMatrix(long[][] matrix, long target) {
         // TODO: Implement 2D matrix binary search
@@ -108,7 +158,8 @@ public final class SSTableIndexLookup {
 
     /**
      * Problem 10: Cross-Partition Median Key Find
-     * Finds the median of two sorted arrays of different sizes in O(log(min(M, N))) time.
+     * Finds the median of two sorted arrays of different sizes in O(log(min(M, N)))
+     * time.
      */
     public static double findMedianKey(long[] keysA, long[] keysB) {
         // TODO: Implement O(log(min(M, N))) partition search

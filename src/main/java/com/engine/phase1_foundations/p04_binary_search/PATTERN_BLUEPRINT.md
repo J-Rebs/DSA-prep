@@ -18,6 +18,8 @@
 ## 3. The Core Structural Trick (Mental Model)
 1. **Index Binary Search:** Halve a sorted array range `[low, high]` based on value comparisons.
 2. **Search Space Binary Search:** Binary search on the *result space* `[minPossible, maxPossible]` by testing feasibility of candidate midpoints.
+3. **The Insertion Index Property (`return low`):**
+   When standard binary search finishes without finding an exact match, the pointer `low` is guaranteed to point to the exact insertion index required to maintain sorted order (the index of the first element $\ge \text{target}$).
 
 ---
 
