@@ -82,8 +82,50 @@ public final class SSTableIndexLookup {
      * Returns int[] {firstIndex, lastIndex}, or int[] {-1, -1} if not present.
      */
     public static int[] findFirstAndLastOccurrence(long[] keys, long target) {
-        // TODO: Implement first and last binary search
-        return new int[] { -1, -1 };
+        // do two passes, on the first use low to find the first appearance
+        // on the second use high to find the last appearance
+        int[] res = new int[] { -1, -1 };
+        // saftey guard
+        if (keys == null || keys.length == 0) {
+            return res;
+        }
+
+        int low = 0;
+        int high = keys.length - 1;
+        int mid;
+        long midVal;
+        // low pass
+        while (low <= high) {
+            mid = (low + high) >>> 1;
+            midVal = keys[mid];
+            // if either on target or too small,
+            // try a smaller partition
+            if (midVal == target) {
+                res[0] = mid;
+                high = mid - 1;
+            } else if (midVal < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        // high pass
+        low = 0;
+        high = keys.length - 1;
+        while (low <= high) {
+            mid = (low + high) >>> 1;
+            midVal = keys[mid];
+            // always try a larger partition
+            if (midVal == target) {
+                res[1] = mid;
+                low = mid + 1;
+            } else if (midVal < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return res;
     }
 
     // ==========================================
