@@ -349,7 +349,6 @@ public final class TwoPointersCompactor {
             }
 
         }
-        // In-place modification
     }
 
     // ==========================================
@@ -361,7 +360,30 @@ public final class TwoPointersCompactor {
      * Computes how much water can be trapped in an elevation map.
      */
     public static int trappingRainWater(int[] heights) {
-        return -1;
+        if (heights == null) {
+            return -1;
+        }
+        if (heights.length < 3) {
+            return 0;
+        }
+
+        int leftMax = -1;
+        int rightMax = -1;
+        int left = 0;
+        int right = heights.length - 1;
+        int sum = 0;
+        while (left < right) {
+            leftMax = Math.max(heights[left], leftMax);
+            rightMax = Math.max(heights[right], rightMax);
+            if (leftMax < rightMax) {
+                sum += leftMax - heights[left]; // if column is new leftMax, value will be excluded
+                left++;
+            } else {
+                sum += rightMax - heights[right];
+                right--;
+            }
+        }
+        return sum;
     }
 
     /**
