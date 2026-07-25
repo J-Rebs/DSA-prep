@@ -826,6 +826,14 @@ int mid = (low + high) >>> 1;</code></pre>
                 "hints": "If target exists, return its index. If not, the loop terminates when low > high, and the index low is the insertion point."
               },
               {
+                "name": "First and Last Occurrence Search",
+                "difficulty": "Easy",
+                "status": "🛑 Todo",
+                "systemMapping": "SSTable duplicate key range locator (finding start & end offset of duplicate keys)",
+                "description": "Finds the starting and ending index of a target key in a sorted array containing duplicates.",
+                "hints": "Run binary search twice: once finding the lower bound (first occurrence) and once finding the upper bound (last occurrence)."
+              },
+              {
                 "name": "Range Query Lookup (SSTable Lower Bound)",
                 "difficulty": "Medium",
                 "status": "🔄 In Progress",
@@ -864,6 +872,14 @@ int mid = (low + high) >>> 1;</code></pre>
                 "systemMapping": "Resource Scheduler (finding minimum capacity to complete workloads)",
                 "description": "Finds the minimum capacity required to complete a series of workloads within a limit.",
                 "hints": "Binary search on the *result space* (min workload max to sum of all workloads). For each mid capacity, verify if tasks can be completed in limit. If yes, search left; if no, search right."
+              },
+              {
+                "name": "2D SSTable Matrix Search (Partition Grid Search)",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Multi-SSTable partition grid search (searching across 2D sorted partition grid)",
+                "description": "Searches for a target key in a 2D sorted matrix.",
+                "hints": "Treat the M x N matrix as a virtual 1D array of size M * N. Binary search mid index mapped to matrix[mid / N][mid % N]."
               },
               {
                 "name": "Cross-Partition Median Key Find (Split-brain sync)",
