@@ -381,6 +381,7 @@
       </div>
       <div class="nav-tabs">
         <button class="nav-tab active" onclick="switchTab('tab-curriculum')">Curriculum</button>
+        <button class="nav-tab" onclick="switchTab('tab-visualizers')">Interactive Walkthroughs</button>
         <button class="nav-tab" onclick="switchTab('tab-performance')">Java Optimization</button>
         <a class="nav-tab" href="https://github.com/J-Rebs/DSA-prep" target="_blank" rel="noopener noreferrer">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
@@ -462,6 +463,50 @@ int mid = (low + high) >>> 1;</code></pre>
                 The <code>&gt;&gt;&gt;</code> operator shifts the bit representation to the right, inserting a zero at the most significant bit. Even if <code>low + high</code> overflows and becomes a negative number, the unsigned shift treats it as positive, successfully obtaining the correct midpoint.
               </p>
             </div>
+          </div>
+
+        </div>
+      <!-- TAB 2: INTERACTIVE VISUALIZERS & WALKTHROUGHS -->
+      <section id="tab-visualizers" class="tab-content">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.6rem; margin-bottom: 8px;">🎮 Interactive Problem Walkthroughs</h2>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">Step-by-step visualizers and interactive animations for complex data structures and hard algorithmic patterns.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px;">
+
+          <!-- Visualizer Card 1: Shortest Subarray Sum at Least K -->
+          <div class="glass-panel" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 0.75rem; font-weight: 700; background: rgba(244, 63, 94, 0.15); color: #e11d48; padding: 4px 8px; border-radius: 6px;">HARD</span>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Two Pointers / Deque</span>
+              </div>
+              <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; color: var(--text-primary);">Shortest Subarray with Sum &ge; K</h3>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.5; margin-bottom: 16px;">
+                Interactive step-by-step playback showing how <strong>Prefix Sums</strong> and a <strong>Monotonic Deque</strong> track valid shortest subarrays in O(N) time even when negative numbers are present.
+              </p>
+            </div>
+            <a href="./shortest_subarray_viz.html" target="_blank" class="nav-tab active" style="justify-content: center; width: 100%; text-decoration: none;">
+              ▶ Open Interactive Visualizer
+            </a>
+          </div>
+
+          <!-- Visualizer Card 2: Sliding Window Maximum -->
+          <div class="glass-panel" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 0.75rem; font-weight: 700; background: rgba(244, 63, 94, 0.15); color: #e11d48; padding: 4px 8px; border-radius: 6px;">HARD</span>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Sliding Window</span>
+              </div>
+              <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; color: var(--text-primary);">Sliding Window Maximum</h3>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.5; margin-bottom: 16px;">
+                Visualizes a sliding window moving over a telemetry metric stream while a <strong>Monotonic Deque</strong> maintains window maximums in O(1) amortized time.
+              </p>
+            </div>
+            <a href="./sliding_window_max.html" target="_blank" class="nav-tab active" style="justify-content: center; width: 100%; text-decoration: none;">
+              ▶ Open Interactive Visualizer
+            </a>
           </div>
 
         </div>
@@ -981,6 +1026,7 @@ int mid = (low + high) >>> 1;</code></pre>
       document.querySelectorAll('.nav-tab').forEach(tab => {
         tab.classList.remove('active');
         if (tab.innerText === 'Curriculum' && tabId === 'tab-curriculum') tab.classList.add('active');
+        if (tab.innerText.includes('Walkthroughs') && tabId === 'tab-visualizers') tab.classList.add('active');
         if (tab.innerText === 'Java Optimization' && tabId === 'tab-performance') tab.classList.add('active');
       });
 

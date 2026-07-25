@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shortest Subarray with Sum at Least K - Visualizer</title>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-card: rgba(30, 41, 59, 0.7);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --accent-indigo: #6366f1;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-violet: #8b5cf6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      text-align: center;
+      max-width: 900px;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #818cf8 0%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    p.subtitle {
+      color: var(--text-sub);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Controls Panel */
+    .panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    select, input, button {
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--accent-indigo);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+
+    button {
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--accent-indigo);
+      border: none;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-emerald {
+      background: var(--accent-emerald);
+      color: #042f2e;
+    }
+
+    /* Main Visualization Grid */
+    .viz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .viz-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Arrays Display */
+    .array-container {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      min-height: 100px;
+      padding: 1rem 0;
+    }
+
+    .array-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-box {
+      width: 54px;
+      height: 54px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .card-badge {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+
+    /* Highlight States */
+    .card-box.active-j {
+      border-color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.2);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+      transform: scale(1.08);
+    }
+
+    .card-box.in-deque {
+      border-color: var(--accent-indigo);
+      background: rgba(99, 102, 241, 0.25);
+    }
+
+    .card-box.matched-front {
+      border-color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.3);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+      transform: scale(1.08);
+    }
+
+    .card-box.popped-back {
+      border-color: var(--accent-rose);
+      background: rgba(244, 63, 94, 0.25);
+    }
+
+    /* Monotonic Deque Box */
+    .deque-box {
+      min-height: 80px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 2px dashed rgba(99, 102, 241, 0.4);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      overflow-x: auto;
+    }
+
+    .deque-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
+      border: 1px solid var(--accent-indigo);
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+      animation: popIn 0.3s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .deque-idx {
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+
+    .deque-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    /* Narrative Box */
+    .narrative-box {
+      background: rgba(15, 23, 42, 0.9);
+      border-left: 4px solid var(--accent-indigo);
+      padding: 1rem 1.25rem;
+      border-radius: 0 12px 12px 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      min-height: 90px;
+    }
+
+    .narrative-title {
+      font-weight: 700;
+      color: var(--accent-amber);
+      margin-bottom: 0.25rem;
+    }
+
+    /* Stat Counters */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .metric-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .metric-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent-emerald);
+      margin-top: 0.25rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .tag-front { background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald); }
+    .tag-back { background: rgba(244, 63, 94, 0.2); color: var(--accent-rose); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Shortest Subarray with Sum at Least K</h1>
+    <p class="subtitle">Interactive Step-by-Step Visualizer using <strong>Prefix Sums</strong> & <strong>Monotonic Deque</strong></p>
+  </header>
+
+  <div class="container">
+
+    <!-- Controls Panel -->
+    <div class="panel">
+      <div class="controls-row">
+        <div class="input-group">
+          <label for="presetSelect">Preset Example:</label>
+          <select id="presetSelect" onchange="loadPreset()">
+            <option value="ex1">Example 1: [2, 1, 3] (K = 4) [Simple Positive]</option>
+            <option value="ex2">Example 2: [2, -1, 2] (K = 3) [With Negative Numbers]</option>
+            <option value="ex3">Example 3: [84, -37, 32, 40, 95] (K = 167) [Multi-Step]</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <button id="btnPrev" class="btn-secondary" onclick="stepBack()">◄ Back</button>
+          <button id="btnPlay" class="btn-emerald" onclick="togglePlay()">▶ Play</button>
+          <button id="btnNext" onclick="stepForward()">Next ►</button>
+          <button id="btnReset" class="btn-secondary" onclick="resetViz()">↺ Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metrics Header -->
+    <div class="metrics-row">
+      <div class="metric-card">
+        <div class="card-badge">TARGET SUM (K)</div>
+        <div class="metric-val" id="valK" style="color: var(--accent-amber);">4</div>
+      </div>
+      <div class="metric-card">
+        <div class="card-badge">SHORTEST LENGTH FOUND</div>
+        <div class="metric-val" id="valMinLen">∞</div>
+      </div>
+      <div class="metric-card">
+        <div class="card-badge">CURRENT STEP</div>
+        <div class="metric-val" id="valStep" style="color: var(--accent-cyan);">0 / 0</div>
+      </div>
+    </div>
+
+    <!-- Visualization Columns -->
+    <div class="viz-grid">
+
+      <!-- Left Column: Arrays -->
+      <div class="panel">
+        <div class="section-title">
+          <span>📊 Array & Prefix Sum State</span>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <div class="card-badge" style="margin-bottom: 0.5rem;">ORIGINAL ARRAY: arr</div>
+          <div id="arrDisplay" class="array-container"></div>
+        </div>
+
+        <div>
+          <div class="card-badge" style="margin-bottom: 0.5rem;">PREFIX SUM ARRAY: prefix (prefix[i] = sum up to i-1)</div>
+          <div id="prefixDisplay" class="array-container"></div>
+        </div>
+      </div>
+
+      <!-- Right Column: Monotonic Deque & Explanation -->
+      <div class="panel" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div class="section-title">
+          <span>📥 Monotonic Deque Container</span>
+          <span style="font-size: 0.75rem; color: var(--text-sub); margin-left: auto;">(Stores prefix indices in increasing order)</span>
+        </div>
+
+        <div class="deque-box" id="dequeDisplay">
+          <!-- Deque items rendered dynamically -->
+        </div>
+
+        <div class="narrative-box" id="narrativeBox">
+          <div class="narrative-title" id="narrativeTitle">Welcome to the Visualizer!</div>
+          <div id="narrativeText">Click <strong>Next</strong> or <strong>Play</strong> to step through how Prefix Sums & the Monotonic Deque find the shortest subarray.</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // PRESET DATA
+    const presets = {
+      ex1: { arr: [2, 1, 3], k: 4 },
+      ex2: { arr: [2, -1, 2], k: 3 },
+      ex3: { arr: [84, -37, 32, 40, 95], k: 167 }
+    };
+
+    let currentArr = [];
+    let K = 0;
+    let prefix = [];
+    let steps = [];
+    let currentStepIdx = 0;
+    let isPlaying = false;
+    let timer = null;
+
+    // INITIALIZATION
+    function loadPreset() {
+      const selected = document.getElementById('presetSelect').value;
+      const data = presets[selected];
+      currentArr = data.arr;
+      K = data.k;
+      document.getElementById('valK').innerText = K;
+      resetViz();
+    }
+
+    function resetViz() {
+      if (isPlaying) togglePlay();
+      currentStepIdx = 0;
+      buildPrefixAndSteps();
+      renderStep();
+    }
+
+    // BUILD ALGORITHM STEPS FOR PLAYBACK
+    function buildPrefixAndSteps() {
+      prefix = [0];
+      for (let i = 0; i < currentArr.length; i++) {
+        prefix.push(prefix[i] + currentArr[i]);
+      }
+
+      steps = [];
+      let deque = []; // Stores indices
+      let minLen = Infinity;
+
+      // Step 0: Initialize
+      deque.push(0);
+      steps.push({
+        j: -1,
+        deque: [...deque],
+        minLen: Infinity,
+        title: "Initialization",
+        text: `Initialize <code>prefix[0] = 0</code> and push index <code>0</code> into the deque to represent the starting baseline.`,
+        action: 'init'
+      });
+
+      // Loop prefix array from j = 1 to prefix.length - 1
+      for (let j = 1; j < prefix.length; j++) {
+        
+        // 1. Highlight current prefix j
+        steps.push({
+          j: j,
+          deque: [...deque],
+          minLen: minLen,
+          title: `Step 1: Inspecting prefix[${j}] = ${prefix[j]}`,
+          text: `Current cumulative sum up to index ${j-1} is <strong>${prefix[j]}</strong>. Check if any candidate starting index in the deque forms a valid sum &ge; ${K}.`,
+          action: 'inspect_j'
+        });
+
+        // 2. Check front of deque for valid sum >= K
+        while (deque.length > 0 && prefix[j] - prefix[deque[0]] >= K) {
+          const frontIdx = deque[0];
+          const len = j - frontIdx;
+          if (len < minLen) minLen = len;
+
+          steps.push({
+            j: j,
+            deque: [...deque],
+            minLen: minLen,
+            matchedFront: frontIdx,
+            title: `🎯 VALID SUBARRAY FOUND!`,
+            text: `<code>prefix[${j}] (${prefix[j]}) - prefix[${frontIdx}] (${prefix[frontIdx]}) = ${prefix[j] - prefix[frontIdx]} &ge; ${K}</code>!<br>Subarray length: <strong>${len}</strong> (from index ${frontIdx} to ${j-1}). Pop index <code>${frontIdx}</code> from front.`,
+            action: 'pop_front'
+          });
+
+          deque.shift(); // Remove front
+        }
+
+        // 3. Maintain Monotonic Increasing Deque by popping back if prefix[j] <= prefix[back]
+        while (deque.length > 0 && prefix[j] <= prefix[deque[deque.length - 1]]) {
+          const backIdx = deque[deque.length - 1];
+          steps.push({
+            j: j,
+            deque: [...deque],
+            minLen: minLen,
+            poppedBack: backIdx,
+            title: `🧹 Monotonic Cleanup (Back Pop)`,
+            text: `<code>prefix[${j}] (${prefix[j]}) &le; prefix[${backIdx}] (${prefix[backIdx]})</code>.<br>Index ${j} has a smaller prefix sum AND a larger index, making index ${backIdx} obsolete. Pop index <code>${backIdx}</code> from back.`,
+            action: 'pop_back'
+          });
+
+          deque.pop(); // Remove back
+        }
+
+        // 4. Push j to back of deque
+        deque.push(j);
+        steps.push({
+          j: j,
+          deque: [...deque],
+          minLen: minLen,
+          title: `➕ Push Index ${j} to Deque`,
+          text: `Push index <code>${j}</code> (prefix = ${prefix[j]}) to the back of the deque for future comparisons.`,
+          action: 'push_j'
+        });
+      }
+
+      // Final Done Step
+      steps.push({
+        j: -1,
+        deque: [...deque],
+        minLen: minLen,
+        title: "🏁 Algorithm Completed!",
+        text: minLen !== Infinity 
+          ? `Algorithm finished! Shortest subarray length with sum &ge; ${K} is <strong style="color: var(--accent-emerald); font-size: 1.1rem;">${minLen}</strong>.`
+          : `Algorithm finished! No subarray was found with sum &ge; ${K}. Return <code>-1</code>.`,
+        action: 'done'
+      });
+    }
+
+    // RENDER CURRENT STEP TO DOM
+    function renderStep() {
+      const step = steps[currentStepIdx];
+
+      // Update Header Stats
+      document.getElementById('valMinLen').innerText = step.minLen === Infinity ? '∞' : step.minLen;
+      document.getElementById('valStep').innerText = `${currentStepIdx + 1} / ${steps.length}`;
+
+      // 1. Render Original Array arr
+      const arrContainer = document.getElementById('arrDisplay');
+      arrContainer.innerHTML = '';
+      currentArr.forEach((val, idx) => {
+        const card = document.createElement('div');
+        card.className = 'array-card';
+        
+        let boxClass = 'card-box';
+        // Highlight subarray elements if current j is active
+        if (step.j > 0 && idx >= 0 && idx < step.j) {
+          // Subarray range up to j-1
+        }
+
+        card.innerHTML = `
+          <div class="${boxClass}">${val}</div>
+          <div class="card-badge">idx ${idx}</div>
+        `;
+        arrContainer.appendChild(card);
+      });
+
+      // 2. Render Prefix Sum Array
+      const prefixContainer = document.getElementById('prefixDisplay');
+      prefixContainer.innerHTML = '';
+      prefix.forEach((val, idx) => {
+        const card = document.createElement('div');
+        card.className = 'array-card';
+        
+        let boxClass = 'card-box';
+        if (idx === step.j) boxClass += ' active-j';
+        if (step.deque.includes(idx)) boxClass += ' in-deque';
+        if (step.matchedFront === idx) boxClass += ' matched-front';
+        if (step.poppedBack === idx) boxClass += ' popped-back';
+
+        card.innerHTML = `
+          <div class="${boxClass}">${val}</div>
+          <div class="card-badge">p[${idx}]</div>
+        `;
+        prefixContainer.appendChild(card);
+      });
+
+      // 3. Render Deque Box
+      const dequeContainer = document.getElementById('dequeDisplay');
+      dequeContainer.innerHTML = '';
+      if (step.deque.length === 0) {
+        dequeContainer.innerHTML = `<span style="color: var(--text-sub); font-size: 0.85rem;">[ Empty Deque ]</span>`;
+      } else {
+        step.deque.forEach((pIdx, position) => {
+          const item = document.createElement('div');
+          item.className = 'deque-item';
+          let tag = '';
+          if (position === 0) tag = `<span class="tag tag-front">FRONT</span>`;
+          if (position === step.deque.length - 1 && step.deque.length > 1) tag = `<span class="tag tag-back">BACK</span>`;
+
+          item.innerHTML = `
+            ${tag}
+            <div class="deque-idx">p[${pIdx}]</div>
+            <div class="deque-val">${prefix[pIdx]}</div>
+          `;
+          dequeContainer.appendChild(item);
+        });
+      }
+
+      // 4. Narrative Box
+      document.getElementById('narrativeTitle').innerHTML = step.title;
+      document.getElementById('narrativeText').innerHTML = step.text;
+
+      // Button States
+      document.getElementById('btnPrev').disabled = currentStepIdx === 0;
+      document.getElementById('btnNext').disabled = currentStepIdx === steps.length - 1;
+    }
+
+    // PLAYBACK CONTROLS
+    function stepForward() {
+      if (currentStepIdx < steps.length - 1) {
+        currentStepIdx++;
+        renderStep();
+      } else if (isPlaying) {
+        togglePlay();
+      }
+    }
+
+    function stepBack() {
+      if (currentStepIdx > 0) {
+        currentStepIdx--;
+        renderStep();
+      }
+    }
+
+    function togglePlay() {
+      const btn = document.getElementById('btnPlay');
+      if (isPlaying) {
+        clearInterval(timer);
+        isPlaying = false;
+        btn.innerText = '▶ Play';
+        btn.className = 'btn-emerald';
+      } else {
+        if (currentStepIdx === steps.length - 1) currentStepIdx = 0;
+        isPlaying = true;
+        btn.innerText = '⏸ Pause';
+        btn.className = 'btn-secondary';
+        timer = setInterval(stepForward, 1800);
+      }
+    }
+
+    // LOAD ON STARTUP
+    loadPreset();
+  </script>
+</body>
+</html>
