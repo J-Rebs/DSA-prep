@@ -318,6 +318,37 @@ public final class TwoPointersCompactor {
      * Sorts an array of 0s, 1s, and 2s in-place in linear time.
      */
     public static void dutchNationalFlag(int[] arr) {
+        // we track the partitions with a left and right pointer
+        // we track the current spot as well
+        if (arr == null || arr.length <= 1) {
+            return;
+        }
+
+        int left = 0;
+        int right = arr.length - 1;
+        int current = 0;
+
+        while (current <= right) {
+            int tmpVal = arr[current];
+            if (tmpVal == 0) {
+                arr[current] = arr[left];
+                arr[left] = tmpVal;
+                left++;
+                // everything up to now is sorted can advance
+                current++;
+            } else if (tmpVal == 1) {
+                // if is a one just advance dont re-write
+                current++;
+                // assume all other values are two
+            } else {
+                arr[current] = arr[right];
+                arr[right] = tmpVal;
+                right--;
+                // we might have to swap current again
+                // so we shouldnt do anything
+            }
+
+        }
         // In-place modification
     }
 

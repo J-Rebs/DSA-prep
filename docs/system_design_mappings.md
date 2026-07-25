@@ -230,3 +230,18 @@ In-memory caching engines (e.g. Redis, memcached) require $O(1)$ evictions of th
   * **LRU Cache:** A Hash Map maps search keys to nodes in a Doubly Linked List. Whenever a key is queried or updated, its corresponding node is detached from its current position and spliced to the head of the list in $O(1)$ pointer operations. The tail node always represents the least recently used element, which can be discarded in $O(1)$ operations upon capacity overflow.
   * **MemTable Merges:** Linked list pointers allow merging $K$ sorted node chains without allocating new memory, adjusting next pointers dynamically during traversals.
   * **Quant/Performance Trick:** To prevent heap fragmentation in high-throughput JVM environments, custom memory-pooled nodes (e.g. allocation arrays where nodes are represented by offsets in long/int pools) are preferred over instantiation of individual `Node` objects.
+
+---
+
+## 17. I/O, Parsing & Stream Processing $\rightarrow$ Log File & Stream Codec Parser Engine
+
+### Macro System Component: RPC Binary Serializers & Log Ingest Parsers
+Production infrastructure components (API gateways, RPC framing layers like gRPC, metric aggregation pipelines) receive high-frequency binary or raw string streams over TCP network sockets. Decoding these packets into structured objects or evaluating metric rules must occur at sub-microsecond speeds.
+
+### How it leverages the DSA Pattern
+* **Algorithmic Primitive:** **State Machines, Stack Expression Evaluation & Length-Prefixed Framing**.
+* **Mechanism:**
+  * **Fast Tokenizer:** Replaces regex scanners with char-by-char state machines using `BufferedReader` and string index scanning, achieving $O(N)$ execution with zero heap allocations.
+  * **Expression Calculator & AST:** Evaluates infix and postfix math expressions (`Basic Calculator`, `RPN`) using operand stack buffers or recursive descent, handling operator precedence and parentheses without generating AST garbage objects.
+  * **Length-Prefixed Framing:** Encodes payload lists as length-prefixed strings (`<length>#<payload>`). Deserializes streams deterministically in a single pass regardless of internal delimiter characters.
+

@@ -835,6 +835,107 @@ int mid = (low + high) >>> 1;</code></pre>
                 "hints": "Binary search on the result space (max element to total sum). For each mid limit, check if you can split the array into K or fewer subarrays. Adjust boundaries accordingly."
               }
             ]
+          },
+          {
+            "id": "p17_io_and_parsing",
+            "name": "I/O & Parsing",
+            "component": "Log File & Stream Codec Parser Engine",
+            "status": "🟢 Mastered",
+            "guidance": {
+              "overview": "I/O, Parsing & Stream Processing covers fast stream tokenization, state-machine text parsing, expression evaluation (RPN/AST), nested structure iterators, binary tree serialization, and length-prefixed protocol framing without external library allocations.",
+              "mentalModel": "Maintain zero-allocation char pointers and state invariants. Evaluate math and boolean predicate expressions using operator and operand stack buffers. Prefix byte/string payloads with length markers for collision-free stream decoding.",
+              "javaTricks": "Use BufferedReader and custom char scanners instead of java.util.Scanner. Use primitive array stacks int[] stack instead of boxed Stack<Integer>. Encode streams using <length>#<payload> framing."
+            },
+            "problems": [
+              {
+                "name": "Fast I/O & Multi-Line Tokenizer Scanner",
+                "difficulty": "Easy",
+                "status": "🟢 Solved",
+                "systemMapping": "High-throughput log ingest buffer scanner",
+                "description": "Parse raw stream/text containing space/newline delimited primitive types using zero-allocation stream buffer tokenization.",
+                "hints": "Wrap InputStream inside BufferedReader. Scan char by char using whitespace checks, creating substrings only at token boundaries."
+              },
+              {
+                "name": "String to Integer (atoi) State Machine",
+                "difficulty": "Easy",
+                "status": "🟢 Solved",
+                "systemMapping": "Safe HTTP request query string parameter converter",
+                "description": "Parse string into 32-bit signed integer with whitespace, sign detection, and 32-bit overflow guards.",
+                "hints": "Trim leading spaces. Track sign (+/-). Accumulate digits into long or check overflow before multiplying by 10."
+              },
+              {
+                "name": "Valid IP Address & Port Format Parser",
+                "difficulty": "Easy",
+                "status": "🟢 Solved",
+                "systemMapping": "Network ingress socket validator (IPv4/IPv6 & port parser)",
+                "description": "Parse and validate socket addresses ('192.168.1.1:8080' or IPv6) with range checks [0-255] and hex verification.",
+                "hints": "Split on colon/dot safely. Check token lengths, leading zero bounds, and hex ranges [0-9, a-f, A-F]."
+              },
+              {
+                "name": "CSV & Delimiter Log Line Parser with Quotes",
+                "difficulty": "Medium",
+                "status": "🟢 Solved",
+                "systemMapping": "Distributed metric log collector & CSV record reader",
+                "description": "Parse CSV lines into field arrays handling quoted strings, internal delimiters, and escaped quotes (\"\").",
+                "hints": "Maintain inQuotes boolean state. If char is quote and next is quote, append single quote and skip next. If comma outside quotes, emit field."
+              },
+              {
+                "name": "Reverse Polish Notation (RPN) Stream Evaluator",
+                "difficulty": "Medium",
+                "status": "🟢 Solved",
+                "systemMapping": "Postfix metric rule evaluator for query execution engines",
+                "description": "Evaluate postfix math expressions (+, -, *, /) using operand stack.",
+                "hints": "Push integers onto stack. On operator, pop top two operands (b then a), execute operation, and push result back."
+              },
+              {
+                "name": "Basic Calculator / Expression Parser with Parentheses",
+                "difficulty": "Medium",
+                "status": "🟢 Solved",
+                "systemMapping": "Dynamic alert condition & rate limiter predicate evaluator",
+                "description": "Evaluate infix math expressions with operator precedence (+,-,*,/,(,)) in O(N) time.",
+                "hints": "Use recursion or operator/operand stack. Process highest precedence ops (*, /) immediately into stack before + and -."
+              },
+              {
+                "name": "Binary Tree Serialization & Deserialization Codec",
+                "difficulty": "Medium",
+                "status": "🟢 Solved",
+                "systemMapping": "RPC data payload serializer/deserializer for distributed index nodes",
+                "description": "Serialize binary trees into compact string streams and reconstruct the exact tree structure.",
+                "hints": "Use pre-order traversal with 'null' markers. Reconstruct recursively using a queue of token strings."
+              },
+              {
+                "name": "Nested List / JSON Structure Parser Iterator",
+                "difficulty": "Medium",
+                "status": "🟢 Solved",
+                "systemMapping": "Microservice RPC JSON response flattener & nested schema iterator",
+                "description": "Parse nested integer lists (e.g. '[1,[4,[6]]]'), providing an iterator to yield flattened values.",
+                "hints": "Parse characters sequentially, extracting integers and preserving nested depth."
+              },
+              {
+                "name": "Stream Chunk Splitter & Read N Characters Read4",
+                "difficulty": "Medium",
+                "status": "🟢 Solved",
+                "systemMapping": "Socket IO stream buffer reader (chunked stream processing)",
+                "description": "Read up to N characters from stream using read4 API, preserving buffer residual state across calls.",
+                "hints": "Maintain internal buf4, buf4Ptr, and buf4Count. Copy available bytes into user buffer until N characters are read."
+              },
+              {
+                "name": "State-Machine Expression Add Operators & AST Parser",
+                "difficulty": "Hard",
+                "status": "🟢 Solved",
+                "systemMapping": "High-frequency SQL query string builder & predicate search planner",
+                "description": "Parse string of digits 0-9 and return all expressions inserting +, -, * evaluating to target without leading zeros.",
+                "hints": "Backtrack across digit splits. Pass current eval value and last multiplied term to handle precedence correctly."
+              },
+              {
+                "name": "High-Throughput Log File Streaming Lexer & Codec",
+                "difficulty": "Hard",
+                "status": "🟢 Solved",
+                "systemMapping": "TCP/gRPC packet framer & zero-copy binary string list encoder/decoder",
+                "description": "Encode string list into length-prefixed stream format ('<len>#<str>') and decode back in O(N) time.",
+                "hints": "Prefix each string payload with its length followed by '#'. Parse length integer up to '#' and jump payload bytes directly."
+              }
+            ]
           }
         ]
       },

@@ -46,6 +46,7 @@ graph TD
 | **Phase 1** | Two Pointers | Real-time Data Deduplication / Merging | Medium | 🔄 In Progress | [View](./src/main/java/com/engine/phase1_foundations/p02_two_pointers/PATTERN_BLUEPRINT.md) |
 | **Phase 1** | Linked Lists & Pointers | LRU Cache / MemTable Compactor | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase1_foundations/p03_linked_list/PATTERN_BLUEPRINT.md) |
 | **Phase 1** | Binary Search | LSM-Tree SSTable Index Lookup | Medium | 🔄 In Progress | [View](./src/main/java/com/engine/phase1_foundations/p04_binary_search/PATTERN_BLUEPRINT.md) |
+| **Phase 1** | I/O, Parsing & Stream Processing | Log File & Stream Codec Parser Engine | Medium / Hard | 🟢 Mastered | [View](./src/main/java/com/engine/phase1_foundations/p17_io_and_parsing/PATTERN_BLUEPRINT.md) |
 | **Phase 2** | Monotonic Stack | Event Metric Streaming (Next Max Spike) | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/p05_monotonic_stack/PATTERN_BLUEPRINT.md) |
 | **Phase 2** | Heaps / PQ | Distributed Top-K Heavy Hitters Tracker | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/p06_heaps_and_priority/PATTERN_BLUEPRINT.md) |
 | **Phase 2** | Trie | Longest Prefix Match (IP Router) | Medium / Hard | 🛑 Todo | [View](./src/main/java/com/engine/phase2_structural/p07_trie/PATTERN_BLUEPRINT.md) |
