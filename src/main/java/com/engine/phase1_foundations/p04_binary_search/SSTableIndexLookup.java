@@ -216,7 +216,6 @@ public final class SSTableIndexLookup {
                 } else {
                     low = mid + 1;
                 }
-                // if here the right partition is sorted
 
             }
         }
@@ -229,9 +228,42 @@ public final class SSTableIndexLookup {
      * Finds the minimum element in a sorted rotated array.
      */
     public static long findMinInRotated(long[] keys) {
-        // TODO: Find minimum element in rotated array
+        // rely on two keys:
+        // if the right partition is sorted, then the right partition
+        // is strictly growing vs mid, so we can drop it
+        // AND we rely on the convergence of low and high within the
+        // partition that contains the min
+        // such that when low == high, it will mean we've found the answer
 
-        return -1;
+        if (keys == null || keys.length == 0) {
+            return -1;
+        }
+
+        int low = 0;
+        int high = keys.length - 1;
+        int mid;
+
+        // when equal, we've found the answer
+        // so exit the loop
+        while (low < high) {
+            mid = (low + high) >>> 1;
+
+            // in the case that the right partition is sorted
+            // we can simply ignore the right
+            if (keys[mid] < keys[high]) {
+                // however, mid itself could be an answer
+                // so we cannot drop it
+                high = mid;
+            } else {
+                // in the event that right is not sorted
+                // we know for a fact mid is already greater
+                // that something in the right
+                // so we can drop it and explore right
+                low = mid + 1;
+            }
+        }
+
+        return keys[low];
     }
 
     /**
