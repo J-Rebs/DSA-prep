@@ -15,13 +15,17 @@
 * **Zero Heap Allocation Loops:**
   Avoid allocating objects inside binary search loops. Keep all index variables (`low`, `high`, `mid`) as primitive integers.
 
-## 3. The Core Structural Trick (Mental Model)
-1. **Index Binary Search:** Halve a sorted array range `[low, high]` based on value comparisons.
-2. **Search Space Binary Search:** Binary search on the *result space* `[minPossible, maxPossible]` by testing feasibility of candidate midpoints.
-3. **The `low` vs `high` Symmetrical Duality Property:**
-   When standard binary search loop (`while (low <= high)`) terminates without an exact match:
-   * **`low`** = Index of the **first element strictly greater** than `target` (Insertion position).
-   * **`high` (`low - 1`)** = Index of the **largest element strictly less** than `target` (Floor / SSTable lower bound).
+3. **The Core Structural Invariants (Mental Models):**
+   * **Floor vs Ceiling Duality:** When `while (low <= high)` finishes without an exact match:
+     * `low` = Smallest element $\ge$ `target` (Ceiling / Insertion position).
+     * `high` (`low - 1`) = Largest element $\le$ `target` (Floor / SSTable lower bound).
+   * **Rotated Array Invariants (`keys[mid] vs keys[high]`):**
+     * **`keys[mid] < keys[high]`**: Right half `[mid..high]` is strictly sorted. Minimum element lives in left half (including `mid`).
+     * **`keys[mid] > keys[high]`**: Left half `[low..mid]` is strictly sorted. Minimum element lives in right half (`low = mid + 1`).
+     * **Rotated Maximum Element**: The maximum element is at `(min_index - 1 + N) % N` (the peak right before the cliff drop).
+   * **Slope-Following Peak Detection:**
+     * Finding a local peak on an unsorted array reduces to Binary Search because evaluating local slope `metrics[mid]` vs `metrics[mid + 1]` determines whether `mid` sits on an ascending ($\nearrow$) or descending ($\searrow$) slope.
+     * Stepping uphill discards 50% of the search space at each step until `low == high` pin-points a local maximum!
 
 ---
 

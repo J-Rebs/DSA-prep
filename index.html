@@ -821,8 +821,8 @@ int mid = (low + high) >>> 1;</code></pre>
             "component": "LSM-Tree SSTable Index Lookup",
             "status": "🔄 In Progress",
             "guidance": {
-              "overview": "Binary Search finds the position of a target value within a sorted search space by repeatedly dividing the search space in half. Beyond basic index lookups, it is a primary mechanism for range queries and optimization problems (Search Space Binary Search).",
-              "mentalModel": "Define search space boundaries (low and high). In each loop step, calculate midpoint. If target is absent when loop completes: `low` points to the first element strictly greater than target (insertion point), while `high` (low - 1) points to the largest element strictly less than target (floor bound).",
+              "overview": "Binary Search cuts search space in half at every step. Beyond exact index lookups, it operates on range boundaries, rotated arrays, peak finding, and answer space capacity optimization.",
+              "mentalModel": "Three core invariants: (1) Floor/Ceiling: `low` = ceiling (smallest >= target), `high` (low-1) = floor (largest <= target). (2) Rotated Arrays: Compare `keys[mid]` vs `keys[high]`. If `mid < high`, right half is sorted and min is in left half; if `mid > high`, left half is sorted and min is in right half. Rotated max is at `(min_idx - 1 + N) % N`. (3) Peak Finding: Evaluate local slope `arr[mid]` vs `arr[mid+1]`. Stepping uphill discards 50% of search space until `low == high` pin-points a peak.",
               "javaTricks": "Always calculate midpoint using unsigned right shift: `int mid = (low + high) >>> 1` to avoid integer overflow bugs. In hot loops, declare loop variables outside the loop to limit frame allocation footprints."
             },
             "problems": [
