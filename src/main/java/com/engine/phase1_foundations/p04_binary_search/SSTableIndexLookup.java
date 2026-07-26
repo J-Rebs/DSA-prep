@@ -174,8 +174,52 @@ public final class SSTableIndexLookup {
      * Searches for targetKey in a sorted array that has been rotated by an unknown
      * offset.
      */
+
     public static int searchRotatedIndex(long[] keys, long targetKey) {
-        // TODO: Implement rotated buffer binary search
+        // key: one of our partitions is always sorted
+        // so we can check if our target is in the sorted partition's range
+        // if not, by defintion, it must be in the other parition if it exists
+
+        // saftey guards
+        if (keys == null || keys.length == 0) {
+            return -1;
+        }
+
+        int low = 0;
+        int high = keys.length - 1;
+        int mid;
+        long midVal;
+
+        while (low <= high) {
+            mid = (low + high) >>> 1;
+            midVal = keys[mid];
+
+            // if we found the target, nothing to do, return
+            if (midVal == targetKey) {
+                return mid;
+            }
+            // otherwise, which partition is sorted
+            boolean isLeftPartitionSorted = keys[low] <= keys[mid];
+
+            if (isLeftPartitionSorted) {
+                // you have to check the lower end since it could be
+                // by rotation, the left is actually the upper half of your
+                // values
+                if (keys[low] <= targetKey && targetKey < midVal) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            } else {
+                // if here the right partition is sorted
+                if (midVal < targetKey && targetKey <= keys[high]) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+        }
+
         return -1;
     }
 
