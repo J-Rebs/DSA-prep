@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotated Array Binary Search & Minimum Element - Visualizer</title>
+  <!-- Google Fonts: Playfair Display, Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #fdfbf7;
+      --bg-card: #ffffff;
+      --border-color: #e3ded2;
+      --border-active: #1c4e70;
+      
+      --text-primary: #222629;
+      --text-secondary: #5a6065;
+      --text-muted: #8d9499;
+
+      --accent-indigo: #1c4e70; /* Glazed Spanish Tile Cobalt Blue */
+      --accent-violet: #a894b0;
+      --accent-emerald: #426b52; /* Rosemary green */
+      --accent-amber: #b28751; /* Colonial gold */
+      --accent-rose: #b58d92; /* Terracotta blush */
+      --accent-cyan: #8faeb4;
+
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --shadow-card: 0 4px 16px rgba(43, 38, 34, 0.04), 0 2px 4px rgba(43, 38, 34, 0.02);
+      --shadow-hover: 0 10px 30px rgba(178, 135, 81, 0.08), 0 2px 6px rgba(43, 38, 34, 0.03);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(143, 174, 180, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(168, 148, 176, 0.15) 0px, transparent 50%);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .glass-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-card);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .glass-panel:hover {
+      border-color: var(--accent-amber);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .tile-ribbon {
+      height: 4px;
+      width: 100%;
+      background: var(--accent-indigo);
+      border-bottom: 1.5px solid var(--accent-amber);
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+    }
+
+    header.glass-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 28px;
+    }
+
+    h1 {
+      font-family: var(--font-heading);
+      font-size: 2.1rem;
+      font-weight: 600;
+      color: var(--accent-indigo);
+      letter-spacing: -0.5px;
+    }
+
+    p.subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+
+    /* Controls Panel */
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    select, button {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    select:focus {
+      border-color: var(--accent-indigo);
+      box-shadow: 0 0 0 3px rgba(28, 78, 112, 0.1);
+    }
+
+    button {
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-indigo);
+      color: #ffffff;
+      border: 1px solid var(--accent-indigo);
+      box-shadow: 0 2px 6px rgba(28, 78, 112, 0.15);
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      background: #143953;
+    }
+
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-secondary {
+      background: var(--bg-main);
+      color: var(--text-secondary);
+      border-color: var(--border-color);
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #f4efe6;
+      color: var(--text-primary);
+    }
+
+    .btn-emerald {
+      background: var(--accent-emerald);
+      border-color: var(--accent-emerald);
+      color: #ffffff;
+    }
+
+    .btn-emerald:hover:not(:disabled) { background: #345440; }
+
+    /* Visualizer Layout */
+    .viz-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .viz-grid { grid-template-columns: 1fr; }
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent-indigo);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Bars Chart Container */
+    .bars-container {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 16px;
+      height: 220px;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .bar-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      max-width: 70px;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .bar {
+      width: 100%;
+      background: var(--accent-indigo);
+      border-radius: 6px 6px 0 0;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.05rem;
+      position: relative;
+    }
+
+    .bar.low-ptr {
+      background: var(--accent-amber) !important;
+      box-shadow: 0 0 12px rgba(178, 135, 81, 0.3);
+    }
+    .bar.mid-ptr {
+      background: var(--accent-indigo) !important;
+      box-shadow: 0 0 12px rgba(28, 78, 112, 0.3);
+      transform: scaleX(1.05);
+    }
+    .bar.high-ptr {
+      background: var(--accent-rose) !important;
+      box-shadow: 0 0 12px rgba(181, 141, 146, 0.3);
+    }
+    .bar.is-min {
+      background: var(--accent-emerald) !important;
+      box-shadow: 0 0 16px rgba(66, 107, 82, 0.4);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+
+    .bar-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .pointer-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+
+    .tag-low { background: rgba(178, 135, 81, 0.15); color: #926f42; }
+    .tag-mid { background: rgba(28, 78, 112, 0.15); color: var(--accent-indigo); }
+    .tag-high { background: rgba(181, 141, 146, 0.15); color: #8c575d; }
+    .tag-min { background: rgba(66, 107, 82, 0.2); color: var(--accent-emerald); }
+
+    /* Explanation Cards */
+    .rule-card {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-indigo);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      line-height: 1.6;
+      font-size: 0.92rem;
+    }
+
+    .rule-title {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--accent-indigo);
+      margin-bottom: 6px;
+    }
+
+    /* Metrics Grid */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+
+    .metric-val {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent-indigo);
+      margin-top: 4px;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      background: rgba(178, 135, 81, 0.08);
+      color: #926f42;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- HEADER PANEL -->
+    <header class="glass-panel">
+      <div class="tile-ribbon"></div>
+      <div>
+        <h1>Rotated Array & Minimum Element Lookup</h1>
+        <p class="subtitle">Why <code>keys[mid] vs keys[high]</code> is the Universal Invariant Signal</p>
+      </div>
+      <div>
+        <a href="./index.html" class="btn-secondary" style="text-decoration: none;">◄ Back to Dashboard</a>
+      </div>
+    </header>
+
+    <!-- Controls Panel -->
+    <div class="glass-panel">
+      <div class="controls-row">
+        <div class="input-group">
+          <label for="presetSelect">Select Preset Array:</label>
+          <select id="presetSelect" onchange="loadPreset()">
+            <option value="ex1">Preset 1: [30, 40, 50, 10, 20] (Pivot in Right Half)</option>
+            <option value="ex2">Preset 2: [40, 50, 60, 70, 0, 10, 20] (Cliff Drop in Middle)</option>
+            <option value="ex3">Preset 3: [10, 20, 30, 40, 50] (Un-rotated / 0 Shifts)</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <button id="btnPrev" class="btn-secondary" onclick="stepBack()">◄ Back</button>
+          <button id="btnPlay" class="btn-emerald" onclick="togglePlay()">▶ Play</button>
+          <button id="btnNext" onclick="stepForward()">Next ►</button>
+          <button id="btnReset" class="btn-secondary" onclick="resetViz()">↺ Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metrics Row -->
+    <div class="metrics-row">
+      <div class="metric-card">
+        <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">MID VALUE vs HIGH VALUE</div>
+        <div class="metric-val" id="valCompare" style="color: var(--accent-amber);">-</div>
+      </div>
+      <div class="metric-card">
+        <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">IS RIGHT PARTITION SORTED?</div>
+        <div class="metric-val" id="valSorted">-</div>
+      </div>
+      <div class="metric-card">
+        <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">CURRENT STEP</div>
+        <div class="metric-val" id="valStep" style="color: var(--accent-indigo);">0 / 0</div>
+      </div>
+    </div>
+
+    <!-- Visualization Grid -->
+    <div class="viz-grid">
+
+      <!-- Left Column: Visual Heights Bar Chart -->
+      <div class="glass-panel">
+        <div class="section-title">
+          <span>📊 Array Values & Pointer Heights</span>
+        </div>
+        <div class="bars-container" id="barsContainer">
+          <!-- Dynamic bars rendered here -->
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 10px;">
+          <span class="pointer-tag tag-low">LOW</span>
+          <span class="pointer-tag tag-mid">MID</span>
+          <span class="pointer-tag tag-high">HIGH</span>
+          <span class="pointer-tag tag-min">MIN ELEMENT</span>
+        </div>
+      </div>
+
+      <!-- Right Column: Universal Rule Narrative -->
+      <div class="glass-panel" style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="section-title">
+          <span>💡 Universal Invariant Proof</span>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-title" id="stepTitle">Step Explanation</div>
+          <div id="stepDesc">Click <strong>Next</strong> or <strong>Play</strong> to trace why comparing <code>keys[mid] vs keys[high]</code> ALWAYS accurately detects which partition is sorted and where the minimum element lives.</div>
+        </div>
+
+        <div class="rule-card" style="border-left-color: var(--accent-emerald);">
+          <div class="rule-title" style="color: var(--accent-emerald);">Why Right Partition Test Works 100% of the Time</div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+            * <strong>If <code>keys[mid] < keys[high]</code></strong>: The right segment <code>[mid..high]</code> goes steadily uphill. No cliff drop exists on the right! Therefore, the minimum element MUST be in the left half (including <code>mid</code>).<br><br>
+            * <strong>If <code>keys[mid] > keys[high]</code></strong>: The middle value is BIGGER than the end value. A cliff drop MUST have occurred between <code>mid</code> and <code>high</code>! Therefore, the minimum element MUST be in the right half (<code>mid + 1</code>).
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const presets = {
+      ex1: [30, 40, 50, 10, 20],
+      ex2: [40, 50, 60, 70, 0, 10, 20],
+      ex3: [10, 20, 30, 40, 50]
+    };
+
+    let currentArr = [];
+    let steps = [];
+    let currentStepIdx = 0;
+    let isPlaying = false;
+    let timer = null;
+
+    function loadPreset() {
+      const selected = document.getElementById('presetSelect').value;
+      currentArr = presets[selected];
+      resetViz();
+    }
+
+    function resetViz() {
+      if (isPlaying) togglePlay();
+      currentStepIdx = 0;
+      buildSteps();
+      renderStep();
+    }
+
+    function buildSteps() {
+      steps = [];
+      let low = 0;
+      let high = currentArr.length - 1;
+
+      while (low < high) {
+        let mid = Math.floor((low + high) / 2);
+        let midVal = currentArr[mid];
+        let highVal = currentArr[high];
+
+        if (midVal > highVal) {
+          steps.push({
+            low, high, mid,
+            compareText: `${midVal} > ${highVal}`,
+            isRightSorted: "FALSE ❌",
+            title: `Step: keys[mid] (${midVal}) > keys[high] (${highVal})`,
+            desc: `Because <code>keys[mid] (${midVal})</code> is BIGGER than <code>keys[high] (${highVal})</code>, a <strong>cliff drop</strong> must have occurred between index ${mid} and index ${high}.<br><br>The minimum element MUST lie in the <strong>RIGHT half</strong>. Search right: <code>low = mid + 1 (${mid + 1})</code>.`
+          });
+          low = mid + 1;
+        } else {
+          steps.push({
+            low, high, mid,
+            compareText: `${midVal} < ${highVal}`,
+            isRightSorted: "TRUE 🟢",
+            title: `Step: keys[mid] (${midVal}) <= keys[high] (${highVal})`,
+            desc: `Because <code>keys[mid] (${midVal})</code> is SMALLER than or EQUAL to <code>keys[high] (${highVal})</code>, the right partition <code>[mid..high]</code> is steadily sorted.<br><br>No cliff drop exists on the right, so the minimum element MUST lie in the <strong>LEFT half</strong> (including mid). Search left: <code>high = mid (${mid})</code>.`
+          });
+          high = mid;
+        }
+      }
+
+      // Final step: low == high
+      steps.push({
+        low, high, mid: low,
+        isMinFound: true,
+        compareText: `Found!`,
+        isRightSorted: "MIN 🏆",
+        title: `🏁 MINIMUM ELEMENT FOUND!`,
+        desc: `Pointers converged at index <strong>${low}</strong>. Minimum element in the rotated array is <strong style="color: var(--accent-emerald); font-size: 1.1em;">${currentArr[low]}</strong>!`
+      });
+    }
+
+    function renderStep() {
+      const step = steps[currentStepIdx];
+
+      document.getElementById('valCompare').innerText = step.compareText;
+      document.getElementById('valSorted').innerText = step.isRightSorted;
+      document.getElementById('valStep').innerText = `${currentStepIdx + 1} / ${steps.length}`;
+
+      document.getElementById('stepTitle').innerText = step.title;
+      document.getElementById('stepDesc').innerHTML = step.desc;
+
+      // Render Bars Chart
+      const container = document.getElementById('barsContainer');
+      container.innerHTML = '';
+
+      const maxVal = Math.max(...currentArr);
+
+      currentArr.forEach((val, idx) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'bar-wrapper';
+
+        const heightPercent = Math.max(20, (val / maxVal) * 100);
+
+        let barClass = 'bar';
+        if (step.isMinFound && idx === step.low) barClass += ' is-min';
+        else if (idx === step.mid) barClass += ' mid-ptr';
+        else if (idx === step.low) barClass += ' low-ptr';
+        else if (idx === step.high) barClass += ' high-ptr';
+
+        let tagText = '';
+        if (step.isMinFound && idx === step.low) tagText = `<span class="pointer-tag tag-min">MIN</span>`;
+        else {
+          if (idx === step.low) tagText += `<span class="pointer-tag tag-low">L</span>`;
+          if (idx === step.mid) tagText += `<span class="pointer-tag tag-mid">M</span>`;
+          if (idx === step.high) tagText += `<span class="pointer-tag tag-high">H</span>`;
+        }
+
+        wrapper.innerHTML = `
+          ${tagText}
+          <div class="${barClass}" style="height: ${heightPercent}%;">${val}</div>
+          <div class="bar-label">idx ${idx}</div>
+        `;
+
+        container.appendChild(wrapper);
+      });
+
+      document.getElementById('btnPrev').disabled = currentStepIdx === 0;
+      document.getElementById('btnNext').disabled = currentStepIdx === steps.length - 1;
+    }
+
+    function stepForward() {
+      if (currentStepIdx < steps.length - 1) {
+        currentStepIdx++;
+        renderStep();
+      } else if (isPlaying) {
+        togglePlay();
+      }
+    }
+
+    function stepBack() {
+      if (currentStepIdx > 0) {
+        currentStepIdx--;
+        renderStep();
+      }
+    }
+
+    function togglePlay() {
+      const btn = document.getElementById('btnPlay');
+      if (isPlaying) {
+        clearInterval(timer);
+        isPlaying = false;
+        btn.innerText = '▶ Play';
+        btn.className = 'btn-emerald';
+      } else {
+        if (currentStepIdx === steps.length - 1) currentStepIdx = 0;
+        isPlaying = true;
+        btn.innerText = '⏸ Pause';
+        btn.className = 'btn-secondary';
+        timer = setInterval(stepForward, 2000);
+      }
+    }
+
+    loadPreset();
+  </script>
+</body>
+</html>
