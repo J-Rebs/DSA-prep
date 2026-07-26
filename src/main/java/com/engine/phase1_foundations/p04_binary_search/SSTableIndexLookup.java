@@ -199,24 +199,25 @@ public final class SSTableIndexLookup {
                 return mid;
             }
             // otherwise, which partition is sorted
-            boolean isLeftPartitionSorted = keys[low] <= keys[mid];
+            // we can use the right partition check as a universal check
+            // for which partition is sorted AND which partition contains
+            // the minimum
+            boolean isRightPartitionSorted = keys[mid] < keys[high];
 
-            if (isLeftPartitionSorted) {
-                // you have to check the lower end since it could be
-                // by rotation, the left is actually the upper half of your
-                // values
-                if (keys[low] <= targetKey && targetKey < midVal) {
-                    high = mid - 1;
-                } else {
-                    low = mid + 1;
-                }
-            } else {
-                // if here the right partition is sorted
+            if (isRightPartitionSorted) {
                 if (midVal < targetKey && targetKey <= keys[high]) {
                     low = mid + 1;
                 } else {
                     high = mid - 1;
                 }
+            } else {
+                if (keys[low] <= targetKey && targetKey < midVal) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+                // if here the right partition is sorted
+
             }
         }
 
@@ -229,6 +230,7 @@ public final class SSTableIndexLookup {
      */
     public static long findMinInRotated(long[] keys) {
         // TODO: Find minimum element in rotated array
+
         return -1;
     }
 
