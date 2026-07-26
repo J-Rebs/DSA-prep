@@ -271,8 +271,41 @@ public final class SSTableIndexLookup {
      * Finds a local peak element index in an unsorted metrics array.
      */
     public static int findPeakLoad(long[] metrics) {
-        // TODO: Find peak index in metric array
-        return -1;
+        // key idea: there are multiple answers that are valid
+        // and for any given local peak we either end up on its descending
+        // or ascending slope,
+        // therefore we can always cut the search space in half each time
+        // until we arrive at the peak
+
+        // saftey guard
+        if (metrics == null || metrics.length == 0) {
+            return -1;
+        }
+
+        int low = 0;
+        int high = metrics.length - 1;
+        int mid;
+        long midVal;
+        while (low < high) {
+            mid = (low + high) >>> 1;
+            midVal = metrics[mid];
+            // mid is guaranteed to be less than high because bit shift rounds down
+            // therefore since high <= metrics.length - 1, we dont have to worry
+            // about mid + 1 >= metrics.length
+            if (midVal > metrics[mid + 1]) {
+                // in this case we are on the descending slope, so we want to
+                // back up the slope
+                // not we cannot preclude mid as the peak!
+                high = mid;
+            } else {
+                // otherwise we are on the ascending slope, so we ant to advance
+                // towards the peak
+                // in this case, we know mid is not the peak, so we can go beyond it
+                low = mid + 1;
+            }
+
+        }
+        return low;
     }
 
     /**
