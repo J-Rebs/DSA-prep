@@ -829,7 +829,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Exact Search (Key Index Lookup)",
                 "difficulty": "Easy",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "MemTable Exact Match (finding exact key in cache blocks)",
                 "description": "Finds the exact index of a target key in a sorted array, returning -1 if it does not exist.",
                 "hints": "Classic binary search. If target equals keys[mid], return mid. If keys[mid] < target, search right. Otherwise, search left."
@@ -837,7 +837,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Insertion Position Finder (Start Block Locator)",
                 "difficulty": "Easy",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Log Append boundary finder (finding index to insert new record)",
                 "description": "Finds the index where target should be inserted in a sorted array to maintain order.",
                 "hints": "If target exists, return its index. If not, the loop terminates when low > high, and the index low is the insertion point."
@@ -845,7 +845,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "First and Last Occurrence Search",
                 "difficulty": "Easy",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "SSTable duplicate key range locator (finding start & end offset of duplicate keys)",
                 "description": "Finds the starting and ending index of a target key in a sorted array containing duplicates.",
                 "hints": "Run binary search twice: once finding the lower bound (first occurrence) and once finding the upper bound (last occurrence)."
@@ -853,7 +853,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Range Query Lookup (SSTable Lower Bound)",
                 "difficulty": "Medium",
-                "status": "🔄 In Progress",
+                "status": "🟢 Solved",
                 "systemMapping": "LSM-Tree SSTable Block Indexer (finding the data block offset)",
                 "description": "Given sorted block keys and offsets, find the largest key <= target to retrieve the correct offset.",
                 "hints": "Maintain an answer variable initialized to -1. When keys[mid] <= target, cache mid in answer and search right (low = mid + 1) to find a larger match. If keys[mid] > target, search left."
@@ -861,7 +861,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Rotated Index Buffer Search (Hash Ring Locator)",
                 "difficulty": "Medium",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Consistent Hashing Ring search (finding nodes in a shifted circle)",
                 "description": "Searches for a target key in a sorted array that has been rotated by an unknown offset.",
                 "hints": "Identify which half of the array is normally sorted. If keys[low] <= keys[mid], the left half is sorted. Otherwise, the right half is sorted. Search inside the sorted half first."
@@ -869,7 +869,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Rotated Index Boundary Finder (Min element in ring)",
                 "difficulty": "Medium",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Shifted circular boundary detector (finding the ring's pivot element)",
                 "description": "Finds the minimum element in a sorted rotated array.",
                 "hints": "Compare keys[mid] with keys[high]. If keys[mid] > keys[high], the minimum element is in the right half (low = mid + 1). Otherwise, the minimum is in the left half (high = mid)."
@@ -877,7 +877,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Peak Load Anomaly Detector (Find peak element)",
                 "difficulty": "Medium",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Telemetry Spike detector (finding local peak workloads)",
                 "description": "Finds a local peak element (an element greater than its neighbors) in an unsorted metrics array.",
                 "hints": "Compare keys[mid] with keys[mid + 1]. If keys[mid] < keys[mid + 1], a peak must exist in the right half. Otherwise, a peak must exist in the left half."
