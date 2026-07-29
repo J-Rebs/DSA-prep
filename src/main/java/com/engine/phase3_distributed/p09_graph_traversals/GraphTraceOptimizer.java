@@ -18,10 +18,33 @@ public final class GraphTraceOptimizer {
 
     /**
      * Problem 1: Flood Fill Grid (Pixel Color Ingest)
-     * Changes starting cell and all 4-directionally connected same-colored cells to color.
+     * Changes starting cell and all 4-directionally connected same-colored cells to
+     * color.
      */
     public static int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        // TODO: Implement Flood Fill BFS/DFS
+        int originalColor = image[sr][sc];
+        return floodFillHelper(image, sr, sc, color, originalColor);
+    }
+
+    public static int[][] floodFillHelper(int[][] image, int sr, int sc, int color, int originalColor) {
+        // saftey guard boundary checks
+        if (image == null || image[0] == null || sr < 0
+                || sr >= image.length || sc < 0 || sc >= image[0].length) {
+            return image;
+        }
+        // then we can do a base case check either we've already painted here
+        // or it is a spot we cannot paint
+        if (image[sr][sc] == color || image[sr][sc] == 0 || image[sr][sc] != originalColor) {
+            return image;
+        }
+        // update
+        image[sr][sc] = color;
+        // then we can recurse
+        int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+        for (int[] dir : dirs) {
+            floodFillHelper(image, sr + dir[0], sc + dir[1], color, originalColor);
+        }
+
         return image;
     }
 
@@ -30,8 +53,40 @@ public final class GraphTraceOptimizer {
      * Counts number of 4-directionally connected islands of '1's in a 2D grid.
      */
     public static int numIslands(char[][] grid) {
-        // TODO: Implement Island Count BFS/DFS
-        return 0;
+        // saftey guard
+        if (grid == null || grid[0] == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int islandCount = 0;
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                if (grid[r][c] == '1') {
+                    islandCount++;
+                    numIslandsHelper(grid, r, c);
+                }
+            }
+        }
+        return islandCount;
+    }
+
+    public static void numIslandsHelper(char[][] grid, int r, int c) {
+        // base case
+        if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length) {
+            return;
+        }
+        // check if valid island plot
+        if (grid[r][c] == '0') {
+            return;
+        }
+        // mark plot as seen by sinking
+        grid[r][c] = '0';
+
+        // explore new plots
+        int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+        for (int[] dir : dirs) {
+            numIslandsHelper(grid, r + dir[0], c + dir[1]);
+        }
     }
 
     /**
@@ -39,8 +94,39 @@ public final class GraphTraceOptimizer {
      * Finds maximum area of an island of 1s in a 2D grid.
      */
     public static int maxAreaOfIsland(int[][] grid) {
-        // TODO: Implement Max Island Area DFS
-        return 0;
+        // saftey guard
+        if (grid == null || grid[0] == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        // computation
+        int maxIslandArea = 0;
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                if (grid[r][c] == 1) {
+                    maxIslandArea = Math.max(maxIslandArea, calculateIslandArea(grid, r, c));
+                }
+            }
+        }
+        return maxIslandArea;
+    }
+
+    public static int calculateIslandArea(int[][] grid, int r, int c) {
+        // boundary check
+        if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length) {
+            return 0;
+        }
+        // otherwise check if plot is land
+        if (grid[r][c] == 0) {
+            return 0;
+        }
+        // if is land add to answer after sinking
+        grid[r][c] = 0;
+
+        return 1 + calculateIslandArea(grid, r + 1, c)
+                + calculateIslandArea(grid, r - 1, c)
+                + calculateIslandArea(grid, r, c + 1)
+                + calculateIslandArea(grid, r, c - 1);
     }
 
     // ==========================================
@@ -65,8 +151,10 @@ public final class GraphTraceOptimizer {
     }
 
     /**
-     * Problem 6: Rotting Oranges / Outage Spread (Cascading Latency Spike Propagation)
-     * Finds minimum time for all fresh oranges (1) to become rotten (2) via 4-way BFS.
+     * Problem 6: Rotting Oranges / Outage Spread (Cascading Latency Spike
+     * Propagation)
+     * Finds minimum time for all fresh oranges (1) to become rotten (2) via 4-way
+     * BFS.
      */
     public static int orangesRotting(int[][] grid) {
         // TODO: Implement Multi-Source BFS
@@ -103,14 +191,17 @@ public final class GraphTraceOptimizer {
     public static class Node {
         public int val;
         public List<Node> neighbors;
+
         public Node() {
             val = 0;
             neighbors = new java.util.ArrayList<>();
         }
+
         public Node(int _val) {
             val = _val;
             neighbors = new java.util.ArrayList<>();
         }
+
         public Node(int _val, List<Node> _neighbors) {
             val = _val;
             neighbors = _neighbors;
