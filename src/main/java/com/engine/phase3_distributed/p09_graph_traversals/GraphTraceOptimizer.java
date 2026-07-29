@@ -122,11 +122,13 @@ public final class GraphTraceOptimizer {
         }
         // if is land add to answer after sinking
         grid[r][c] = 0;
+        int[][] DIRS = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+        int area = 1;
+        for (int[] dir : DIRS) {
+            area += calculateIslandArea(grid, r + dir[0], c + dir[1]);
+        }
 
-        return 1 + calculateIslandArea(grid, r + 1, c)
-                + calculateIslandArea(grid, r - 1, c)
-                + calculateIslandArea(grid, r, c + 1)
-                + calculateIslandArea(grid, r, c - 1);
+        return area;
     }
 
     // ==========================================
