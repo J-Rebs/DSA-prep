@@ -818,10 +818,10 @@ int mid = (low + high) >>> 1;</code></pre>
             "id": "p04_binary_search",
             "name": "Binary Search",
             "component": "LSM-Tree SSTable Index Lookup",
-            "status": "🔄 In Progress",
+            "status": "🟢 Mastered",
             "guidance": {
               "overview": "Binary Search cuts search space in half at every step. Beyond exact index lookups, it operates on range boundaries, rotated arrays, peak finding, and answer space capacity optimization.",
-              "mentalModel": "<ul style='margin: 0; padding-left: 14px; display: flex; flex-direction: column; gap: 6px;'><li style='margin-bottom: 2px;'><strong>Floor vs Ceiling:</strong> <code>low</code> = ceiling (smallest &ge; target), <code>high</code> (low-1) = floor (largest &le; target).</li><li style='margin-bottom: 2px;'><strong>Rotated Invariants (<code>keys[mid] vs keys[high]</code>):</strong> If <code>mid &lt; high</code>, right half is sorted and min is in left half; if <code>mid &gt; high</code>, left half is sorted and min is in right half. Rotated max is at <code>(min_idx - 1 + N) % N</code>.</li><li><strong>Slope-Following Peak Finding:</strong> Evaluate local slope <code>arr[mid] vs arr[mid+1]</code>. Stepping uphill discards 50% of search space until <code>low == high</code>.</li></ul>",
+              "mentalModel": "<ul style='margin: 0; padding-left: 14px; display: flex; flex-direction: column; gap: 6px;'><li style='margin-bottom: 2px;'><strong>Floor vs Ceiling:</strong> <code>low</code> = ceiling (smallest &ge; target), <code>high</code> (low-1) = floor (largest &le; target).</li><li style='margin-bottom: 2px;'><strong>Rotated Invariants (<code>keys[mid] vs keys[high]</code>):</strong> If <code>mid &lt; high</code>, right half is sorted and min is in left half; if <code>mid &gt; high</code>, left half is sorted and min is in right half. Rotated max is at <code>(min_idx - 1 + N) % N</code>.</li><li style='margin-bottom: 2px;'><strong>Slope-Following Peak Finding:</strong> Evaluate local slope <code>arr[mid] vs arr[mid+1]</code>. Stepping uphill discards 50% of search space until <code>low == high</code>.</li><li><strong>Answer-Space Monotonicity:</strong> Bound search space between <code>low = max(items)</code> and <code>high = sum(items)</code>. Check feasibility of <code>mid</code>; if valid, search left (<code>high = mid</code>), else search right (<code>low = mid + 1</code>).</li></ul>",
               "javaTricks": "Always calculate midpoint using unsigned right shift: <code>int mid = (low + high) >>> 1</code> to avoid integer overflow bugs. In hot loops, declare loop variables outside the loop to limit frame allocation footprints."
             },
             "problems": [
@@ -884,7 +884,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Capacity Planner (Search Space Binary Search)",
                 "difficulty": "Medium",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Resource Scheduler (finding minimum capacity to complete workloads)",
                 "description": "Finds the minimum capacity required to complete a series of workloads within a limit.",
                 "hints": "Binary search on the *result space* (min workload max to sum of all workloads). For each mid capacity, verify if tasks can be completed in limit. If yes, search left; if no, search right."
@@ -892,23 +892,23 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "2D SSTable Matrix Search (Partition Grid Search)",
                 "difficulty": "Medium",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Multi-SSTable partition grid search (searching across 2D sorted partition grid)",
                 "description": "Searches for a target key in a 2D sorted matrix.",
-                "hints": "Treat the M x N matrix as a virtual 1D array of size M * N. Binary search mid index mapped to matrix[mid / N][mid % N]."
+                "hints": "Option A (Row then Col): Binary search row boundaries where matrix[mid][0] <= target <= matrix[mid][cols-1], then binary search inside that row. Option B (Virtual 1D): Treat M x N grid as a flat 1D array [0..M*N-1], mapping mid via row = mid / numCols (full rows skipped) and col = mid % numCols (horizontal offset)."
               },
               {
                 "name": "Cross-Partition Median Key Find (Split-brain sync)",
                 "difficulty": "Hard",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Distributed database sync (finding median partition key in log streams)",
                 "description": "Finds the median of two sorted arrays of different sizes in O(log(min(M, N))) time.",
-                "hints": "Partition both arrays such that the left half has the same size as the right half. Perform binary search on the partition cut point of the smaller array."
+                "hints": "1. Swap inputs up front (ensure keysA.length <= keysB.length) so forced cut j = (M+N+1)/2 - i never goes out of bounds. 2. Formula (M+N+1)/2 unifies odd/even math. Binary search cut i in keysA [0..M]. Verify maxLeftA <= minRightB and maxLeftB <= minRightA."
               },
               {
                 "name": "Maximum Metric Load Allocator (Minimizing max load)",
                 "difficulty": "Hard",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Router Traffic Allocator (partitioning loads to minimize maximum bottleneck)",
                 "description": "Partitions an array into K subarrays such that the maximum subarray sum is minimized.",
                 "hints": "Binary search on the result space (max element to total sum). For each mid limit, check if you can split the array into K or fewer subarrays. Adjust boundaries accordingly."
@@ -919,7 +919,7 @@ int mid = (low + high) >>> 1;</code></pre>
             "id": "p17_io_and_parsing",
             "name": "I/O & Parsing",
             "component": "Log File & Stream Codec Parser Engine",
-            "status": "🛑 Todo",
+            "status": "🟢 Mastered",
             "guidance": {
               "overview": "I/O, Parsing & Stream Processing covers fast stream tokenization, state-machine text parsing, expression evaluation (RPN/AST), nested structure iterators, binary tree serialization, and length-prefixed protocol framing without external library allocations.",
               "mentalModel": "Maintain zero-allocation char pointers and state invariants. Evaluate math and boolean predicate expressions using operator and operand stack buffers. Prefix byte/string payloads with length markers for collision-free stream decoding.",
@@ -1034,7 +1034,107 @@ int mid = (low + high) >>> 1;</code></pre>
         "subtitle": "Connectivity, Routing & Consensus",
         "color": "var(--accent-cyan)",
         "concepts": [
-          { "id": "p09_graph_traversals", "name": "Graph BFS/DFS", "component": "Call Graph Trace Optimizer", "status": "🛑 Todo" },
+          {
+            "id": "p09_graph_traversals",
+            "name": "Graph BFS/DFS",
+            "component": "Call Graph Trace Optimizer",
+            "status": "🔄 In Progress",
+            "guidance": {
+              "overview": "Graph BFS/DFS & Grid Traversals model networks, service call graphs, and spatial grids. BFS guarantees shortest path on unweighted graphs level by level, while DFS explores connected components and depth bounds.",
+              "mentalModel": "<ul style='margin: 0; padding-left: 14px; display: flex; flex-direction: column; gap: 6px;'><li style='margin-bottom: 2px;'><strong>In-Place Grid Marking:</strong> Set grid values in-place (e.g. '1' -> '0') to avoid O(M*N) boolean visited[][] array allocations.</li><li style='margin-bottom: 2px;'><strong>Multi-Source BFS:</strong> Enqueue all source nodes at level 0 up front to simulate simultaneous propagation (e.g. Rotting Oranges, 01 Matrix).</li><li><strong>Bi-Directional BFS:</strong> Alternate search from start and end sets to shrink search space from O(b^d) to O(b^(d/2)).</li></ul>",
+              "javaTricks": "Use static direction offset array DIRS = {{0,1},{1,0},{0,-1},{-1,0}}. Use ArrayDeque for Queue/Stack operations to eliminate synchronized method overhead."
+            },
+            "problems": [
+              {
+                "name": "Flood Fill Grid (Pixel Color Ingest)",
+                "difficulty": "Easy",
+                "status": "🛑 Todo",
+                "systemMapping": "Distributed canvas & image segmentation rasterizer",
+                "description": "Change starting cell and all 4-directionally connected same-colored cells to target color.",
+                "hints": "If starting cell already equals new color, return immediately. Perform DFS/BFS in 4 directions updating color."
+              },
+              {
+                "name": "Island Count (Connected Microservice Cluster Locator)",
+                "difficulty": "Easy",
+                "status": "🛑 Todo",
+                "systemMapping": "Network cluster topology analyzer (counting isolated server clusters)",
+                "description": "Count number of 4-directionally connected islands of 1s in a 2D binary grid.",
+                "hints": "Iterate through grid cells. On finding '1', increment count and run DFS/BFS to sink the entire island to '0'."
+              },
+              {
+                "name": "Max Island Area (Largest Data Center Subnet Size)",
+                "difficulty": "Easy",
+                "status": "🛑 Todo",
+                "systemMapping": "Infrastructure capacity analyzer (finding largest connected server cluster)",
+                "description": "Find maximum area of an island of 1s in a 2D binary grid.",
+                "hints": "DFS returns area of current connected component. Track global max area across all starting cells."
+              },
+              {
+                "name": "Pacific Atlantic Water Flow (Bi-directional Network Ingress)",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Multi-region traffic routing validator (nodes reaching both ocean backbones)",
+                "description": "Find coordinates where water can flow to both Pacific and Atlantic oceans.",
+                "hints": "Run DFS backwards from Pacific ocean borders into pacificReachable set, and from Atlantic ocean borders into atlanticReachable set. Intersect both sets."
+              },
+              {
+                "name": "Surrounded Regions (Deadlock Memory Cell Reclaimer)",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Deadlock memory cell reclaimer (capturing 4-way enclosed unreferenced nodes)",
+                "description": "Capture all 'O' regions completely surrounded by 'X'.",
+                "hints": "DFS from border 'O' cells to mark non-surrounded 'O's as 'E' (escaped). Then change remaining 'O's to 'X' and 'E's back to 'O'."
+              },
+              {
+                "name": "Rotting Oranges / Outage Spread (Cascading Latency Spike Propagation)",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Network outage propagation & epidemic latency spike simulation",
+                "description": "Min time for all 1s to become 2s via 4-directional BFS propagation.",
+                "hints": "Multi-source BFS: Enqueue all initial rotten oranges (2). Track minutes elapsed per BFS level until no fresh oranges remain."
+              },
+              {
+                "name": "01 Matrix Nearest Distance (Service Mesh RPC Latency Map)",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Service Mesh RPC Latency Map (finding distance to nearest zero node)",
+                "description": "Find distance of nearest 0 for each cell in a binary matrix.",
+                "hints": "Multi-source BFS: Enqueue all 0 cells with distance 0. Set 1 cells to max distance and update distance layer by layer."
+              },
+              {
+                "name": "Word Ladder (RPC Method Schema Mutation Path)",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "API schema transformation planner (shortest mutation path)",
+                "description": "Find shortest transformation sequence length from beginWord to endWord.",
+                "hints": "BFS level order. For each word, try changing each character 'a'..'z'. If mutant word is in dict, enqueue it and remove from dict."
+              },
+              {
+                "name": "Clone Graph (Distributed RPC Microservice Call-Graph Replicator)",
+                "difficulty": "Medium",
+                "status": "🛑 Todo",
+                "systemMapping": "Microservice call graph trace duplicator",
+                "description": "Create a deep copy of a connected undirected graph.",
+                "hints": "Use a HashMap<Node, Node> to map original nodes to cloned nodes. BFS/DFS to copy nodes and wire up cloned neighbor lists."
+              },
+              {
+                "name": "Word Ladder II (All Shortest Transformation Paths)",
+                "difficulty": "Hard",
+                "status": "🛑 Todo",
+                "systemMapping": "Fault-tolerant multi-path RPC mutation sequence planner",
+                "description": "Find all shortest transformation sequences from beginWord to endWord.",
+                "hints": "BFS to build parent graph of shortest distances, then DFS backtracking from endWord to beginWord to construct all paths."
+              },
+              {
+                "name": "Shortest Path in 2D Matrix with Obstacle Elimination",
+                "difficulty": "Hard",
+                "status": "🛑 Todo",
+                "systemMapping": "Router packet bypass allocator (shortest path bypassing up to K firewall rules)",
+                "description": "Find shortest path from (0,0) to (M-1,N-1) stepping over up to K obstacle walls.",
+                "hints": "BFS with 3D state (row, col, remainingK). Track visited[row][col][k] to avoid redundant state traversals."
+              }
+            ]
+          },
           { "id": "p10_topological_sort", "name": "Topological Sort", "component": "Distributed Task Scheduler", "status": "🛑 Todo" },
           { "id": "p11_union_find", "name": "Union-Find (DSU)", "component": "Network Partition Detector", "status": "🛑 Todo" },
           { "id": "p12_shortest_paths", "name": "Dijkstra / Shortest Path", "component": "Service Mesh RPC Route optimizer", "status": "🛑 Todo" }

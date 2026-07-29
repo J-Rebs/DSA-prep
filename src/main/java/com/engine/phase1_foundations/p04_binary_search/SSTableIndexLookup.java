@@ -310,12 +310,80 @@ public final class SSTableIndexLookup {
 
     /**
      * Problem 8: Capacity Planner (Search Space Binary Search)
-     * Finds minimum instance capacity required to complete workloads in
-     * numInstances limit.
+     * Finds the minimum per-instance capacity required to process an ordered
+     * sequence
+     * of workloads using at most {@code numInstances} parallel worker instances.
+     * 
+     * Tasks must be assigned in contiguous order to parallel workers without
+     * splitting single tasks.
+     * Binary searches the answer space [max(taskLoads), sum(taskLoads)] to find the
+     * smallest capacity
+     * that allows all tasks to finish across <= numInstances workers.
+     * 
+     * @param taskLoads    array where each element represents the workload
+     *                     cost/size of a task
+     * @param numInstances maximum number of parallel worker instances available
+     * @return minimum instance capacity needed
      */
     public static int calculateMinimumCapacity(int[] taskLoads, int numInstances) {
-        // TODO: Implement search-space binary search for optimal load capacity
-        return -1;
+        // saftey guard
+        if (taskLoads == null || taskLoads.length == 0 || numInstances <= 0) {
+            return -1;
+        }
+
+        // compute the answer space which is
+        // [max(taskLoads) ... sum(taskLoads)] because at minimum an instance
+        // must be able to handle the largest task by itself
+        // and at maximum we could just pick a huge instance such that all task loads
+        // fit into it
+        int tasksSum = 0;
+        int maxTask = 0;
+        for (int task : taskLoads) {
+            tasksSum += task;
+            maxTask = maxTask > task ? maxTask : task;
+        }
+        // then conduct binary search
+        int lowCapacity = maxTask;
+        int highCapacity = tasksSum;
+        int instanceCapacity;
+        int instancesUsed;
+        int currentInstanceCapacityLeft;
+
+        while (lowCapacity < highCapacity) {
+            instanceCapacity = (lowCapacity + highCapacity) >>> 1;
+            // see how many instances we are going to use at this capacity
+            instancesUsed = 1;
+            currentInstanceCapacityLeft = instanceCapacity;
+
+            for (int task : taskLoads) {
+                // either the current instance can take the whole task
+                // or we need a new instance
+                if (currentInstanceCapacityLeft >= task) {
+                    currentInstanceCapacityLeft -= task;
+                } else {
+                    instancesUsed += 1;
+                    currentInstanceCapacityLeft = instanceCapacity - task;
+                }
+            }
+            // check feasiability
+            if (instancesUsed == numInstances) {
+                // if right at max num instances, see if can go lower
+                highCapacity = instanceCapacity;
+            } else if (instancesUsed < numInstances) {
+                // or if under the max instances try to see if can get size of
+                // instance down
+                highCapacity = instanceCapacity;
+            } else {
+                // if using too many tasks have to try to make instances larger;
+                // in this case, we can exclude instance capacity as a possible answer
+                // because it is NOT feasible whereas it is feasible for the above two
+                // conditions
+                lowCapacity = instanceCapacity + 1;
+            }
+
+        }
+        // on loop exit, low and high should converge to the mins
+        return lowCapacity;
     }
 
     /**
@@ -324,8 +392,59 @@ public final class SSTableIndexLookup {
      * each row > last of previous.
      */
     public static boolean searchIn2DMatrix(long[][] matrix, long target) {
-        // TODO: Implement 2D matrix binary search
-        return false;
+        // saftey guard
+        if (matrix == null || matrix.length == 0 || matrix[0] == null || matrix[0].length == 0) {
+            return false;
+        }
+
+        // find the right row and then the right column
+        boolean targetFound = false;
+        int numRows = matrix.length;
+        int numCols = matrix[0].length;
+        int low = 0;
+        int high = numRows - 1;
+        int mid;
+        int targetRow = -1;
+
+        while (low <= high) {
+            mid = (low + high) >>> 1;
+            // if the row bounds target, we've found the row we need
+            // no need to keep searching
+            if (matrix[mid][0] <= target && matrix[mid][numCols - 1] >= target) {
+                targetRow = mid;
+                break;
+            } else if (matrix[mid][0] > target) {
+                // if on the other hand the first element is already larger than target
+                // we need to look at an earlier row
+                high = mid - 1;
+            } else {
+                // or in the last case, if the last element of the row is smaller than
+                // the target, we need a later row
+                low = mid + 1;
+            }
+        }
+        // if you couldn't find a suitable row, then return false
+        if (targetRow == -1) {
+            return targetFound;
+        }
+        // otherwise, try and find the target
+        long[] candidateRow = matrix[targetRow];
+        low = 0;
+        high = numCols - 1;
+        while (low <= high) {
+            mid = (low + high) >>> 1;
+
+            if (candidateRow[mid] == target) {
+                targetFound = true;
+                break;
+            } else if (candidateRow[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return targetFound;
     }
 
     // ==========================================
@@ -338,7 +457,66 @@ public final class SSTableIndexLookup {
      * time.
      */
     public static double findMedianKey(long[] keysA, long[] keysB) {
-        // TODO: Implement O(log(min(M, N))) partition search
+        // key idea: we dont have to merge the arrays, we can just pretend they are
+        // merged
+        // and then check when we've actually found a partition that covers the smallest
+        // 50% of the overall
+        // elements
+
+        // saftey guard, always have the smaller array be the first one, so B cannot
+        // be negative or out of bounds
+        if (keysA.length > keysB.length) {
+            return findMedianKey(keysB, keysA);
+        }
+
+        int M = keysA.length;
+        int N = keysB.length;
+
+        int low = 0;
+        // high is M because we are looking at number of elements
+        // rather than specific indexes
+        int high = M;
+
+        long maxALeft = Long.MIN_VALUE;
+        long maxBLeft = Long.MIN_VALUE;
+        long minARight = Long.MAX_VALUE;
+        long minBRight = Long.MAX_VALUE;
+
+        int elementCountA;
+        int elementCountB;
+
+        // since (M + N + 1) / 2 would be the middle of the overall array
+        // we can simulate guess where to cut B based on where we cut A
+
+        while (low <= high) {
+            elementCountA = (low + high) >>> 1;
+            // the + 1 is required to make sure that when we compute median it is accurate
+            elementCountB = (M + N + 1) / 2 - elementCountA;
+
+            // subtract 1 because of 0 based indexing
+            maxALeft = (elementCountA == 0) ? Long.MIN_VALUE : keysA[elementCountA - 1];
+            minARight = (elementCountA == M) ? Long.MAX_VALUE : keysA[elementCountA];
+
+            maxBLeft = (elementCountB == 0) ? Long.MIN_VALUE : keysB[elementCountB - 1];
+            minBRight = (elementCountB == N) ? Long.MAX_VALUE : keysB[elementCountB];
+
+            // now assess if we found the median or not
+            if (maxALeft <= minBRight && maxBLeft <= minARight) {
+                if ((M + N) % 2 != 0) {
+                    return Math.max(maxALeft, maxBLeft);
+                } else {
+                    return (Math.max(maxALeft, maxBLeft) + Math.min(minARight, minBRight)) / 2.0;
+                }
+            } else if (maxALeft > minBRight) {
+                // in this case, we have too many elements in A
+                high = elementCountA - 1;
+            } else {
+                // int his case, we have too many elements in B
+                low = elementCountA + 1;
+            }
+
+        }
+
         return 0.0;
     }
 
@@ -347,7 +525,8 @@ public final class SSTableIndexLookup {
      * Partitions array into numShards such that maximum subarray sum is minimized.
      */
     public static int minimizeMaxShardLoad(int[] partitionSizes, int numShards) {
-        // TODO: Implement search-space binary search for minimizing maximum load sum
-        return -1;
+        // this problem reduces to the prior.
+        return calculateMinimumCapacity(partitionSizes, numShards);
+
     }
 }

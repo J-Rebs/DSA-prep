@@ -26,6 +26,14 @@
    * **Slope-Following Peak Detection:**
      * Finding a local peak on an unsorted array reduces to Binary Search because evaluating local slope `metrics[mid]` vs `metrics[mid + 1]` determines whether `mid` sits on an ascending ($\nearrow$) or descending ($\searrow$) slope.
      * Stepping uphill discards 50% of the search space at each step until `low == high` pin-points a local maximum!
+   * **Binary Search on Answer Space (Monotonicity Duality):**
+     * Any problem asking for *"Find the min/max capacity X that satisfies condition Y"* reduces to Binary Search if the feasibility check $f(X)$ is **monotonic** (i.e. transitions cleanly from `[False, False, ..., True, True]`).
+     * **Lower Bound (`low`)**: Absolute minimum feasible candidate (e.g. `max(taskLoads)` — single largest item that must fit).
+     * **Upper Bound (`high`)**: Absolute maximum feasible candidate (e.g. `sum(taskLoads)` — total workload on 1 instance).
+     * **Feasibility Check**: Binary search tests `mid`. If `isFeasible(mid)` is true, search left (`high = mid`) for a smaller valid capacity. If false, search right (`low = mid + 1`).
+   * **Cross-Partition Virtual Cut Invariants (2-Array Median Search):**
+     * **Array Order Swap Guard:** Always swap inputs up front (`keysA.length <= keysB.length`) so forced cut $j = (M + N + 1) / 2 - i$ never yields negative or out-of-bound indices.
+     * **Unified Left Half Size Formula:** `(M + N + 1) / 2` unifies odd and even combined length math. For odd $M+N$, median is `max(maxALeft, maxBLeft)`. For even $M+N$, median is `(max(maxALeft, maxBLeft) + min(minARight, minBRight)) / 2.0`.
 
 ---
 
