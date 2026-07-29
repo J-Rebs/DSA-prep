@@ -1,5 +1,6 @@
 package com.engine.phase3_distributed.p09_graph_traversals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -140,8 +141,73 @@ public final class GraphTraceOptimizer {
      * Finds coordinates where water can flow to both Pacific and Atlantic oceans.
      */
     public static List<List<Integer>> pacificAtlantic(int[][] heights) {
-        // TODO: Implement Pacific Atlantic Water Flow
-        return List.of();
+        // saftey guard
+        if (heights == null || heights.length == 0 || heights[0] == null || heights[0].length == 0) {
+            return List.of();
+        }
+        // set up reached and visited
+        boolean[][] visitedPacific = new boolean[heights.length][heights[0].length];
+        boolean[][] visitedAtlantic = new boolean[heights.length][heights[0].length];
+        int[][] reached = new int[heights.length][heights[0].length];
+
+        // traverse
+        // start from first and last row
+        for (int c = 0; c < heights[0].length; c++) {
+            invertedWaterFlow(heights, reached, visitedPacific, 0, c);
+            invertedWaterFlow(heights, reached, visitedAtlantic, heights.length - 1, c);
+        }
+        // and also start from first and last column
+        for (int r = 0; r < heights.length; r++) {
+            invertedWaterFlow(heights, reached, visitedPacific, r, 0);
+            invertedWaterFlow(heights, reached, visitedAtlantic, r, heights[0].length - 1);
+        }
+
+        // process results
+        List<List<Integer>> res = new ArrayList<>();
+
+        for (int r = 0; r < heights.length; r++) {
+            for (int c = 0; c < heights[0].length; c++) {
+                if (reached[r][c] == 2) {
+                    res.add(List.of(r, c));
+                }
+            }
+        }
+
+        return res;
+    }
+
+    public static void invertedWaterFlow(int[][] heights, int[][] reached, boolean[][] visited, int r, int c) {
+        // are we at aa valid spot, gate this in case first call is not coming from
+        // recursion
+        if (r < 0 || c < 0 || r >= heights.length || c >= heights[0].length) {
+            return;
+        }
+        // has this spot been visited
+        if (visited[r][c]) {
+            return;
+        }
+        // if not, then we should visit it
+        visited[r][c] = true;
+        reached[r][c] += 1;
+        // then traverse
+        int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+        for (int[] dir : dirs) {
+            // for a given dir, we have to check if the next step is valid
+            int newR = r + dir[0];
+            int newC = c + dir[1];
+            // first, will it be on the board
+            if (newR < 0 || newC < 0 || newR >= heights.length || newC >= heights[0].length) {
+                continue;
+            }
+            // next, would where we want to go be uphill from where we are
+            // implies water could flow from there to here
+            // note: equivalent to check the inverse and skip recursion
+            if (heights[newR][newC] < heights[r][c]) {
+                continue;
+            }
+            invertedWaterFlow(heights, reached, visited, r + dir[0], c + dir[1]);
+        }
+
     }
 
     /**
