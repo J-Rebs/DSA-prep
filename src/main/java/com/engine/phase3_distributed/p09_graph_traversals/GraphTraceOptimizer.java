@@ -215,7 +215,50 @@ public final class GraphTraceOptimizer {
      * Captures all 'O' regions completely surrounded by 'X'.
      */
     public static void solveSurroundedRegions(char[][] board) {
-        // TODO: Implement Surrounded Regions DFS
+        if (board == null || board.length == 0 || board[0] == null || board[0].length == 0) {
+            return;
+        }
+        int rows = board.length;
+        int cols = board[0].length;
+
+        // figure out which O are reachable from edge
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                // do the top and bottow row
+                if (r == 0 || r == rows - 1) {
+                    doDFS(board, r, c);
+                }
+                // do the left and right column
+                if (c == 0 || c == cols - 1) {
+                    doDFS(board, r, c);
+                }
+            }
+        }
+        // those which were remain 'O' otherwise they become 'X'
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'X';
+                } else if (board[r][c] == 'E') {
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+
+    public static void doDFS(char[][] board, int r, int c) {
+        // we dont recurse if we see a O (inner region would remain unreached)
+        // since we assume we only start from edge cells
+        if (r < 0 || r >= board.length || c < 0 || c >= board[0].length || board[r][c] != 'O') {
+            return;
+        }
+        // mark safe
+        board[r][c] = 'E';
+        doDFS(board, r + 1, c);
+        doDFS(board, r - 1, c);
+        doDFS(board, r, c + 1);
+        doDFS(board, r, c - 1);
+
     }
 
     /**

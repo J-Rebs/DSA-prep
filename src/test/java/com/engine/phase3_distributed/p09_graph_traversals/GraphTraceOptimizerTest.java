@@ -121,7 +121,14 @@ public class GraphTraceOptimizerTest {
             {'X','X','O','X'},
             {'X','O','X','X'}
         };
+        char[][] expected = {
+            {'X','X','X','X'},
+            {'X','X','X','X'},
+            {'X','X','X','X'},
+            {'X','O','X','X'}
+        };
         GraphTraceOptimizer.solveSurroundedRegions(board);
+        assertArrayEquals(expected, board);
     }
 
     // 6. Rotting Oranges
