@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Ladder BFS - Interactive Visualizer</title>
+  <!-- Google Fonts: Playfair Display, Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #fdfbf7;
+      --bg-card: #ffffff;
+      --border-color: #e3ded2;
+      --border-active: #1c4e70;
+      --border-glow: rgba(28, 78, 112, 0.08);
+      
+      --text-primary: #222629;
+      --text-secondary: #5a6065;
+      --text-muted: #8d9499;
+
+      --accent-indigo: #1c4e70; /* Glazed Spanish Tile Cobalt Blue */
+      --accent-violet: #8b5cf6;
+      --accent-emerald: #10b981; /* Success / Match */
+      --accent-amber: #b28751; /* Colonial Gold */
+      --accent-rose: #e11d48; /* Mutation highlight */
+      --accent-cyan: #06b6d4;
+
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --shadow-card: 0 4px 16px rgba(43, 38, 34, 0.04), 0 2px 4px rgba(43, 38, 34, 0.02);
+      --shadow-hover: 0 10px 30px rgba(178, 135, 81, 0.08), 0 2px 6px rgba(43, 38, 34, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(143, 174, 180, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(168, 148, 176, 0.15) 0px, transparent 50%);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1320px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .glass-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-card);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .glass-panel:hover {
+      border-color: var(--accent-amber);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .tile-ribbon {
+      height: 4px;
+      width: 100%;
+      background: var(--accent-indigo);
+      border-bottom: 1.5px solid var(--accent-amber);
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+    }
+
+    header.glass-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 28px;
+    }
+
+    .title-area {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .badge-hard {
+      background: rgba(225, 29, 72, 0.12);
+      color: var(--accent-rose);
+      border: 1px solid rgba(225, 29, 72, 0.2);
+    }
+
+    .badge-concept {
+      background: rgba(28, 78, 112, 0.1);
+      color: var(--accent-indigo);
+      border: 1px solid rgba(28, 78, 112, 0.2);
+    }
+
+    h1 {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    p.subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Controls Grid */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .input-group-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .input-field label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    .input-field input {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: #faf8f5;
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-field input:focus {
+      border-color: var(--accent-indigo);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(28, 78, 112, 0.1);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #f4f0e8;
+      border-color: var(--accent-amber);
+    }
+
+    .btn-primary {
+      background: var(--accent-indigo);
+      color: #ffffff;
+      border-color: var(--accent-indigo);
+    }
+
+    .btn-primary:hover {
+      background: #143b56;
+      border-color: #143b56;
+    }
+
+    .speed-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    /* Main Workbench Split */
+    .workbench-layout {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 24px;
+    }
+
+    /* Left Panel: Level Tree & Queue Inspector */
+    .vis-main {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    /* Tree Level Containers */
+    .tree-levels {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 280px;
+      padding: 10px;
+      background: #faf8f5;
+      border-radius: 12px;
+      border: 1px solid #eee7db;
+    }
+
+    .level-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px;
+      background: #ffffff;
+      border: 1px dashed var(--border-color);
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .level-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--accent-indigo);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      min-width: 75px;
+      text-align: center;
+    }
+
+    .node-chips {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .word-node {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 2px solid var(--border-color);
+      background: #ffffff;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+
+    .word-node.active-pop {
+      border-color: var(--accent-rose);
+      background: #fff1f2;
+      color: var(--accent-rose);
+      box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2);
+      transform: scale(1.05);
+    }
+
+    .word-node.visited-tree {
+      border-color: var(--accent-emerald);
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .word-node.target-found {
+      border-color: var(--accent-amber);
+      background: #fffbe6;
+      color: #b28751;
+      box-shadow: 0 0 0 3px rgba(178, 135, 81, 0.3);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    /* Word Bank / Set Display */
+    .word-bank {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 14px;
+      background: #f4f0e8;
+      border-radius: 10px;
+    }
+
+    .bank-chip {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    .bank-chip.removed {
+      background: #e5e7eb;
+      color: #9ca3af;
+      text-decoration: line-through;
+      border-color: #d1d5db;
+      opacity: 0.6;
+    }
+
+    /* Queue Bar */
+    .queue-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: #eef6fa;
+      border: 1px solid #bce1f0;
+      border-radius: 10px;
+      min-height: 50px;
+      overflow-x: auto;
+    }
+
+    .queue-chip {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: var(--accent-indigo);
+      color: #fff;
+    }
+
+    /* Right Panel: Code Trace & Inspector */
+    .code-panel {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+
+    .code-line {
+      padding: 2px 8px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .code-line.active-line {
+      background: #334155;
+      color: #38bdf8;
+      font-weight: 700;
+      border-left: 3px solid #38bdf8;
+    }
+
+    .state-inspector {
+      background: #faf8f5;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .inspector-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      border-bottom: 1px solid #eee7db;
+      padding-bottom: 6px;
+    }
+
+    .inspector-label {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .inspector-val {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .log-box {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-primary);
+      background: #ffffff;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      min-height: 70px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- HEADER -->
+    <header class="glass-panel">
+      <div class="tile-ribbon"></div>
+      <div class="title-area">
+        <div class="badge-bar">
+          <span class="badge badge-hard">Hard / Medium</span>
+          <span class="badge badge-concept">Graph Traversal (BFS)</span>
+        </div>
+        <h1>Word Ladder — Shortest Mutation Path</h1>
+        <p class="subtitle">Visualizing level-by-level BFS transformation sequence from <code>beginWord</code> to <code>endWord</code>.</p>
+      </div>
+      <div>
+        <a href="./index.html" class="btn" style="text-decoration: none;">&larr; Back to Dashboard</a>
+      </div>
+    </header>
+
+    <!-- CONTROLS PANEL -->
+    <section class="glass-panel">
+      <div class="tile-ribbon"></div>
+      <div class="controls-grid">
+        <div class="input-group-row">
+          <div class="input-field">
+            <label>Begin Word</label>
+            <input type="text" id="beginWordInput" value="hit" maxlength="6">
+          </div>
+          <div class="input-field">
+            <label>End Word</label>
+            <input type="text" id="endWordInput" value="cog" maxlength="6">
+          </div>
+          <div class="input-field" style="flex: 2;">
+            <label>Word List (Comma Separated)</label>
+            <input type="text" id="wordListInput" value="hot, dot, dog, lot, log, cog">
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="btn btn-primary" id="btnPlay">▶ Play</button>
+          <button class="btn" id="btnStepFwd">Step &rarr;</button>
+          <button class="btn" id="btnStepBack">&larr; Back</button>
+          <button class="btn" id="btnReset">&#217; Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN WORKBENCH LAYOUT -->
+    <div class="workbench-layout">
+      
+      <!-- LEFT COLUMN: VISUALIZER PANES -->
+      <div class="vis-main">
+        
+        <!-- Queue Bar -->
+        <div class="glass-panel" style="padding: 16px;">
+          <div class="tile-ribbon"></div>
+          <div class="section-title">📥 Active BFS Queue</div>
+          <div class="queue-bar" id="queueContainer">
+            <span style="color: var(--text-muted); font-size: 0.85rem;">Queue is empty</span>
+          </div>
+        </div>
+
+        <!-- Tree Levels Visualizer -->
+        <div class="glass-panel">
+          <div class="tile-ribbon"></div>
+          <div class="section-title">🌐 Level-by-Level Mutation Tree</div>
+          <div class="tree-levels" id="treeLevelsContainer">
+            <!-- Level rows dynamically inserted here -->
+          </div>
+        </div>
+
+        <!-- Unvisited Word Set / Bank -->
+        <div class="glass-panel">
+          <div class="tile-ribbon"></div>
+          <div class="section-title">📚 Remaining Unvisited Word Set</div>
+          <div class="word-bank" id="wordBankContainer">
+            <!-- Word bank chips inserted here -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: STATE INSPECTOR & CODE TRACE -->
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <!-- State Inspector -->
+        <div class="glass-panel">
+          <div class="tile-ribbon"></div>
+          <div class="section-title">🔍 Step Inspector</div>
+          <div class="state-inspector">
+            <div class="inspector-row">
+              <span class="inspector-label">Current Step:</span>
+              <span class="inspector-val" id="stepCounterVal">0 / 0</span>
+            </div>
+            <div class="inspector-row">
+              <span class="inspector-label">Current Level (Length):</span>
+              <span class="inspector-val" id="levelVal">1</span>
+            </div>
+            <div class="inspector-row">
+              <span class="inspector-label">Popped Node:</span>
+              <span class="inspector-val" id="poppedNodeVal">None</span>
+            </div>
+            <div class="inspector-row">
+              <span class="inspector-label">Status Result:</span>
+              <span class="inspector-val" id="statusResultVal" style="color: var(--accent-amber);">In Progress</span>
+            </div>
+
+            <div class="log-box" id="explanationLog">
+              Click <strong>Play</strong> or <strong>Step &rarr;</strong> to start visual execution.
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Trace -->
+        <div class="glass-panel" style="padding: 16px;">
+          <div class="tile-ribbon"></div>
+          <div class="section-title">💻 Live Code Execution</div>
+          <div class="code-panel">
+            <div class="code-line" id="line1">Set&lt;String&gt; wordSet = new HashSet&lt;&gt;(wordList);</div>
+            <div class="code-line" id="line2">if (!wordSet.contains(endWord)) return 0;</div>
+            <div class="code-line" id="line3">Queue&lt;String&gt; q = new ArrayDeque&lt;&gt;();</div>
+            <div class="code-line" id="line4">q.offer(beginWord); int level = 1;</div>
+            <div class="code-line" id="line5">while (!q.isEmpty()) {</div>
+            <div class="code-line" id="line6">  int size = q.size();</div>
+            <div class="code-line" id="line7">  for (int i = 0; i &lt; size; i++) {</div>
+            <div class="code-line" id="line8">    String word = q.poll();</div>
+            <div class="code-line" id="line9">    for (int j = 0; j &lt; word.length(); j++) {</div>
+            <div class="code-line" id="line10">      for (char c = 'a'; c &lt;= 'z'; c++) {</div>
+            <div class="code-line" id="line11">        String next = substitute(word, j, c);</div>
+            <div class="code-line" id="line12">        if (next.equals(endWord)) return level + 1;</div>
+            <div class="code-line" id="line13">        if (wordSet.contains(next)) {</div>
+            <div class="code-line" id="line14">          q.offer(next); wordSet.remove(next);</div>
+            <div class="code-line" id="line15">        }</div>
+            <div class="code-line" id="line16">      }</div>
+            <div class="code-line" id="line17">    }</div>
+            <div class="code-line" id="line18">  } level++;</div>
+            <div class="code-line" id="line19">} return 0;</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // --- Visualizer State Engine ---
+    let steps = [];
+    let currentStepIdx = 0;
+    let isPlaying = false;
+    let playTimer = null;
+
+    // Elements
+    const beginWordInput = document.getElementById('beginWordInput');
+    const endWordInput = document.getElementById('endWordInput');
+    const wordListInput = document.getElementById('wordListInput');
+
+    const btnPlay = document.getElementById('btnPlay');
+    const btnStepFwd = document.getElementById('btnStepFwd');
+    const btnStepBack = document.getElementById('btnStepBack');
+    const btnReset = document.getElementById('btnReset');
+
+    const queueContainer = document.getElementById('queueContainer');
+    const treeLevelsContainer = document.getElementById('treeLevelsContainer');
+    const wordBankContainer = document.getElementById('wordBankContainer');
+
+    const stepCounterVal = document.getElementById('stepCounterVal');
+    const levelVal = document.getElementById('levelVal');
+    const poppedNodeVal = document.getElementById('poppedNodeVal');
+    const statusResultVal = document.getElementById('statusResultVal');
+    const explanationLog = document.getElementById('explanationLog');
+
+    // Build Execution Steps
+    function buildSteps() {
+      steps = [];
+      const beginWord = beginWordInput.value.trim().toLowerCase();
+      const endWord = endWordInput.value.trim().toLowerCase();
+      const wordList = wordListInput.value.split(',').map(w => w.trim().toLowerCase()).filter(w => w.length > 0);
+
+      const wordSet = new Set(wordList);
+      
+      // Step 0: Initial State
+      steps.push({
+        line: 1,
+        beginWord, endWord,
+        wordSet: new Set(wordSet),
+        queue: [beginWord],
+        levels: { 1: [beginWord] },
+        currentLevel: 1,
+        popped: null,
+        status: 'In Progress',
+        log: `Initialized wordSet with ${wordSet.size} words. Pushed beginWord "${beginWord}" to Queue.`
+      });
+
+      if (!wordSet.has(endWord)) {
+        steps.push({
+          line: 2,
+          beginWord, endWord,
+          wordSet: new Set(wordSet),
+          queue: [],
+          levels: { 1: [beginWord] },
+          currentLevel: 1,
+          popped: null,
+          status: 'Impossible (0)',
+          log: `End word "${endWord}" is NOT in wordSet! Shortest transformation path length is 0.`
+        });
+        return;
+      }
+
+      const queue = [beginWord];
+      const visitedSet = new Set(wordSet);
+      visitedSet.delete(beginWord);
+
+      let level = 1;
+      const levelsMap = { 1: [beginWord] };
+
+      while (queue.length > 0) {
+        const levelSize = queue.length;
+        const nextLevelWords = [];
+
+        steps.push({
+          line: 6,
+          beginWord, endWord,
+          wordSet: new Set(visitedSet),
+          queue: [...queue],
+          levels: JSON.parse(JSON.stringify(levelsMap)),
+          currentLevel: level,
+          popped: null,
+          status: 'In Progress',
+          log: `Starting Level ${level}. Queue contains ${levelSize} word(s).`
+        });
+
+        for (let i = 0; i < levelSize; i++) {
+          const word = queue.shift();
+
+          steps.push({
+            line: 8,
+            beginWord, endWord,
+            wordSet: new Set(visitedSet),
+            queue: [...queue],
+            levels: JSON.parse(JSON.stringify(levelsMap)),
+            currentLevel: level,
+            popped: word,
+            status: 'In Progress',
+            log: `Popped "${word}" from Queue at Level ${level}. Testing 1-character mutations...`
+          });
+
+          // Generate mutations
+          for (let j = 0; j < word.length; j++) {
+            for (let c = 97; c <= 122; c++) {
+              const charStr = String.fromCharCode(c);
+              if (charStr === word[j]) continue;
+
+              const nextWord = word.substring(0, j) + charStr + word.substring(j + 1);
+
+              if (nextWord === endWord) {
+                // Success!
+                if (!levelsMap[level + 1]) levelsMap[level + 1] = [];
+                levelsMap[level + 1].push(nextWord);
+
+                steps.push({
+                  line: 12,
+                  beginWord, endWord,
+                  wordSet: new Set(visitedSet),
+                  queue: [...queue],
+                  levels: JSON.parse(JSON.stringify(levelsMap)),
+                  currentLevel: level + 1,
+                  popped: word,
+                  foundWord: nextWord,
+                  status: `Solved (${level + 1})`,
+                  log: `🎉 TARGET FOUND! Mutated "${word}" → "${nextWord}" (endWord)! Shortest sequence length = ${level + 1}.`
+                });
+                return;
+              }
+
+              if (visitedSet.has(nextWord)) {
+                visitedSet.delete(nextWord);
+                queue.push(nextWord);
+                nextLevelWords.push(nextWord);
+
+                if (!levelsMap[level + 1]) levelsMap[level + 1] = [];
+                levelsMap[level + 1].push(nextWord);
+
+                steps.push({
+                  line: 14,
+                  beginWord, endWord,
+                  wordSet: new Set(visitedSet),
+                  queue: [...queue],
+                  levels: JSON.parse(JSON.stringify(levelsMap)),
+                  currentLevel: level,
+                  popped: word,
+                  log: `Found valid mutation: "${word}" → "${nextWord}". Enqueued "${nextWord}" and removed from unvisited set.`
+                });
+              }
+            }
+          }
+        }
+        level++;
+      }
+
+      steps.push({
+        line: 19,
+        beginWord, endWord,
+        wordSet: new Set(visitedSet),
+        queue: [],
+        levels: JSON.parse(JSON.stringify(levelsMap)),
+        currentLevel: level,
+        status: 'No Path (0)',
+        log: `Queue exhausted! Could not reach "${endWord}". Result = 0.`
+      });
+    }
+
+    // Render Current Step State
+    function renderStep() {
+      if (steps.length === 0) return;
+      const state = steps[currentStepIdx];
+
+      // Step & Counter Info
+      stepCounterVal.textContent = `${currentStepIdx + 1} / ${steps.length}`;
+      levelVal.textContent = state.currentLevel;
+      poppedNodeVal.textContent = state.popped ? `"${state.popped}"` : 'None';
+      statusResultVal.textContent = state.status;
+      explanationLog.innerHTML = state.log;
+
+      // Highlight Code Execution Line
+      for (let i = 1; i <= 19; i++) {
+        const lineEl = document.getElementById(`line${i}`);
+        if (lineEl) lineEl.classList.remove('active-line');
+      }
+      const activeLineEl = document.getElementById(`line${state.line}`);
+      if (activeLineEl) activeLineEl.classList.add('active-line');
+
+      // Render Queue
+      queueContainer.innerHTML = '';
+      if (state.queue.length === 0) {
+        queueContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 0.85rem;">Queue is empty</span>';
+      } else {
+        state.queue.forEach(w => {
+          const chip = document.createElement('div');
+          chip.className = 'queue-chip';
+          chip.textContent = w;
+          queueContainer.appendChild(chip);
+        });
+      }
+
+      // Render Word Bank (Set)
+      wordBankContainer.innerHTML = '';
+      const initialList = wordListInput.value.split(',').map(w => w.trim().toLowerCase()).filter(w => w.length > 0);
+      initialList.forEach(w => {
+        const chip = document.createElement('div');
+        chip.className = 'bank-chip';
+        chip.textContent = w;
+        if (!state.wordSet.has(w) && w !== state.beginWord) {
+          chip.classList.add('removed');
+        }
+        wordBankContainer.appendChild(chip);
+      });
+
+      // Render Levels Tree
+      treeLevelsContainer.innerHTML = '';
+      Object.keys(state.levels).forEach(lvl => {
+        const row = document.createElement('div');
+        row.className = 'level-row';
+
+        const badge = document.createElement('div');
+        badge.className = 'level-badge';
+        badge.textContent = `Lvl ${lvl}`;
+        row.appendChild(badge);
+
+        const chips = document.createElement('div');
+        chips.className = 'node-chips';
+
+        state.levels[lvl].forEach(w => {
+          const node = document.createElement('div');
+          node.className = 'word-node';
+          node.textContent = w;
+
+          if (w === state.popped) {
+            node.classList.add('active-pop');
+          } else if (w === state.foundWord) {
+            node.classList.add('target-found');
+          } else {
+            node.classList.add('visited-tree');
+          }
+
+          chips.appendChild(node);
+        });
+
+        row.appendChild(chips);
+        treeLevelsContainer.appendChild(row);
+      });
+
+      // Update buttons
+      btnStepBack.disabled = (currentStepIdx === 0);
+      btnStepFwd.disabled = (currentStepIdx === steps.length - 1);
+    }
+
+    // Play Controls
+    function togglePlay() {
+      if (isPlaying) {
+        pause();
+      } else {
+        play();
+      }
+    }
+
+    function play() {
+      if (currentStepIdx >= steps.length - 1) currentStepIdx = 0;
+      isPlaying = true;
+      btnPlay.textContent = '⏸ Pause';
+      playTimer = setInterval(() => {
+        if (currentStepIdx < steps.length - 1) {
+          currentStepIdx++;
+          renderStep();
+        } else {
+          pause();
+        }
+      }, 700);
+    }
+
+    function pause() {
+      isPlaying = false;
+      btnPlay.textContent = '▶ Play';
+      if (playTimer) clearInterval(playTimer);
+    }
+
+    // Event Listeners
+    btnPlay.addEventListener('click', togglePlay);
+    btnStepFwd.addEventListener('click', () => {
+      pause();
+      if (currentStepIdx < steps.length - 1) {
+        currentStepIdx++;
+        renderStep();
+      }
+    });
+
+    btnStepBack.addEventListener('click', () => {
+      pause();
+      if (currentStepIdx > 0) {
+        currentStepIdx--;
+        renderStep();
+      }
+    });
+
+    btnReset.addEventListener('click', () => {
+      pause();
+      buildSteps();
+      currentStepIdx = 0;
+      renderStep();
+    });
+
+    [beginWordInput, endWordInput, wordListInput].forEach(inp => {
+      inp.addEventListener('change', () => {
+        pause();
+        buildSteps();
+        currentStepIdx = 0;
+        renderStep();
+      });
+    });
+
+    // Initial Launch
+    buildSteps();
+    renderStep();
+  </script>
+</body>
+</html>
