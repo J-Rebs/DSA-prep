@@ -155,13 +155,29 @@ public class GraphTraceOptimizerTest {
     // 7. 01 Matrix Nearest Distance
     @Test
     void testUpdateMatrix() {
-        int[][] mat = {
+        int[][] mat1 = {
             {0,0,0},
             {0,1,0},
             {1,1,1}
         };
-        int[][] res = GraphTraceOptimizer.updateMatrix(mat);
-        assertNotNull(res);
+        int[][] expected1 = {
+            {0,0,0},
+            {0,1,0},
+            {1,2,1}
+        };
+        assertArrayEquals(expected1, GraphTraceOptimizer.updateMatrix(mat1));
+
+        int[][] mat2 = {
+            {0,0,0},
+            {0,1,0},
+            {0,0,0}
+        };
+        int[][] expected2 = {
+            {0,0,0},
+            {0,1,0},
+            {0,0,0}
+        };
+        assertArrayEquals(expected2, GraphTraceOptimizer.updateMatrix(mat2));
     }
 
     // 8. Word Ladder

@@ -284,9 +284,6 @@ public final class GraphTraceOptimizer {
                 }
             }
         }
-        if (freshOrangeCount == 0) {
-            return 0;
-        }
         // use BFS to count time ticks till no freshOranges
         int timeTick = 0;
         int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, -1 }, { 0, 1 } };
@@ -333,11 +330,11 @@ public final class GraphTraceOptimizer {
                     freshOrangeCount--;
                     q.offer(new int[] { nR, nC });
                 }
-
                 layerSize--;
             }
         }
-        return freshOrangeCount == 0 ? timeTick : -1;
+        // if cannot get rid of all fresh oranges return -1
+        return -1;
     }
 
     /**
@@ -345,7 +342,54 @@ public final class GraphTraceOptimizer {
      * Finds distance of nearest 0 for each cell in a binary matrix.
      */
     public static int[][] updateMatrix(int[][] mat) {
-        // TODO: Implement 01 Matrix Multi-Source BFS
+        // Multi-Source BFS: Expand outward from all '0's simultaneously.
+        // First visit to any cell via BFS guarantees the minimum distance from the
+        // nearest '0'.
+
+        // saftey guards
+        if (mat == null || mat[0] == null || mat.length == 0 || mat[0].length == 0) {
+            return mat;
+        }
+        // initial processing, find 0 and pick diff value for unvisited
+        // since 1 is a valid distance
+        Queue<int[]> q = new ArrayDeque<>();
+        int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        for (int r = 0; r < mat.length; r++) {
+            for (int c = 0; c < mat[0].length; c++) {
+                if (mat[r][c] == 0) {
+                    q.offer(new int[] { r, c });
+                } else {
+                    mat[r][c] = Integer.MIN_VALUE;
+                }
+            }
+        }
+        // now do BFS
+        while (!q.isEmpty()) {
+            int[] coord = q.poll();
+            int r = coord[0];
+            int c = coord[1];
+
+            // assume we've only pushed valid coordinates, so process neighbors directly
+            for (int[] dir : dirs) {
+                int nR = r + dir[0];
+                int nC = c + dir[1];
+                // if not valid skip
+                if (nR < 0 || nC < 0 || nR >= mat.length || nC >= mat[0].length) {
+                    continue;
+                }
+                // if not an unvisited value skip
+                if (mat[nR][nC] != Integer.MIN_VALUE) {
+                    continue;
+                }
+                // otherwise process
+                // notice that by updating values when process neighbors
+                // we correctly leave 0 cells w/ 0 distance
+                mat[nR][nC] = mat[r][c] + 1;
+                q.offer(new int[] { nR, nC });
+            }
+        }
+
         return mat;
     }
 
