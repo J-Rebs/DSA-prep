@@ -1,7 +1,9 @@
 package com.engine.phase3_distributed.p09_graph_traversals;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * High-Performance Graph BFS/DFS & Grid Traversal Engine.
@@ -268,8 +270,74 @@ public final class GraphTraceOptimizer {
      * BFS.
      */
     public static int orangesRotting(int[][] grid) {
-        // TODO: Implement Multi-Source BFS
-        return -1;
+        // saftey guards
+        if (grid == null || grid[0] == null || grid.length == 0 || grid[0].length == 0) {
+            return -1;
+        }
+        // find out how many fresh oranges we have.
+        int freshOrangeCount = 0;
+
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                if (grid[r][c] == 1) {
+                    freshOrangeCount++;
+                }
+            }
+        }
+        if (freshOrangeCount == 0) {
+            return 0;
+        }
+        // use BFS to count time ticks till no freshOranges
+        int timeTick = 0;
+        int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, -1 }, { 0, 1 } };
+        Queue<int[]> q = new ArrayDeque<>();
+        // push any rotten oranges as the start
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                if (grid[r][c] == 2) {
+                    q.offer(new int[] { r, c });
+                }
+            }
+        }
+        // then process in layers
+        while (!q.isEmpty()) {
+            // evaluate if any fresh oranges at start of each layer, handles
+            // case there were never any to start
+            if (freshOrangeCount == 0) {
+                return timeTick;
+            }
+            int layerSize = q.size();
+            timeTick++;
+            while (layerSize != 0) {
+                int[] cellCoordinates = q.poll();
+                int r = cellCoordinates[0];
+                int c = cellCoordinates[1];
+
+                // process neighbors, note no other checks required
+                // because we only push 2 to the queue
+                for (int[] dir : dirs) {
+                    // get neighbor coordinates
+                    int nR = r + dir[0];
+                    int nC = c + dir[1];
+                    // if it is invalid ignore it
+                    if (nR < 0 || nC < 0 || nR >= grid.length || nC >= grid[0].length) {
+                        continue;
+                    }
+                    // if 2 or 0 ignore
+                    if (grid[nR][nC] == 2 || grid[nR][nC] == 0) {
+                        continue;
+                    }
+                    // otherwise is 1, and we can push
+                    // assuming valid input, otherwise can do if == 1
+                    grid[nR][nC] = 2;
+                    freshOrangeCount--;
+                    q.offer(new int[] { nR, nC });
+                }
+
+                layerSize--;
+            }
+        }
+        return freshOrangeCount == 0 ? timeTick : -1;
     }
 
     /**

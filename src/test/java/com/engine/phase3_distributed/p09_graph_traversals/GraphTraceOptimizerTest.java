@@ -134,12 +134,22 @@ public class GraphTraceOptimizerTest {
     // 6. Rotting Oranges
     @Test
     void testRottingOranges() {
-        int[][] grid = {
+        int[][] grid1 = {
             {2,1,1},
             {1,1,0},
             {0,1,1}
         };
-        assertEquals(4, GraphTraceOptimizer.orangesRotting(grid));
+        assertEquals(4, GraphTraceOptimizer.orangesRotting(grid1));
+
+        int[][] grid2 = {
+            {2,1,1},
+            {0,1,1},
+            {1,0,1}
+        };
+        assertEquals(-1, GraphTraceOptimizer.orangesRotting(grid2));
+
+        int[][] grid3 = {{0,2}};
+        assertEquals(0, GraphTraceOptimizer.orangesRotting(grid3));
     }
 
     // 7. 01 Matrix Nearest Distance
