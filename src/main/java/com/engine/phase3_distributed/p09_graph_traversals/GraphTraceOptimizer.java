@@ -2,6 +2,7 @@ package com.engine.phase3_distributed.p09_graph_traversals;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
 
@@ -398,7 +399,53 @@ public final class GraphTraceOptimizer {
      * Finds length of shortest transformation sequence from beginWord to endWord.
      */
     public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        // TODO: Implement Word Ladder BFS
+        // saftey guard
+        if (beginWord == null || endWord == null || wordList == null || wordList.size() == 0) {
+            return 0;
+        }
+        // key: a single transformation is defined as a change in one letter
+        Queue<String> wordQueue = new ArrayDeque<>();
+        HashSet<String> wordSet = new HashSet<>(wordList);
+        wordQueue.offer(beginWord);
+        int transforms = 0;
+
+        while (!wordQueue.isEmpty()) {
+            // do bfs by level since each neighbor represents the same number of transforms
+            transforms++;
+            int levelSize = wordQueue.size();
+            for (int i = 0; i < levelSize; i++) {
+                // get a word
+                char[] wordArray = wordQueue.poll().toCharArray();
+                // try to transform it
+                for (int wordIndex = 0; wordIndex < wordArray.length; wordIndex++) {
+                    char originalChar = wordArray[wordIndex];
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        // if what we had before, skip
+                        if (c == originalChar) {
+                            continue;
+                        }
+                        wordArray[wordIndex] = c;
+                        // change by 1 yields a neighbor
+                        String neighbor = new String(wordArray);
+
+                        // check that this neighbor actually exists
+                        // then we can either mark it as the answer or
+                        // add it to the queueu
+                        // we can add neighbor to the queue
+                        if (wordSet.remove(neighbor)) {
+                            if (neighbor.equals(endWord)) {
+                                // plus 1 for this latest transformation
+                                return transforms + 1;
+                            }
+                            wordQueue.offer(neighbor);
+                        }
+                    }
+                    // restore original character before moving to next index
+                    wordArray[wordIndex] = originalChar;
+                }
+
+            }
+        }
         return 0;
     }
 

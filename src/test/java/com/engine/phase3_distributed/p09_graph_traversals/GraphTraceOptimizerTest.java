@@ -182,9 +182,43 @@ public class GraphTraceOptimizerTest {
 
     // 8. Word Ladder
     @Test
-    void testWordLadder() {
+    void testWordLadder_StandardPath() {
         List<String> wordList = List.of("hot","dot","dog","lot","log","cog");
         assertEquals(5, GraphTraceOptimizer.ladderLength("hit", "cog", wordList));
+    }
+
+    @Test
+    void testWordLadder_EndWordNotInList() {
+        // Critical edge case: endWord is missing from wordList
+        List<String> wordList = List.of("hot","dot","dog");
+        assertEquals(0, GraphTraceOptimizer.ladderLength("hit", "cog", wordList));
+    }
+
+    @Test
+    void testWordLadder_NoPossiblePath() {
+        // Disconnected word graph
+        List<String> wordList = List.of("hot","dot","lot");
+        assertEquals(0, GraphTraceOptimizer.ladderLength("hit", "cog", wordList));
+    }
+
+    @Test
+    void testWordLadder_DirectTransformation() {
+        // Only 1 mutation away
+        List<String> wordList = List.of("hot");
+        assertEquals(2, GraphTraceOptimizer.ladderLength("hit", "hot", wordList));
+    }
+
+    @Test
+    void testWordLadder_SingleLetterWords() {
+        List<String> wordList = List.of("a", "b", "c");
+        assertEquals(2, GraphTraceOptimizer.ladderLength("a", "c", wordList));
+    }
+
+    @Test
+    void testWordLadder_NullAndEmptyGuards() {
+        assertEquals(0, GraphTraceOptimizer.ladderLength(null, "cog", List.of("cog")));
+        assertEquals(0, GraphTraceOptimizer.ladderLength("hit", null, List.of("hit")));
+        assertEquals(0, GraphTraceOptimizer.ladderLength("hit", "cog", List.of()));
     }
 
     // 9. Clone Graph
