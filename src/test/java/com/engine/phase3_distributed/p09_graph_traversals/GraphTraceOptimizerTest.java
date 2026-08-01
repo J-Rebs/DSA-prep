@@ -6,9 +6,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GraphTraceOptimizerTest {
 
@@ -223,14 +221,40 @@ public class GraphTraceOptimizerTest {
 
     // 9. Clone Graph
     @Test
-    void testCloneGraph() {
+    void testCloneGraph_TwoNodesCycle() {
         GraphTraceOptimizer.Node n1 = new GraphTraceOptimizer.Node(1);
         GraphTraceOptimizer.Node n2 = new GraphTraceOptimizer.Node(2);
         n1.neighbors.add(n2);
         n2.neighbors.add(n1);
 
         GraphTraceOptimizer.Node cloned = GraphTraceOptimizer.cloneGraph(n1);
-        // Basic check
+        
+        assertNotNull(cloned);
+        assertNotSame(n1, cloned);
+        assertEquals(1, cloned.val);
+        assertEquals(1, cloned.neighbors.size());
+
+        GraphTraceOptimizer.Node clonedNeighbor = cloned.neighbors.get(0);
+        assertNotSame(n2, clonedNeighbor);
+        assertEquals(2, clonedNeighbor.val);
+
+        // Verify cyclic back-reference points to the cloned root
+        assertSame(cloned, clonedNeighbor.neighbors.get(0));
+    }
+
+    @Test
+    void testCloneGraph_Null() {
+        assertNull(GraphTraceOptimizer.cloneGraph(null));
+    }
+
+    @Test
+    void testCloneGraph_SingleNode() {
+        GraphTraceOptimizer.Node n1 = new GraphTraceOptimizer.Node(42);
+        GraphTraceOptimizer.Node cloned = GraphTraceOptimizer.cloneGraph(n1);
+        assertNotNull(cloned);
+        assertNotSame(n1, cloned);
+        assertEquals(42, cloned.val);
+        assertTrue(cloned.neighbors.isEmpty());
     }
 
     // ==========================================

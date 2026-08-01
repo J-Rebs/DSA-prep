@@ -2,6 +2,7 @@ package com.engine.phase3_distributed.p09_graph_traversals;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
@@ -454,8 +455,44 @@ public final class GraphTraceOptimizer {
      * Creates a deep copy of a connected undirected graph.
      */
     public static Node cloneGraph(Node node) {
-        // TODO: Implement Graph Clone BFS/DFS
-        return null;
+        // saftey guard
+        if (node == null) {
+            return null;
+        }
+
+        // process current graph
+        // building map of nodes as we go
+        Queue<Node> q = new ArrayDeque<>();
+        q.offer(node);
+        Node curr;
+        HashMap<Node, Node> nodeMap = new HashMap<>();
+        HashSet<Node> originalVisited = new HashSet<>();
+
+        // process via bfs
+        while (!q.isEmpty()) {
+            curr = q.poll();
+            // retrieve a node from the original graph
+            // if it was already visited ignore
+            if (originalVisited.contains(curr)) {
+                continue;
+            }
+            // add to nodeMap a reference to this node
+            // if it does not exist
+            nodeMap.computeIfAbsent(curr, key -> new Node(key.val));
+            // mark it as visited
+            originalVisited.add(curr);
+            // set up neighbors if not present and associate copies
+            // with this node, then finally add those neighbors
+            // originals to the queue
+            for (Node neighbor : curr.neighbors) {
+                nodeMap.computeIfAbsent(neighbor, key -> new Node(key.val));
+                nodeMap.get(curr).neighbors.add(nodeMap.get(neighbor));
+                q.offer(neighbor);
+            }
+
+        }
+        // we get the root copy from map
+        return nodeMap.get(node);
     }
 
     public static class Node {
