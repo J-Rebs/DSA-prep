@@ -4,7 +4,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 /**
@@ -524,8 +526,128 @@ public final class GraphTraceOptimizer {
      * Finds all shortest transformation sequences from beginWord to endWord.
      */
     public static List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        // TODO: Implement BFS + Backtracking for Word Ladder II
-        return List.of();
+        // saftey guard
+        if (beginWord == null || beginWord.length() == 0 || endWord == null || endWord.length() == 0) {
+            return List.of();
+        }
+        // solveability guard - O(n) check but better then O(V + E) traversal
+        if (!wordList.contains(endWord)) {
+            return List.of();
+        }
+        // once we know solvable, then we can build parent map and compute result
+        List<List<String>> pathsToEndWord = new ArrayList<>();
+        LinkedList<String> currentPath = new LinkedList<>();
+        Map<String, List<String>> parentMap = buildParentMap(beginWord, endWord, wordList);
+        // since we know we can reach endword somehow (no dictionary making some words
+        // invalid)
+        // parent map cannot be empty and we can compute the result.
+        dfs(endWord, beginWord, parentMap, currentPath, pathsToEndWord);
+        return pathsToEndWord;
+
+    }
+
+    /**
+     * 
+     * We can construct a DAG leading from end word back to begin word
+     * which we will use with DFS
+     */
+    public static Map<String, List<String>> buildParentMap(String beginWord, String endWord, List<String> wordList) {
+        HashSet<String> wordSet = new HashSet<>(wordList);
+        HashSet<String> visited = new HashSet<>();
+        Map<String, List<String>> parentMap = new HashMap<>();
+        Queue<String> q = new ArrayDeque<>();
+        q.offer(beginWord);
+
+        while (!q.isEmpty()) {
+            // bfs by levels AND for shortest path
+            int levelSize = q.size();
+            // there may be multiple edges to a word,
+            // but we only want to add that word (a node) once to the queue
+            // at a given level
+            HashSet<String> visitedAtThisLevel = new HashSet<>();
+            for (int i = 0; i < levelSize; i++) {
+                String curr = q.poll();
+                visited.add(curr);
+
+                List<String> neighbors = buildNeighbors(curr, wordSet);
+                // if neighbor is not in parent map and not already visited
+                // add it
+                for (String neighbor : neighbors) {
+                    if (visited.contains(neighbor)) {
+                        continue;
+                    }
+
+                    // add the edge from child to parent
+                    parentMap.computeIfAbsent(neighbor, key -> new ArrayList<>()).add(curr);
+
+                    // but only want to add the child node once
+                    if (visitedAtThisLevel.add(neighbor)) {
+                        q.offer(neighbor);
+                    }
+
+                }
+            }
+            // since we see the neighbors at this level, we should never again
+            // try to compute an edge for them bc we could create cycles
+            // or unoptimal (non shortest paths)
+            visited.addAll(visitedAtThisLevel);
+        }
+
+        return parentMap;
+    }
+
+    /**
+     * Construct neighbors to a given word
+     */
+    public static List<String> buildNeighbors(String curr, HashSet<String> wordSet) {
+        ArrayList<String> neighbors = new ArrayList<>();
+        char[] currArr = curr.toCharArray();
+        for (int i = 0; i < currArr.length; i++) {
+            char original = currArr[i];
+            // try changes to the currArr
+            for (char c = 'a'; c <= 'z'; c++) {
+                currArr[i] = c;
+                String neighbor = new String(currArr);
+                if (wordSet.contains(neighbor)) {
+                    neighbors.add(neighbor);
+                }
+            }
+            // restore original before moving to next character
+            currArr[i] = original;
+        }
+        return neighbors;
+    }
+
+    /**
+     * Does DFS down a graph, takes a snapshot of path buffer once reaches
+     * beginWord of the path taken
+     * then cleans up the path buffer on the way back up
+     */
+    public static void dfs(String curr, String beginWord, Map<String, List<String>> parentMap,
+            LinkedList<String> currentPath, List<List<String>> result) {
+
+        // always push the current word, we construct the solution such that this won't
+        // be null, we also ensure its possible to reach the base case
+        // we add first since we built an inverted dag
+        currentPath.addFirst(curr);
+
+        // base case we have a result, and no need to recurse further
+        if (curr.equals(beginWord)) {
+            // do not add the reference to the current buffer but
+            // a copy (snapshot) of it at the point the result is found
+            result.add(new ArrayList<>(currentPath));
+        } else {
+            // otherwise we recurse
+            List<String> parents = parentMap.get(curr);
+            if (parents != null) {
+                for (String parent : parents) {
+                    dfs(parent, beginWord, parentMap, currentPath, result);
+                }
+            }
+        }
+        // no matter what we need to clean up on backtracking to allow
+        // the next DFS path to find a new result
+        currentPath.removeFirst();
     }
 
     /**

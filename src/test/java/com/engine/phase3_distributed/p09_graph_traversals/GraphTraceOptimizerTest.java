@@ -263,10 +263,38 @@ public class GraphTraceOptimizerTest {
 
     // 10. Word Ladder II
     @Test
-    void testWordLadderII() {
+    void testWordLadderII_MultipleShortestPaths() {
         List<String> wordList = List.of("hot","dot","dog","lot","log","cog");
         List<List<String>> result = GraphTraceOptimizer.findLadders("hit", "cog", wordList);
         assertNotNull(result);
+        assertEquals(2, result.size());
+        assertTrue(result.contains(List.of("hit", "hot", "dot", "dog", "cog")));
+        assertTrue(result.contains(List.of("hit", "hot", "lot", "log", "cog")));
+    }
+
+    @Test
+    void testWordLadderII_EndWordNotInList() {
+        List<String> wordList = List.of("hot","dot","dog");
+        List<List<String>> result = GraphTraceOptimizer.findLadders("hit", "cog", wordList);
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void testWordLadderII_NoPathPossible() {
+        List<String> wordList = List.of("hot","dot","lot");
+        List<List<String>> result = GraphTraceOptimizer.findLadders("hit", "cog", wordList);
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void testWordLadderII_DirectTransformation() {
+        List<String> wordList = List.of("hot");
+        List<List<String>> result = GraphTraceOptimizer.findLadders("hit", "hot", wordList);
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(List.of("hit", "hot"), result.get(0));
     }
 
     // 11. Shortest Path in 2D Matrix with Obstacle Elimination
