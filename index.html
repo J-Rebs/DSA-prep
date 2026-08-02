@@ -936,7 +936,7 @@ int mid = (low + high) >>> 1;</code></pre>
             "id": "p17_io_and_parsing",
             "name": "I/O & Parsing",
             "component": "Log File & Stream Codec Parser Engine",
-            "status": "🟢 Mastered",
+            "status": "🔄 In Progress",
             "guidance": {
               "overview": "I/O, Parsing & Stream Processing covers fast stream tokenization, state-machine text parsing, expression evaluation (RPN/AST), nested structure iterators, binary tree serialization, and length-prefixed protocol framing without external library allocations.",
               "mentalModel": "Maintain zero-allocation char pointers and state invariants. Evaluate math and boolean predicate expressions using operator and operand stack buffers. Prefix byte/string payloads with length markers for collision-free stream decoding.",
@@ -946,7 +946,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Fast I/O & Multi-Line Tokenizer Scanner",
                 "difficulty": "Easy",
-                "status": "🟢 Solved",
+                "status": "🛑 Todo",
                 "systemMapping": "High-throughput log ingest buffer scanner",
                 "description": "Parse raw stream/text containing space/newline delimited primitive types using zero-allocation stream buffer tokenization.",
                 "hints": "Wrap InputStream inside BufferedReader. Scan char by char using whitespace checks, creating substrings only at token boundaries."
@@ -954,7 +954,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "String to Integer (atoi) State Machine",
                 "difficulty": "Easy",
-                "status": "🟢 Solved",
+                "status": "🛑 Todo",
                 "systemMapping": "Safe HTTP request query string parameter converter",
                 "description": "Parse string into 32-bit signed integer with whitespace, sign detection, and 32-bit overflow guards.",
                 "hints": "Trim leading spaces. Track sign (+/-). Accumulate digits into long or check overflow before multiplying by 10."
@@ -962,7 +962,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Valid IP Address & Port Format Parser",
                 "difficulty": "Easy",
-                "status": "🟢 Solved",
+                "status": "🛑 Todo",
                 "systemMapping": "Network ingress socket validator (IPv4/IPv6 & port parser)",
                 "description": "Parse and validate socket addresses ('192.168.1.1:8080' or IPv6) with range checks [0-255] and hex verification.",
                 "hints": "Split on colon/dot safely. Check token lengths, leading zero bounds, and hex ranges [0-9, a-f, A-F]."
@@ -970,7 +970,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "CSV & Delimiter Log Line Parser with Quotes",
                 "difficulty": "Medium",
-                "status": "🟢 Solved",
+                "status": "🛑 Todo",
                 "systemMapping": "Distributed metric log collector & CSV record reader",
                 "description": "Parse CSV lines into field arrays handling quoted strings, internal delimiters, and escaped quotes (\"\").",
                 "hints": "Maintain inQuotes boolean state. If char is quote and next is quote, append single quote and skip next. If comma outside quotes, emit field."
@@ -978,7 +978,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Reverse Polish Notation (RPN) Stream Evaluator",
                 "difficulty": "Medium",
-                "status": "🟢 Solved",
+                "status": "🛑 Todo",
                 "systemMapping": "Postfix metric rule evaluator for query execution engines",
                 "description": "Evaluate postfix math expressions (+, -, *, /) using operand stack.",
                 "hints": "Push integers onto stack. On operator, pop top two operands (b then a), execute operation, and push result back."
@@ -986,7 +986,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Basic Calculator / Expression Parser with Parentheses",
                 "difficulty": "Medium",
-                "status": "🟢 Solved",
+                "status": "🛑 Todo",
                 "systemMapping": "Dynamic alert condition & rate limiter predicate evaluator",
                 "description": "Evaluate infix math expressions with operator precedence (+,-,*,/,(,)) in O(N) time.",
                 "hints": "Use recursion or operator/operand stack. Process highest precedence ops (*, /) immediately into stack before + and -."
@@ -994,7 +994,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Binary Tree Serialization & Deserialization Codec",
                 "difficulty": "Medium",
-                "status": "🟢 Solved",
+                "status": "🛑 Todo",
                 "systemMapping": "RPC data payload serializer/deserializer for distributed index nodes",
                 "description": "Serialize binary trees into compact string streams and reconstruct the exact tree structure.",
                 "hints": "Use pre-order traversal with 'null' markers. Reconstruct recursively using a queue of token strings."
@@ -1002,7 +1002,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Nested List / JSON Structure Parser Iterator",
                 "difficulty": "Medium",
-                "status": "🟢 Solved",
+                "status": "🛑 Todo",
                 "systemMapping": "Microservice RPC JSON response flattener & nested schema iterator",
                 "description": "Parse nested integer lists (e.g. '[1,[4,[6]]]'), providing an iterator to yield flattened values.",
                 "hints": "Parse characters sequentially, extracting integers and preserving nested depth."
@@ -1010,7 +1010,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Stream Chunk Splitter & Read N Characters Read4",
                 "difficulty": "Medium",
-                "status": "🟢 Solved",
+                "status": "🛑 Todo",
                 "systemMapping": "Socket IO stream buffer reader (chunked stream processing)",
                 "description": "Read up to N characters from stream using read4 API, preserving buffer residual state across calls.",
                 "hints": "Maintain internal buf4, buf4Ptr, and buf4Count. Copy available bytes into user buffer until N characters are read."
@@ -1018,7 +1018,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "State-Machine Expression Add Operators & AST Parser",
                 "difficulty": "Hard",
-                "status": "🟢 Solved",
+                "status": "🛑 Todo",
                 "systemMapping": "High-frequency SQL query string builder & predicate search planner",
                 "description": "Parse string of digits 0-9 and return all expressions inserting +, -, * evaluating to target without leading zeros.",
                 "hints": "Backtrack across digit splits. Pass current eval value and last multiplied term to handle precedence correctly."
@@ -1026,7 +1026,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "High-Throughput Log File Streaming Lexer & Codec",
                 "difficulty": "Hard",
-                "status": "🟢 Solved",
+                "status": "🛑 Todo",
                 "systemMapping": "TCP/gRPC packet framer & zero-copy binary string list encoder/decoder",
                 "description": "Encode string list into length-prefixed stream format ('<len>#<str>') and decode back in O(N) time.",
                 "hints": "Prefix each string payload with its length followed by '#'. Parse length integer up to '#' and jump payload bytes directly."
@@ -1055,7 +1055,7 @@ int mid = (low + high) >>> 1;</code></pre>
             "id": "p09_graph_traversals",
             "name": "Graph BFS/DFS",
             "component": "Call Graph Trace Optimizer",
-            "status": "🔄 In Progress",
+            "status": "🟢 Mastered",
             "guidance": {
               "overview": "Graph BFS/DFS & Grid Traversals model networks, service call graphs, and spatial grids. BFS guarantees shortest path on unweighted graphs level by level, while DFS explores connected components and depth bounds.",
               "mentalModel": "<ul style='margin: 0; padding-left: 14px; display: flex; flex-direction: column; gap: 6px;'><li style='margin-bottom: 2px;'><strong>In-Place Grid Marking:</strong> Set grid values in-place (e.g. '1' -> '0') to avoid O(M*N) boolean visited[][] array allocations.</li><li style='margin-bottom: 2px;'><strong>Multi-Source BFS:</strong> Enqueue all source nodes at level 0 up front to simulate simultaneous propagation (e.g. Rotting Oranges, 01 Matrix).</li><li><strong>Bi-Directional BFS:</strong> Alternate search from start and end sets to shrink search space from O(b^d) to O(b^(d/2)).</li></ul>",
@@ -1145,7 +1145,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Shortest Path in 2D Matrix with Obstacle Elimination",
                 "difficulty": "Hard",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "Router packet bypass allocator (shortest path bypassing up to K firewall rules)",
                 "description": "Find shortest path from (0,0) to (M-1,N-1) stepping over up to K obstacle walls.",
                 "hints": "BFS with 3D state (row, col, remainingK). Track visited[row][col][k] to avoid redundant state traversals."
@@ -1428,6 +1428,66 @@ while (low &lt;= high) {
         high = mid - 1; // Search left to find smaller bounds
     }
 }</code></pre>
+          </div>
+        `;
+      } else if (conceptId === 'p17_io_and_parsing') {
+        lessonHTML = `
+          <div class="guidance-container" style="border-left-color: var(--accent-amber); background: rgba(178, 135, 81, 0.015);">
+            <h4 style="font-size: 1.1rem; font-weight: 700; color: var(--accent-amber); margin-bottom: 8px;">🎓 Lesson: Stream I/O, State Machine & Expression Parsing</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 12px;">
+              Production stream parsers (RPC framing, log aggregators, AST evaluators) process raw text or binary streams without relying on slow regex engines or excessive object allocations.
+              We achieve $O(N)$ single-pass throughput using <strong>Stream Readers</strong>, <strong>State Machine Trackers</strong>, <strong>Operand Stacks</strong>, and <strong>Length-Prefixed Framing</strong>.
+            </p>
+
+            <div class="section-title" style="color: var(--accent-indigo); margin-top: 16px;">1. Fast Stream Reader & Zero-Regex Token Scanner Template</div>
+            <pre><code>BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
+String line;
+while ((line = reader.readLine()) != null) {
+    int n = line.length();
+    int i = 0;
+    while (i &lt; n) {
+        while (i &lt; n && Character.isWhitespace(line.charAt(i))) i++; // Skip leading whitespace
+        if (i &gt;= n) break;
+        int start = i;
+        while (i &lt; n && !Character.isWhitespace(line.charAt(i))) i++; // Scan to token end
+        tokens.add(line.substring(start, i));
+    }
+}</code></pre>
+
+            <div class="section-title" style="color: var(--accent-indigo); margin-top: 16px;">2. State-Machine Number Parser (atoi) Template</div>
+            <pre><code>int i = 0, n = s.length(), sign = 1;
+while (i &lt; n && s.charAt(i) == ' ') i++; // 1. Trim leading spaces
+if (i &lt; n && (s.charAt(i) == '+' || s.charAt(i) == '-')) {
+    sign = s.charAt(i++) == '-' ? -1 : 1; // 2. Sign detection
+}
+long result = 0;
+while (i &lt; n && Character.isDigit(s.charAt(i))) {
+    result = result * 10 + (s.charAt(i++) - '0'); // 3. Digit accumulation
+    if (sign == 1 && result &gt; Integer.MAX_VALUE) return Integer.MAX_VALUE; // 4. Overflow guards
+    if (sign == -1 && -result &lt; Integer.MIN_VALUE) return Integer.MIN_VALUE;
+}
+return (int)(result * sign);</code></pre>
+
+            <div class="section-title" style="color: var(--accent-indigo); margin-top: 16px;">3. Operand Stack Expression Evaluator Template</div>
+            <pre><code>int[] stack = new int[tokens.length];
+int top = -1;
+for (String token : tokens) {
+    if (isOperator(token)) {
+        int b = stack[top--];
+        int a = stack[top--];
+        stack[++top] = evaluate(a, b, token); // Push result back onto stack
+    } else {
+        stack[++top] = Integer.parseInt(token);
+    }
+}
+return stack[top];</code></pre>
+
+            <div class="section-title" style="color: var(--accent-emerald); margin-top: 20px; font-weight: 700;">💡 Key Findings & High-Yield Tips</div>
+            <ul style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-left: 20px; margin-top: 8px; display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Avoid <code>java.util.Scanner</code>:</strong> Scanner relies on regex compilation for every token. Use <code>BufferedReader</code> and char pointers for $10\times$ faster log stream processing.</li>
+              <li><strong>Primitive Array Stacks:</strong> Avoid <code>java.util.Stack&lt;Integer&gt;</code> due to unboxing overhead and synchronized method locks. Prefer <code>int[] stack</code> or <code>ArrayDeque</code>.</li>
+              <li><strong>Length-Prefixed Payload Framing:</strong> Encode streams as <code>&lt;len&gt;#&lt;payload&gt;</code> (e.g. <code>5#hello4#world</code>). This prevents delimiter collision when payloads contain commas or hashes.</li>
+            </ul>
           </div>
         `;
       }

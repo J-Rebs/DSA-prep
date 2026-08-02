@@ -655,7 +655,72 @@ public final class GraphTraceOptimizer {
      * Finds shortest path from (0,0) to (m-1, n-1) eliminating up to k obstacles.
      */
     public static int shortestPathWithObstacles(int[][] grid, int k) {
-        // TODO: Implement State-based 3D BFS
+        // two ideas help solve this:
+        // (1) BFS by levels always gives the shortest or most optimal route, all things
+        // considered
+        // (2) it's always more optimal to have some k left at a given cell if we can,
+        // but at the same time
+        // we should always spend if we need to remove an obstacle
+
+        // saftey guard
+        if (grid == null || grid.length == 0 || grid[0] == null || grid[0].length == 0) {
+            return -1;
+        }
+
+        // we could use an array but using a record makes this idea more
+        // extendible if not all state is of the same type in java
+        record State(int r, int c, int rem, int steps) {
+        }
+        ;
+
+        int[][] visited = new int[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                visited[i][j] = -1;
+            }
+        }
+        Queue<State> q = new LinkedList<>();
+        int[][] dirs = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        // setup
+        q.offer(new State(0, 0, k, 0));
+        visited[0][0] = k;
+
+        // level wise bfs
+        while (!q.isEmpty()) {
+            int levelSize = q.size();
+            for (int i = 0; i < levelSize; i++) {
+                State current = q.poll();
+                // check, have we reached the end?
+                if (current.r == grid.length - 1 && current.c == grid[0].length - 1) {
+                    return current.steps;
+                }
+                // otherwise, see if we have neighbors to visit
+                for (int[] dir : dirs) {
+                    int nr = current.r + dir[0];
+                    int nc = current.c + dir[1];
+                    // check if out of bounds
+                    if (nr < 0 || nc < 0 || nr >= grid.length || nc >= grid[0].length) {
+                        continue;
+                    }
+                    // calculate the obstacles left we can remove for taking
+                    // this next step
+                    int obstacleBudget = grid[nr][nc] == 1 ? current.rem - 1 : current.rem;
+                    // then we should only visit if the value of the next step would be
+                    // better than whatever is already there, which is to say
+                    // would going there with this path leave more obstacle budget vs what was there
+                    // before
+                    if (obstacleBudget >= 0 && obstacleBudget > visited[nr][nc]) {
+                        // visited takes on the value of the obstacle budget
+                        // since we are going to take this path
+                        visited[nr][nc] = obstacleBudget;
+                        q.offer(new State(nr, nc, obstacleBudget, current.steps + 1));
+                    }
+                }
+
+            }
+        }
+
         return -1;
     }
 }
