@@ -946,7 +946,7 @@ int mid = (low + high) >>> 1;</code></pre>
               {
                 "name": "Fast I/O & Multi-Line Tokenizer Scanner",
                 "difficulty": "Easy",
-                "status": "🛑 Todo",
+                "status": "🟢 Solved",
                 "systemMapping": "High-throughput log ingest buffer scanner",
                 "description": "Parse raw stream/text containing space/newline delimited primitive types using zero-allocation stream buffer tokenization.",
                 "hints": "Wrap InputStream inside BufferedReader. Scan char by char using whitespace checks, creating substrings only at token boundaries."
@@ -1484,7 +1484,7 @@ return stack[top];</code></pre>
 
             <div class="section-title" style="color: var(--accent-emerald); margin-top: 20px; font-weight: 700;">💡 Key Findings & High-Yield Tips</div>
             <ul style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-left: 20px; margin-top: 8px; display: flex; flex-direction: column; gap: 8px;">
-              <li><strong>Avoid <code>java.util.Scanner</code>:</strong> Scanner relies on regex compilation for every token. Use <code>BufferedReader</code> and char pointers for $10\times$ faster log stream processing.</li>
+              <li><strong>Avoid <code>java.util.Scanner</code>:</strong> Scanner relies on regex compilation for every token. Use <code>BufferedReader</code> and char pointers for 10x faster log stream processing.</li>
               <li><strong>Primitive Array Stacks:</strong> Avoid <code>java.util.Stack&lt;Integer&gt;</code> due to unboxing overhead and synchronized method locks. Prefer <code>int[] stack</code> or <code>ArrayDeque</code>.</li>
               <li><strong>Length-Prefixed Payload Framing:</strong> Encode streams as <code>&lt;len&gt;#&lt;payload&gt;</code> (e.g. <code>5#hello4#world</code>). This prevents delimiter collision when payloads contain commas or hashes.</li>
             </ul>
