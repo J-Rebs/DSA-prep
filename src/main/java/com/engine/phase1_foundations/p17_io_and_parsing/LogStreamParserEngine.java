@@ -1,6 +1,8 @@
 package com.engine.phase1_foundations.p17_io_and_parsing;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -55,8 +57,45 @@ public class LogStreamParserEngine {
      * tokenization.
      */
     public List<String> fastLogTokenScan(InputStream stream) throws Exception {
-        // TODO: Implement fast multi-line tokenizer
-        return Collections.emptyList();
+        // saftey guard
+        if (stream == null) {
+            return Collections.emptyList();
+        }
+        // need to create a bridge between bytes and characters
+        InputStreamReader byteToCharBuffer = new InputStreamReader(stream);
+        BufferedReader buffer = new BufferedReader(byteToCharBuffer);
+        List<String> result = new ArrayList<>();
+
+        // now can process line by line
+        String line;
+        while ((line = buffer.readLine()) != null) {
+            // for each line we have
+            // strip leading white space
+            // and construct words as those between the whitespace
+            int n = line.length();
+            int i = 0;
+            while (i < n) {
+                // strip whitespace at start or in middle of line
+                while (i < n && Character.isWhitespace(line.charAt(i))) {
+                    i++;
+                }
+                // if there is a trailing whitespace at the end of a line
+                // we risk adding an empty string if we do not break
+                if (i >= n) {
+                    break;
+                }
+                // find token
+                int start = i;
+                while (i < n && !Character.isWhitespace(line.charAt(i))) {
+                    i++;
+                }
+                // note i is now at a whitespace, but that's ok
+                // because of how substring works going to endIndex - 1
+                result.add(line.substring(start, i));
+            }
+
+        }
+        return result;
     }
 
     /**
@@ -65,8 +104,52 @@ public class LogStreamParserEngine {
      * detection, and overflow guards.
      */
     public int parseStringToInteger(String s) {
-        // TODO: Implement atoi state machine
-        return 0;
+        // saftey guard
+        if (s == null) {
+            return 0;
+        }
+        // setup
+        int sign = 1;
+        int n = s.length();
+        int i = 0;
+        // trim leading whitespaces
+        while (i < n && s.charAt(i) == ' ') {
+            i++;
+        }
+        // be careful to make sure didnt only have whitespace
+        if (i >= n) {
+            return 0;
+        }
+        // then check sign if present
+        if (s.charAt(i) == '+') {
+            i++;
+        } else if (s.charAt(i) == '-') {
+            sign = -1;
+            i++;
+        }
+        // now accumulate digits, if none present or not immediate
+        // result remains 0 and we are good
+        // use long so can properly detect integer overflow, underflow
+        long result = 0;
+        while (i < n && Character.isDigit(s.charAt(i))) {
+            // - '0' char - char converts to int
+            int digit = s.charAt(i) - '0';
+            // promote by power of 10 prior result
+            // and add current digit
+            result = result * 10 + digit;
+
+            // overflow checks
+            if (sign == 1 && result > Integer.MAX_VALUE) {
+                return Integer.MAX_VALUE;
+            }
+            if (sign == -1 && -result < Integer.MIN_VALUE) {
+                return Integer.MIN_VALUE;
+            }
+            i++;
+
+        }
+
+        return (int) (sign * result);
     }
 
     /**
