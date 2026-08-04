@@ -278,9 +278,17 @@ public class LogStreamParserEngine {
 
             if (c == '"') {
                 // covers case of an escaped quote
+                // in this case we are using " like we might use
+                // "/" to escape in another context
+                // given that we can only escape if we see ""
+                // then we only keep one of the double quotes
+                // in the literal string
+                // if the escape character were diff,
+                // we would include only the second value
+                // rather than doing i++
                 if (inQuotes && i + 1 < n && line.charAt(i + 1) == '"') {
                     current.append(c);
-                    i++; // skip escaped quote
+                    i++;
                 } else {
                     // otherwise toggle in qutoes
                     // if not escaping
@@ -314,8 +322,34 @@ public class LogStreamParserEngine {
      * Evaluates postfix arithmetic expressions with +, -, *, / using operand stack.
      */
     public int evaluateRpnExpression(String[] tokens) {
-        // TODO: Implement RPN expression evaluator
-        return 0;
+        // saftey guard
+        if (tokens == null || tokens.length == 0) {
+            return 0;
+        }
+        // deque is preferred from a performance perspective
+        // stack is more legacy
+        Deque<Integer> stack = new ArrayDeque<>();
+        // order will only matter for subtraction and division
+        for (String token : tokens) {
+            if (token.equals("+")) {
+                stack.push(stack.pop() + stack.pop());
+            } else if (token.equals("*")) {
+                stack.push(stack.pop() * stack.pop());
+            } else if (token.equals("/")) {
+                int b = stack.pop();
+                int a = stack.pop();
+                stack.push(a / b);
+            } else if (token.equals("-")) {
+                int b = stack.pop();
+                int a = stack.pop();
+                stack.push(a - b);
+            } else {
+                // in this case assume valid input parse the int
+                // and push it to the stack
+                stack.push(Integer.parseInt(token));
+            }
+        }
+        return stack.pop();
     }
 
     /**
