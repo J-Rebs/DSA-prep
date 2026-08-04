@@ -263,8 +263,50 @@ public class LogStreamParserEngine {
      * ("").
      */
     public List<String> parseCsvLine(String line) {
-        // TODO: Implement CSV parser with quote escaping
-        return Collections.emptyList();
+        if (line == null) {
+            // done check for a blank line because
+            // that can be a valid csv line
+            return Collections.emptyList();
+        }
+        List<String> colValues = new ArrayList<>();
+        boolean inQuotes = false;
+        int i = 0;
+        int n = line.length();
+        StringBuilder current = new StringBuilder();
+        while (i < n) {
+            char c = line.charAt(i);
+
+            if (c == '"') {
+                // covers case of an escaped quote
+                if (inQuotes && i + 1 < n && line.charAt(i + 1) == '"') {
+                    current.append(c);
+                    i++; // skip escaped quote
+                } else {
+                    // otherwise toggle in qutoes
+                    // if not escaping
+                    inQuotes = !inQuotes;
+                }
+                // closing qutoe case
+            } else if (c == ',' && !inQuotes) {
+                // once we leave quotes and see a ,
+                // we should add the value to result
+                colValues.add(current.toString());
+                // and reset the buffer
+                current.setLength(0);
+            } else {
+                // otherwise we're inbetween a pair
+                // of binding quotes, so we should
+                // add c
+                current.append(c);
+            }
+            i++;
+        }
+        // on exit we should have come
+        // to the last column assuming a reaosnably
+        // well formed input
+        colValues.add(current.toString());
+        return colValues;
+
     }
 
     /**
