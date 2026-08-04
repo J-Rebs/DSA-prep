@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
+import javax.management.RuntimeErrorException;
+
 /**
  * Log File & Stream Codec Parser Engine
  * 
@@ -158,8 +160,101 @@ public class LogStreamParserEngine {
      * Invalid).
      */
     public String validateIpAddressAndPort(String input) {
-        // TODO: Implement IP address and port validator
-        return "Invalid";
+        final String INVALID = "Invalid";
+        final String IPV4 = "IPv4";
+        final String IPV6 = "IPv6";
+        // IPv4 is . separated and IPv6 is colon separated
+        // using index of allows us to check in O(n)
+        // which format we could have
+        if (input == null || input.isBlank()) {
+            return INVALID;
+        }
+        if (input.indexOf('.') != -1) {
+            return canParseAsIPv4(input) ? IPV4 : INVALID;
+        } else if (input.indexOf(':') != -1) {
+            return canParseAsIpV6(input) ? IPV6 : INVALID;
+        }
+
+        return INVALID;
+    }
+
+    public boolean canParseAsIPv4(String input) {
+        // using split is acceptable because we have a small bounded
+        // input vs dealing with a very large input buffer
+        String ipPart = input;
+        if (input.indexOf(':') != -1) {
+            String[] socketParts = input.split(":", -1);
+            // we must only have one colon, so two parts
+            if (socketParts.length != 2)
+                return false;
+            // save ip part for later
+            ipPart = socketParts[0];
+            // now validate port
+            try {
+                int port = Integer.parseInt(socketParts[1]);
+                if (port < 1 || port > 65535) {
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        // now validate ip part
+        // first, do we have the expected octets
+        // -1 to preserve empty strings at the end like "10.0:" -> ["10","0",""]
+        // if split on "."
+        // \\ is needed because split works on a regex and . is an any match
+        // one \ is used with things like \n so you have to do \\. to pass
+        // the regex \. which is to say split on the character period.
+        String[] tokens = ipPart.split("\\.", -1);
+        if (tokens.length != 4) {
+            return false;
+        }
+
+        // then parse values
+        for (String token : tokens) {
+            // if token somehow empty or too long, the value must be off
+            if (token.isEmpty() || token.length() > 3) {
+                return false;
+            }
+            // double check leading zero
+            if (token.charAt(0) == '0' && token.length() > 1) {
+                return false;
+            }
+            try {
+                int tokenValue = Integer.parseInt(token);
+                if (tokenValue < 0 || tokenValue > 255) {
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public boolean canParseAsIpV6(String input) {
+        String[] tokens = input.split(":", -1);
+        // we must have 8 segments or tokens
+        if (tokens.length != 8) {
+            return false;
+        }
+        for (String token : tokens) {
+            if (token.isBlank() || token.length() > 4) {
+                return false;
+            }
+            try {
+                // must be hexadecimal
+                Integer.parseInt(token, 16);
+            } catch (NumberFormatException e) {
+                return false;
+            }
+
+        }
+        return true;
+
     }
 
     /**
